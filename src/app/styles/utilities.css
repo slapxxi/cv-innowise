@@ -1,0 +1,15 @@
+/* Material UI typography utilities */
+@utility typography-* {
+  font: --value(--font-*);
+}
+
+/* Material UI overlay utilities */
+@utility overlay-* {
+  background-image: --value(--overlay-*);
+}
+
+/* Material UI elevation utilities */
+@utility elevation-* {
+  background-image: --value(--overlay-*);
+  box-shadow: --value(--shadow-*);
+}

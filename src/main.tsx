@@ -1,12 +1,14 @@
+import GlobalStyles from '@mui/material/GlobalStyles';
+import { StyledEngineProvider } from '@mui/material/styles';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 
 // Import the generated route tree
-import { routeTree } from './routeTree.gen';
-
+import { ThemeProvider } from '~/app/providers';
 import '~/app/styles/styles.css';
 import reportWebVitals from './reportWebVitals.ts';
+import { routeTree } from './routeTree.gen';
 
 // Create a new router instance
 const router = createRouter({
@@ -31,7 +33,12 @@ if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      <StyledEngineProvider enableCssLayer>
+        <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
+        <ThemeProvider>
+          <RouterProvider router={router} />
+        </ThemeProvider>
+      </StyledEngineProvider>
     </StrictMode>
   );
 }
