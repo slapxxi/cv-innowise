@@ -10,6 +10,9 @@ export default defineConfig([
   tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   {
+    ignores: ['**/__tests__/**', '**/__test__/**'],
+  },
+  {
     rules: {
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
