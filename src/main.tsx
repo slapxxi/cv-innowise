@@ -5,6 +5,7 @@ import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 
 // Import the generated route tree
+import '~/app/i18n';
 import { ThemeProvider } from '~/app/providers';
 import '~/app/styles/styles.css';
 import reportWebVitals from './reportWebVitals.ts';
