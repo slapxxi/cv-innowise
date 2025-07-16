@@ -1,1 +1,1 @@
-[FSD](../public/fsd-pyramid-of-doom.png)
+![FSD](../public/fsd-pyramid-of-doom.png)
