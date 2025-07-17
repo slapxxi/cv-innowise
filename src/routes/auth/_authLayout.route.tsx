@@ -1,7 +1,7 @@
 import { Tabs, Tab } from '@mui/material';
 import { createFileRoute, Outlet, useLocation } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/_authLayout')({
+export const Route = createFileRoute('/auth/_authLayout')({
   component: RouteComponent,
 });
 
@@ -10,13 +10,13 @@ function RouteComponent() {
   const nav = Route.useNavigate();
 
   const handleChangeTab = (_event: React.SyntheticEvent, newValue: string) => {
-    nav({ to: `/${newValue}` });
+    nav({ to: `/auth/${newValue}` });
   };
 
   return (
     <div className="flex h-screen flex-col">
       <header className="flex justify-center">
-        <Tabs value={location.pathname.slice(1)} onChange={handleChangeTab}>
+        <Tabs value={location.pathname.split('/')[2]} onChange={handleChangeTab}>
           <Tab label="Login" value="login"></Tab>
           <Tab label="Sign Up" value="signup"></Tab>
         </Tabs>

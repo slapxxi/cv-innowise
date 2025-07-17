@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { Button, PasswordField, TextField, Title } from '~/shared';
 
-export const Route = createFileRoute('/_authLayout/login')({
+export const Route = createFileRoute('/auth/_authLayout/signup')({
   component: RouteComponent,
 });
 
@@ -13,9 +13,9 @@ function RouteComponent() {
     <section className="flex flex-col">
       <header className="flex flex-col items-center gap-6 mb-10">
         <Title asChild>
-          <h2>{t('Welcome back')}</h2>
+          <h2>{t('Register')}</h2>
         </Title>
-        <p>{t('Happy to see you')}</p>
+        <p>{t('Welcome')}</p>
       </header>
 
       <div className="flex flex-col gap-4">
@@ -24,8 +24,8 @@ function RouteComponent() {
       </div>
 
       <div className="mt-15 flex flex-col gap-2 self-center">
-        <Button>{t('Login')}</Button>
-        <Button variant="text">{t('Forgot password')}</Button>
+        <Button>{t('Signup')}</Button>
+        <Button variant="text">{t('I have an account')}</Button>
       </div>
     </section>
   );
