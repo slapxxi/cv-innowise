@@ -1,5 +1,7 @@
 @layer base {
   body {
+    @apply text-neutral-800;
+
     @variant dark {
       @apply bg-neutral-700 text-white;
     }

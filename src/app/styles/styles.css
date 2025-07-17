@@ -1,6 +1,7 @@
 @layer theme, base, mui, components, utilities;
 @import 'tailwindcss';
-@import './vars';
-@import './theme';
-@import './utilities';
-@import './base';
+
+@import './vars.css';
+@import './theme.css';
+@import './utilities.css';
+@import './base.css';
