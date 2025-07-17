@@ -1,3 +1,11 @@
+@layer base {
+  body {
+    @variant dark {
+      @apply bg-neutral-700 text-white;
+    }
+  }
+}
+
 /* Material UI base styles */
 @layer base {
   h1 {

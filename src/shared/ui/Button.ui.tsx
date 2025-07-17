@@ -1,12 +1,12 @@
 import BaseButton from '@mui/material/Button';
-import { cn } from '~/shared';
 import { cva } from 'class-variance-authority';
+import { cn } from '~/shared';
 
 const buttonVariants = cva('rounded-full', {
   variants: {
     variant: {
-      contained: '',
-      text: 'text-gray-600',
+      contained: 'text-white',
+      text: 'text-neutral-500',
     },
   },
   defaultVariants: {

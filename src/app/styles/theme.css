@@ -86,16 +86,16 @@
   --color-action-focus: var(--mui-palette-action-focus);
 
   /* Material UI gray scale */
-  --color-gray-50: var(--mui-palette-grey-50);
-  --color-gray-100: var(--mui-palette-grey-100);
-  --color-gray-200: var(--mui-palette-grey-200);
-  --color-gray-300: var(--mui-palette-grey-300);
-  --color-gray-400: var(--mui-palette-grey-400);
-  --color-gray-500: var(--mui-palette-grey-500);
-  --color-gray-600: var(--mui-palette-grey-600);
-  --color-gray-700: var(--mui-palette-grey-700);
-  --color-gray-800: var(--mui-palette-grey-800);
-  --color-gray-900: var(--mui-palette-grey-900);
+  /* --color-gray-50: var(--mui-palette-grey-50); */
+  /* --color-gray-100: var(--mui-palette-grey-100); */
+  /* --color-gray-200: var(--mui-palette-grey-200); */
+  /* --color-gray-300: var(--mui-palette-grey-300); */
+  /* --color-gray-400: var(--mui-palette-grey-400); */
+  /* --color-gray-500: var(--mui-palette-grey-500); */
+  /* --color-gray-600: var(--mui-palette-grey-600); */
+  /* --color-gray-700: var(--mui-palette-grey-700); */
+  /* --color-gray-800: var(--mui-palette-grey-800); */
+  /* --color-gray-900: var(--mui-palette-grey-900); */
   --color-gray-A100: var(--mui-palette-grey-A100);
   --color-gray-A200: var(--mui-palette-grey-A200);
   --color-gray-A400: var(--mui-palette-grey-A400);
