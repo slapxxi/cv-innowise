@@ -1,0 +1,6 @@
+@layer mui {
+  :root {
+    --mui-palette-primary-main: hsl(360 61% 48%);
+    --mui-palette-primary-dark: hsl(360 61% 38%);
+  }
+}

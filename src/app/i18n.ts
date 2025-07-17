@@ -9,12 +9,20 @@ const resources = {
     translation: {
       'Welcome to React': 'Welcome to React and react-i18next',
       Language: 'Language',
+      Email: 'Email',
+      Password: 'Password',
+      Signup: 'Sign Up',
+      'I have an account': 'I have an account',
     },
   },
   ru: {
     translation: {
       'Welcome to React': 'Добро пожаловать в React и react-i18next',
       Language: 'Язык',
+      Email: 'Электронная почта',
+      Password: 'Пароль',
+      Signup: 'Регистрация',
+      'I have an account': 'У меня есть аккаунт',
     },
   },
 };
@@ -31,5 +39,7 @@ i18n
       escapeValue: false, // react already safes from xss
     },
   });
+
+export { i18n };
 
 export default i18n;
