@@ -1,17 +1,17 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { Button, PasswordField, TextField, Title } from '~/shared';
+import { Button, ButtonLink, PasswordField, TextField, Title } from '~/shared';
 import { useForm } from 'react-hook-form';
 import type { AuthInput } from 'cv-graphql';
 import { useSignupMutation } from '~/features/auth/api/use-signup.ts';
 
 export const Route = createFileRoute('/auth/_authLayout/signup')({
   component: RouteComponent,
+  head: () => ({ meta: [{ title: 'Sign Up' }] }),
 });
 
 function RouteComponent() {
   const { t } = useTranslation();
-  const nav = Route.useNavigate();
   const { register, handleSubmit } = useForm<AuthInput>();
   const { mutate: signupMutation, isPending } = useSignupMutation();
 
@@ -36,9 +36,9 @@ function RouteComponent() {
         <Button type="submit" disabled={isPending}>
           {t('Signup')}
         </Button>
-        <Button variant="text" onClick={() => nav({ to: '/auth/login' })}>
+        <ButtonLink to="/auth/login" variant="text">
           {t('I have an account')}
-        </Button>
+        </ButtonLink>
       </div>
     </form>
   );
