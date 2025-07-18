@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, ButtonLink, PasswordField, TextField, Title } from '~/shared';
 
 export const Route = createFileRoute('/auth/_authLayout/signup')({
+  head: () => ({ meta: [{ title: 'Sign Up' }] }),
   component: RouteComponent,
   head: () => ({ meta: [{ title: 'Sign Up' }] }),
 });

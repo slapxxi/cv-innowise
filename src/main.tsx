@@ -5,6 +5,7 @@ import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 
 // Import the generated route tree
+import { QueryClient } from '@tanstack/react-query';
 import '~/app/i18n';
 import { ThemeProvider } from '~/app/providers';
 import '~/app/styles/styles.css';
@@ -14,7 +15,7 @@ import { routeTree } from './routeTree.gen';
 // Create a new router instance
 const router = createRouter({
   routeTree,
-  context: {},
+  context: { queryClient: new QueryClient() },
   defaultPreload: 'intent',
   scrollRestoration: true,
   defaultStructuralSharing: true,
