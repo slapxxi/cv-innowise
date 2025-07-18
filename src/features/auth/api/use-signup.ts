@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import type { AuthInput, AuthResult } from 'cv-graphql';
 import { graphQLClient } from '~/shared/api/graphql.ts';
 import { useNavigate } from '@tanstack/react-router';
+import type { GraphQLResponseError } from '~/shared/types/graphql.types.ts';
 
 const SIGNUP_QUERY = `
   mutation Signup($auth:AuthInput!){
@@ -20,7 +21,6 @@ export const useSignupMutation = () => {
   return useMutation<AuthResult, Error, AuthInput>({
     mutationFn: async (auth: AuthInput) => {
       const response = await graphQLClient.request<{ signup: AuthResult }>(SIGNUP_QUERY, { auth });
-      console.log(response);
       return response.signup;
     },
     onSuccess: (response) => {
@@ -28,6 +28,9 @@ export const useSignupMutation = () => {
         localStorage.setItem('access_token', response.access_token);
       }
       navigate({ to: '/auth/login' });
+    },
+    onError: (error: GraphQLResponseError) => {
+      console.log(error.response?.errors[0].message);
     },
   });
 };
