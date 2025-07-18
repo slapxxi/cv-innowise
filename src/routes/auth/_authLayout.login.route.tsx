@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { Button, PasswordField, TextField, Title } from '~/shared';
+import { Button, ButtonLink, PasswordField, TextField, Title } from '~/shared';
 
 export const Route = createFileRoute('/auth/_authLayout/login')({
   component: RouteComponent,
@@ -8,7 +8,6 @@ export const Route = createFileRoute('/auth/_authLayout/login')({
 
 function RouteComponent() {
   const { t } = useTranslation();
-  const nav = Route.useNavigate();
 
   return (
     <section className="flex flex-col">
@@ -27,9 +26,9 @@ function RouteComponent() {
 
       <div className="mt-15 flex flex-col gap-2 self-center">
         <Button>{t('Login')}</Button>
-        <Button onClick={() => nav({ to: '/auth/forgot-password' })} variant="text">
+        <ButtonLink to="/auth/forgot-password" variant="text">
           {t('Forgot password')}
-        </Button>
+        </ButtonLink>
       </div>
     </section>
   );

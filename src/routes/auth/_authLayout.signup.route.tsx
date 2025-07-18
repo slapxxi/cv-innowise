@@ -1,9 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { Button, PasswordField, TextField, Title } from '~/shared';
+import { Button, ButtonLink, PasswordField, TextField, Title } from '~/shared';
 
 export const Route = createFileRoute('/auth/_authLayout/signup')({
   component: RouteComponent,
+  head: () => ({ meta: [{ title: 'Sign Up' }] }),
 });
 
 function RouteComponent() {
@@ -25,7 +26,9 @@ function RouteComponent() {
 
       <div className="mt-15 flex flex-col gap-2 self-center">
         <Button>{t('Signup')}</Button>
-        <Button variant="text">{t('I have an account')}</Button>
+        <ButtonLink to="/auth/login" variant="text">
+          {t('I have an account')}
+        </ButtonLink>
       </div>
     </section>
   );
