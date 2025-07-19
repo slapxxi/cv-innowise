@@ -5,12 +5,12 @@ import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 
 // Import the generated route tree
-import { QueryClient } from '@tanstack/react-query';
 import '~/app/i18n';
 import { ThemeProvider } from '~/app/providers';
 import '~/app/styles/styles.css';
 import reportWebVitals from './reportWebVitals.ts';
 import { routeTree } from './routeTree.gen';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Create a new router instance
 const router = createRouter({
@@ -38,7 +38,9 @@ if (rootElement && !rootElement.innerHTML) {
       <StyledEngineProvider enableCssLayer>
         <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
         <ThemeProvider>
-          <RouterProvider router={router} />
+          <QueryClientProvider client={new QueryClient()}>
+            <RouterProvider router={router} />
+          </QueryClientProvider>
         </ThemeProvider>
       </StyledEngineProvider>
     </StrictMode>

@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { Button, ButtonLink, PasswordField, TextField, Title } from '~/shared';
 import * as z from 'zod/v4';
 import i18n from '~/app/i18n';
+import type { AuthInput } from 'cv-graphql';
+import { useSignupMutation } from '~/features/auth/api/use-signup.ts';
 
 export const Route = createFileRoute('/auth/_authLayout/signup')({
   head: () => ({ meta: [{ title: i18n.t('Signup') }] }),
@@ -17,13 +19,15 @@ function RouteComponent() {
     email: z.string().nonempty(t('Email is required')),
     password: z.string().nonempty(t('Password is required')),
   });
-  const form = useForm({
+  const form = useForm<AuthInput>({
     resolver: zodResolver(formSchema),
   });
 
   const handleSubmit: SubmitHandler<z.infer<typeof formSchema>> = (data) => {
-    console.log(data);
+    signupMutation(data);
   };
+
+  const { mutate: signupMutation, isPending } = useSignupMutation();
 
   return (
     <section className="flex flex-col">
@@ -54,8 +58,12 @@ function RouteComponent() {
         </div>
 
         <div className="mt-15 flex flex-col gap-2 self-center">
-          <Button type="submit">{t('Signup')}</Button>
-          <ButtonLink variant="text">{t('I have an account')}</ButtonLink>
+          <Button type="submit" disabled={isPending}>
+            {t('Signup')}
+          </Button>
+          <ButtonLink variant="text" to="/auth/login">
+            {t('I have an account')}
+          </ButtonLink>
         </div>
       </form>
     </section>
