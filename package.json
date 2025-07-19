@@ -8,7 +8,9 @@
     "build": "vite build && tsc",
     "serve": "vite preview",
     "lint": "eslint src/",
-    "test": "jest",
+    "typecheck": "tsc --noEmit",
+    "test": "jest src/",
+    "spec": "npx playwright test",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -44,12 +46,14 @@
   "devDependencies": {
     "@babel/preset-env": "^7.28.0",
     "@babel/preset-react": "^7.27.1",
+    "@playwright/test": "^1.54.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^30.0.0",
     "@types/lodash": "^4.17.20",
+    "@types/node": "^24.0.14",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.6.0",

@@ -10,17 +10,17 @@ function RouteComponent() {
   const { t } = useTranslation();
   const nav = Route.useNavigate();
   return (
-    <div className="flex items-center justify-center h-screen ">
-      <section className="flex flex-col items-center  w-full max-w-xl p-6 ">
-        <header className="flex flex-col items-center gap-6 mb-10">
+    <div className="flex h-screen items-center justify-center">
+      <section className="flex w-full max-w-xl flex-col items-center p-6">
+        <header className="mb-10 flex flex-col items-center gap-6">
           <Title asChild>
             <h2>{t('Forgot password')}</h2>
           </Title>
-          <p>{t('We will send you an email with further instructions')}</p>
+          <p className="text-center">{t('We will send you an email with further instructions')}</p>
         </header>
 
-        <div className="flex flex-col gap-4  w-full  ">
-          <TextField placeholder='example@email.com' label={'Email'} type="email" />
+        <div className="flex w-full flex-col gap-4">
+          <TextField placeholder="example@email.com" label={t('Email')} type="email" />
         </div>
 
         <div className="mt-15 flex flex-col gap-2 self-center">

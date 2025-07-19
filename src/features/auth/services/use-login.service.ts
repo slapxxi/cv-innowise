@@ -1,8 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
-import type { AuthInput, AuthResult } from 'cv-graphql';
-import { graphQLClient } from '~/shared/api/graphql.ts';
 import { useNavigate } from '@tanstack/react-router';
-import type { GraphQLResponseError } from '~/shared/types/graphql.types.ts';
+import type { AuthInput, AuthResult } from 'cv-graphql';
+import { graphQLClient, type GraphQLResponseError } from '~/shared';
 
 const LOGIN_QUERY = `
   query Login($auth: AuthInput!) {

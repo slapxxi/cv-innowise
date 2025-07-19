@@ -19,7 +19,12 @@ export const PasswordField: React.FC<PasswordFieldProps> = (props) => {
         input: {
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={handleTogglePassword} edge="end" aria-label="toggle password visibility">
+              <IconButton
+                onClick={handleTogglePassword}
+                edge="end"
+                aria-label="toggle password visibility"
+                data-testid="toggle-password-visibility"
+              >
                 {showPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
             </InputAdornment>

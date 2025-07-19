@@ -1,11 +1,13 @@
-import { Tabs, Tab } from '@mui/material';
+import { Tab, Tabs } from '@mui/material';
 import { createFileRoute, Outlet, useLocation } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 
 export const Route = createFileRoute('/auth/_authLayout')({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const { t } = useTranslation();
   const location = useLocation();
   const nav = Route.useNavigate();
 
@@ -17,8 +19,8 @@ function RouteComponent() {
     <div className="flex h-screen flex-col">
       <header className="flex justify-center">
         <Tabs value={location.pathname.split('/')[2]} onChange={handleChangeTab}>
-          <Tab label="Login" value="login"></Tab>
-          <Tab label="Sign Up" value="signup"></Tab>
+          <Tab label={t('Login tab')} value="login"></Tab>
+          <Tab label={t('Signup tab')} value="signup"></Tab>
         </Tabs>
       </header>
 
