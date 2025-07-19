@@ -1,35 +1,21 @@
-import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from '@tanstack/react-router';
-import type { AuthInput, AuthResult } from 'cv-graphql';
-import { graphQLClient, type GraphQLResponseError } from '~/shared';
+import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
+import { auth, type AuthData, type AuthError } from '~/shared';
+import { LOGIN_QUERY } from '~/features/auth/services/queries';
+import type { AuthInput } from 'cv-graphql';
 
-const LOGIN_QUERY = `
-  query Login($auth: AuthInput!) {
-    login(auth: $auth) {
-      access_token
-      user {
-        id
-        email
-      }
-    }
-  }
-`;
+export function useLogin(params: UseMutationOptions<AuthData, AuthError, AuthInput>) {
+  const { mutate, ...mutation } = useMutation<AuthData, AuthError, AuthInput>({
+    ...params,
+    mutationFn: async (params: AuthInput) => {
+      const signupResult = await auth(LOGIN_QUERY, 'login', params);
 
-export const useLoginMutation = () => {
-  const navigate = useNavigate();
-  return useMutation<AuthResult, Error, AuthInput>({
-    mutationFn: async (auth: AuthInput) => {
-      const response = await graphQLClient.request<{ login: AuthResult }>(LOGIN_QUERY, { auth });
-      return response.login;
-    },
-    onSuccess: (response) => {
-      if (response.access_token) {
-        localStorage.setItem('access_token', response.access_token);
+      if (signupResult.ok) {
+        return signupResult.data;
       }
-      navigate({ to: '/' });
-    },
-    onError: (error: GraphQLResponseError) => {
-      console.log(error.response?.errors[0].message);
+
+      throw signupResult.error;
     },
   });
-};
+
+  return { login: mutate, ...mutation };
+}
