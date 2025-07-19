@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useTranslation } from 'react-i18next';
-import { Button, ButtonLink, PasswordField, TextField, Title } from '~/shared';
 import type { AuthInput } from 'cv-graphql';
 import { useForm } from 'react-hook-form';
-import { useLoginMutation } from '~/features/auth/api/use-login.ts';
+import { useTranslation } from 'react-i18next';
+import { useLoginMutation } from '~/features';
+import { Button, ButtonLink, PasswordField, TextField, Title } from '~/shared';
 
 export const Route = createFileRoute('/auth/_authLayout/login')({
   component: RouteComponent,

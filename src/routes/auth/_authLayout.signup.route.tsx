@@ -1,12 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createFileRoute } from '@tanstack/react-router';
+import type { AuthInput } from 'cv-graphql';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Button, ButtonLink, PasswordField, TextField, Title } from '~/shared';
 import * as z from 'zod/v4';
 import i18n from '~/app/i18n';
-import type { AuthInput } from 'cv-graphql';
-import { useSignupMutation } from '~/features/auth/api/use-signup.ts';
+import { useSignupMutation } from '~/features';
+import { Button, ButtonLink, PasswordField, TextField, Title } from '~/shared';
 
 export const Route = createFileRoute('/auth/_authLayout/signup')({
   head: () => ({ meta: [{ title: i18n.t('Signup') }] }),

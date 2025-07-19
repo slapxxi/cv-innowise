@@ -17,6 +17,7 @@ export default defineConfig({
     viteReact(),
     tailwindcss(),
   ],
+  // @ts-expect-error custom property?
   test: {
     globals: true,
     environment: 'jsdom',
