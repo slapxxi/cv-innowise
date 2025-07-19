@@ -42,4 +42,25 @@ test.describe('Sign Up Page', () => {
     await page.locator('button[type="submit"]').click();
     await expect(page.locator('text=Password is required')).toBeVisible();
   });
+
+  test('shows user alreay exists error message', async ({ page }) => {
+    await page.fill('input[name="email"]', 'a@b.com');
+    await page.fill('input[name="password"]', 'password');
+    await page.locator('button[type="submit"]').click();
+    await expect(page.locator('text=user already exists')).toBeVisible();
+  });
+
+  test('shows email is not valid error message', async ({ page }) => {
+    await page.fill('input[name="email"]', 'invalid-email');
+    await page.fill('input[name="password"]', 'password');
+    await page.locator('button[type="submit"]').click();
+    await expect(page.locator('text=email must be an email')).toBeVisible();
+  });
+
+  test('shows password is too short error message', async ({ page }) => {
+    await page.fill('input[name="email"]', 'a@b.com');
+    await page.fill('input[name="password"]', 'pass');
+    await page.locator('button[type="submit"]').click();
+    await expect(page.locator('text=password must be longer than or equal to 5 characters')).toBeVisible();
+  });
 });
