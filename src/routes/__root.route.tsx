@@ -12,7 +12,7 @@ export const Route = createRootRouteWithContext<CVContext>()({
     <>
       <HeadContent />
       <Outlet />
-      <TanStackRouterDevtools />
+      <TanStackRouterDevtools position="top-right" />
     </>
   ),
 });

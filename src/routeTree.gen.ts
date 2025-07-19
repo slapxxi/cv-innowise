@@ -13,11 +13,17 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRouteImport } from './routes/__root.route'
 import { Route as VerifyEmailRouteRouteImport } from './routes/verify-email.route'
 import { Route as AboutRouteRouteImport } from './routes/about.route'
+import { Route as MainLayoutRouteRouteImport } from './routes/_mainLayout/route'
 import { Route as IndexRouteRouteImport } from './routes/index.route'
 import { Route as AuthForgotPasswordRouteRouteImport } from './routes/auth/forgot-password.route'
 import { Route as AuthAuthLayoutRouteRouteImport } from './routes/auth/_authLayout.route'
+import { Route as MainLayoutSkillsRouteRouteImport } from './routes/_mainLayout/skills.route'
+import { Route as MainLayoutLanguagesRouteRouteImport } from './routes/_mainLayout/languages.route'
+import { Route as MainLayoutCvsRouteRouteImport } from './routes/_mainLayout/cvs.route'
+import { Route as MainLayoutUsersIndexRouteRouteImport } from './routes/_mainLayout/users/index.route'
 import { Route as AuthAuthLayoutSignupRouteRouteImport } from './routes/auth/_authLayout.signup.route'
 import { Route as AuthAuthLayoutLoginRouteRouteImport } from './routes/auth/_authLayout.login.route'
+import { Route as MainLayoutUsersUserIdProfileRouteRouteImport } from './routes/_mainLayout/users/$userId.profile.route'
 
 const AuthRouteImport = createFileRoute('/auth')()
 
@@ -36,6 +42,10 @@ const AboutRouteRoute = AboutRouteRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MainLayoutRouteRoute = MainLayoutRouteRouteImport.update({
+  id: '/_mainLayout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRouteRoute = IndexRouteRouteImport.update({
   id: '/',
   path: '/',
@@ -50,6 +60,28 @@ const AuthAuthLayoutRouteRoute = AuthAuthLayoutRouteRouteImport.update({
   id: '/_authLayout',
   getParentRoute: () => AuthRoute,
 } as any)
+const MainLayoutSkillsRouteRoute = MainLayoutSkillsRouteRouteImport.update({
+  id: '/skills',
+  path: '/skills',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
+const MainLayoutLanguagesRouteRoute =
+  MainLayoutLanguagesRouteRouteImport.update({
+    id: '/languages',
+    path: '/languages',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
+const MainLayoutCvsRouteRoute = MainLayoutCvsRouteRouteImport.update({
+  id: '/cvs',
+  path: '/cvs',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
+const MainLayoutUsersIndexRouteRoute =
+  MainLayoutUsersIndexRouteRouteImport.update({
+    id: '/users/',
+    path: '/users/',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
 const AuthAuthLayoutSignupRouteRoute =
   AuthAuthLayoutSignupRouteRouteImport.update({
     id: '/signup',
@@ -62,35 +94,57 @@ const AuthAuthLayoutLoginRouteRoute =
     path: '/login',
     getParentRoute: () => AuthAuthLayoutRouteRoute,
   } as any)
+const MainLayoutUsersUserIdProfileRouteRoute =
+  MainLayoutUsersUserIdProfileRouteRouteImport.update({
+    id: '/users/$userId/profile',
+    path: '/users/$userId/profile',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRouteRoute
   '/about': typeof AboutRouteRoute
   '/verify-email': typeof VerifyEmailRouteRoute
+  '/cvs': typeof MainLayoutCvsRouteRoute
+  '/languages': typeof MainLayoutLanguagesRouteRoute
+  '/skills': typeof MainLayoutSkillsRouteRoute
   '/auth': typeof AuthAuthLayoutRouteRouteWithChildren
   '/auth/forgot-password': typeof AuthForgotPasswordRouteRoute
   '/auth/login': typeof AuthAuthLayoutLoginRouteRoute
   '/auth/signup': typeof AuthAuthLayoutSignupRouteRoute
+  '/users': typeof MainLayoutUsersIndexRouteRoute
+  '/users/$userId/profile': typeof MainLayoutUsersUserIdProfileRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRouteRoute
   '/about': typeof AboutRouteRoute
   '/verify-email': typeof VerifyEmailRouteRoute
+  '/cvs': typeof MainLayoutCvsRouteRoute
+  '/languages': typeof MainLayoutLanguagesRouteRoute
+  '/skills': typeof MainLayoutSkillsRouteRoute
   '/auth': typeof AuthAuthLayoutRouteRouteWithChildren
   '/auth/forgot-password': typeof AuthForgotPasswordRouteRoute
   '/auth/login': typeof AuthAuthLayoutLoginRouteRoute
   '/auth/signup': typeof AuthAuthLayoutSignupRouteRoute
+  '/users': typeof MainLayoutUsersIndexRouteRoute
+  '/users/$userId/profile': typeof MainLayoutUsersUserIdProfileRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRouteRoute
+  '/_mainLayout': typeof MainLayoutRouteRouteWithChildren
   '/about': typeof AboutRouteRoute
   '/verify-email': typeof VerifyEmailRouteRoute
+  '/_mainLayout/cvs': typeof MainLayoutCvsRouteRoute
+  '/_mainLayout/languages': typeof MainLayoutLanguagesRouteRoute
+  '/_mainLayout/skills': typeof MainLayoutSkillsRouteRoute
   '/auth': typeof AuthRouteWithChildren
   '/auth/_authLayout': typeof AuthAuthLayoutRouteRouteWithChildren
   '/auth/forgot-password': typeof AuthForgotPasswordRouteRoute
   '/auth/_authLayout/login': typeof AuthAuthLayoutLoginRouteRoute
   '/auth/_authLayout/signup': typeof AuthAuthLayoutSignupRouteRoute
+  '/_mainLayout/users/': typeof MainLayoutUsersIndexRouteRoute
+  '/_mainLayout/users/$userId/profile': typeof MainLayoutUsersUserIdProfileRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -98,33 +152,50 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/verify-email'
+    | '/cvs'
+    | '/languages'
+    | '/skills'
     | '/auth'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/signup'
+    | '/users'
+    | '/users/$userId/profile'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/verify-email'
+    | '/cvs'
+    | '/languages'
+    | '/skills'
     | '/auth'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/signup'
+    | '/users'
+    | '/users/$userId/profile'
   id:
     | '__root__'
     | '/'
+    | '/_mainLayout'
     | '/about'
     | '/verify-email'
+    | '/_mainLayout/cvs'
+    | '/_mainLayout/languages'
+    | '/_mainLayout/skills'
     | '/auth'
     | '/auth/_authLayout'
     | '/auth/forgot-password'
     | '/auth/_authLayout/login'
     | '/auth/_authLayout/signup'
+    | '/_mainLayout/users/'
+    | '/_mainLayout/users/$userId/profile'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRouteRoute: typeof IndexRouteRoute
+  MainLayoutRouteRoute: typeof MainLayoutRouteRouteWithChildren
   AboutRouteRoute: typeof AboutRouteRoute
   VerifyEmailRouteRoute: typeof VerifyEmailRouteRoute
   AuthRoute: typeof AuthRouteWithChildren
@@ -153,6 +224,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_mainLayout': {
+      id: '/_mainLayout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof MainLayoutRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -174,6 +252,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthAuthLayoutRouteRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_mainLayout/skills': {
+      id: '/_mainLayout/skills'
+      path: '/skills'
+      fullPath: '/skills'
+      preLoaderRoute: typeof MainLayoutSkillsRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/languages': {
+      id: '/_mainLayout/languages'
+      path: '/languages'
+      fullPath: '/languages'
+      preLoaderRoute: typeof MainLayoutLanguagesRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/cvs': {
+      id: '/_mainLayout/cvs'
+      path: '/cvs'
+      fullPath: '/cvs'
+      preLoaderRoute: typeof MainLayoutCvsRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/users/': {
+      id: '/_mainLayout/users/'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof MainLayoutUsersIndexRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
     '/auth/_authLayout/signup': {
       id: '/auth/_authLayout/signup'
       path: '/signup'
@@ -188,8 +294,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthAuthLayoutLoginRouteRouteImport
       parentRoute: typeof AuthAuthLayoutRouteRoute
     }
+    '/_mainLayout/users/$userId/profile': {
+      id: '/_mainLayout/users/$userId/profile'
+      path: '/users/$userId/profile'
+      fullPath: '/users/$userId/profile'
+      preLoaderRoute: typeof MainLayoutUsersUserIdProfileRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
   }
 }
+
+interface MainLayoutRouteRouteChildren {
+  MainLayoutCvsRouteRoute: typeof MainLayoutCvsRouteRoute
+  MainLayoutLanguagesRouteRoute: typeof MainLayoutLanguagesRouteRoute
+  MainLayoutSkillsRouteRoute: typeof MainLayoutSkillsRouteRoute
+  MainLayoutUsersIndexRouteRoute: typeof MainLayoutUsersIndexRouteRoute
+  MainLayoutUsersUserIdProfileRouteRoute: typeof MainLayoutUsersUserIdProfileRouteRoute
+}
+
+const MainLayoutRouteRouteChildren: MainLayoutRouteRouteChildren = {
+  MainLayoutCvsRouteRoute: MainLayoutCvsRouteRoute,
+  MainLayoutLanguagesRouteRoute: MainLayoutLanguagesRouteRoute,
+  MainLayoutSkillsRouteRoute: MainLayoutSkillsRouteRoute,
+  MainLayoutUsersIndexRouteRoute: MainLayoutUsersIndexRouteRoute,
+  MainLayoutUsersUserIdProfileRouteRoute:
+    MainLayoutUsersUserIdProfileRouteRoute,
+}
+
+const MainLayoutRouteRouteWithChildren = MainLayoutRouteRoute._addFileChildren(
+  MainLayoutRouteRouteChildren,
+)
 
 interface AuthAuthLayoutRouteRouteChildren {
   AuthAuthLayoutLoginRouteRoute: typeof AuthAuthLayoutLoginRouteRoute
@@ -218,6 +352,7 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRouteRoute: IndexRouteRoute,
+  MainLayoutRouteRoute: MainLayoutRouteRouteWithChildren,
   AboutRouteRoute: AboutRouteRoute,
   VerifyEmailRouteRoute: VerifyEmailRouteRoute,
   AuthRoute: AuthRouteWithChildren,
