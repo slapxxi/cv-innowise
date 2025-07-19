@@ -8,6 +8,7 @@
     "build": "vite build && tsc",
     "serve": "vite preview",
     "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
     "test": "jest src/",
     "spec": "npx playwright test",
     "prepare": "husky"
