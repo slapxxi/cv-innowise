@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createFileRoute } from '@tanstack/react-router';
-import type { AuthInput } from 'cv-graphql';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
@@ -19,7 +18,7 @@ function RouteComponent() {
     email: z.string().nonempty(t('Email is required')),
     password: z.string().nonempty(t('Password is required')),
   });
-  const form = useForm<AuthInput>({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
