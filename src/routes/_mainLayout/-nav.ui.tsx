@@ -2,12 +2,9 @@ import { ChevronLeft, ChevronRight, ContactPageOutlined, Group, GTranslate, Tren
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import i18n from '~/app/i18n';
 import { cn, UserAvatar } from '~/shared';
 
 // todo: move this file to the relevant subdir
-
-i18n.changeLanguage('ru');
 
 const navItems = [
   { to: '/users', name: 'Employees', icon: <Group />, props: { className: 'xl:mt-12' } },
