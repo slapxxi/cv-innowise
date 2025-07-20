@@ -15,7 +15,7 @@ const navItems = [
 
 export function Sidebar() {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   function handleToggleOpen() {
     setOpen((o) => !o);

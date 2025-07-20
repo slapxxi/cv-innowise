@@ -11,7 +11,7 @@ import '~/app/styles/styles.css';
 import reportWebVitals from './reportWebVitals.ts';
 import { routeTree } from './routeTree.gen';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from './shared/lib/tanstack-query.lib.ts';
+import { queryClient } from '~/shared';
 
 // Create a new router instance
 const router = createRouter({
