@@ -10,12 +10,13 @@ import { ThemeProvider } from '~/app/providers';
 import '~/app/styles/styles.css';
 import reportWebVitals from './reportWebVitals.ts';
 import { routeTree } from './routeTree.gen';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '~/shared';
 
 // Create a new router instance
 const router = createRouter({
   routeTree,
-  context: { queryClient: new QueryClient() },
+  context: { queryClient },
   defaultPreload: 'intent',
   scrollRestoration: true,
   defaultStructuralSharing: true,
@@ -38,7 +39,7 @@ if (rootElement && !rootElement.innerHTML) {
       <StyledEngineProvider enableCssLayer>
         <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
         <ThemeProvider>
-          <QueryClientProvider client={new QueryClient()}>
+          <QueryClientProvider client={queryClient}>
             <RouterProvider router={router} />
           </QueryClientProvider>
         </ThemeProvider>

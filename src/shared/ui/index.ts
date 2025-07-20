@@ -3,3 +3,6 @@ export * from './Button.ui';
 export * from './PasswordField.ui';
 export * from './Title.ui';
 export * from './ButtonLink.ui';
+export * from './UserAvatar.ui';
+export * from './Text.ui';
+export * from './SearchField.ui';
