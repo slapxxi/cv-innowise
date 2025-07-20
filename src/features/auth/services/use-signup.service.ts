@@ -1,13 +1,12 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import { auth, type AuthData, type AuthError } from '~/shared';
-import { SIGNUP_QUERY } from '~/features/auth/services/queries';
+import { signup, type SignupData, type SignupError, type SignupParams } from '~/shared';
 import type { AuthInput } from 'cv-graphql';
 
-export function useSignup(params: UseMutationOptions<AuthData, AuthError, AuthInput>) {
-  const { mutate, ...mutation } = useMutation<AuthData, AuthError, AuthInput>({
+export function useSignup(params: UseMutationOptions<SignupData, SignupError, SignupParams>) {
+  const { mutate, ...mutation } = useMutation<SignupData, SignupError, SignupParams>({
     ...params,
     mutationFn: async (params: AuthInput) => {
-      const signupResult = await auth(SIGNUP_QUERY, 'signup', params);
+      const signupResult = await signup(params);
 
       if (signupResult.ok) {
         return signupResult.data;

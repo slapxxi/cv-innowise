@@ -39,7 +39,7 @@ export const LoginForm = () => {
         </Title>
         <p>{t('Happy to see you')}</p>
       </header>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="contents">
         <div className="flex flex-col gap-4">
           <TextField
             label={t('Email')}
