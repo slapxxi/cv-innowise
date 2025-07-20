@@ -15,5 +15,5 @@ export function useLogin(params: UseMutationOptions<LoginData, LoginError, Login
     },
   });
 
-  return { Login: mutate, ...mutation };
+  return { login: mutate, ...mutation };
 }
