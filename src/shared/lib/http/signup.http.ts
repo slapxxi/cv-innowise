@@ -1,9 +1,29 @@
-import type { AuthInput, AuthResult } from 'cv-graphql';
+import type { AuthResult } from 'cv-graphql';
 import * as z from 'zod/v4';
-import { type HttpError, type HttpResult } from '~/shared';
-import { ClientError, graphQLClient } from './graphql.http.ts';
-//TODO rename file to auth.http....
-//TODO move somewhere for app error handling--------------
+import type { HttpError, HttpResult } from '~/shared';
+import { ClientError, gql, graphQLClient } from './graphql.http';
+
+const SIGNUP_QUERY = gql`
+  mutation Signup($auth: AuthInput!) {
+    signup(auth: $auth) {
+      user {
+        id
+        email
+      }
+      access_token
+    }
+  }
+`;
+
+export type SignupParams = {
+  email: string;
+  password: string;
+};
+
+export type SignupData = AuthResult;
+export type SignupError = HttpError;
+export type SignupResult = HttpResult<SignupData, SignupError>;
+
 const errorSchema = z.object({
   message: z.string(),
   extensions: z.object({
@@ -28,22 +48,11 @@ const errorsSchema = errorResponseSchema.transform((data) => {
       .flatMap((m) => m),
   };
 });
-//  ----------------
 
-export type AuthData = AuthResult;
-export type AuthError = HttpError;
-export type AuthResultType = HttpResult<AuthData, AuthError>;
-
-type AuthResponseShape = { [key: string]: AuthResult };
-
-export async function auth(
-  query: string,
-  operation: keyof AuthResponseShape,
-  params: AuthInput
-): Promise<AuthResultType> {
+export async function signup(params: SignupParams): Promise<SignupResult> {
   try {
-    const response = await graphQLClient.request<AuthResponseShape>(query, { auth: params });
-    return { ok: true, data: response[operation] };
+    const response = await graphQLClient.request<{ signup: AuthResult }>(SIGNUP_QUERY, { auth: params });
+    return { ok: true, data: response.signup };
   } catch (e) {
     if (e instanceof ClientError) {
       const parseResult = errorsSchema.safeParse(e.response);
@@ -53,6 +62,6 @@ export async function auth(
       }
     }
 
-    return { ok: false, error: { message: 'Request failed' } };
+    return { ok: false, error: { message: 'Signup failed' } };
   }
 }
