@@ -5,6 +5,9 @@
 }
 
 @theme inline {
+  --color-bg: var(--color-white);
+  --color-bg-dark: var(--color-neutral-700);
+
   /* Material UI typography */
   --font-h1: var(--mui-font-h1);
   --font-h2: var(--mui-font-h2);
