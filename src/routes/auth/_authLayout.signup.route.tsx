@@ -1,14 +1,19 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import i18n from '~/app/i18n';
 import { useSignup } from '~/features';
-import { Button, ButtonLink, PasswordField, TextField, Title } from '~/shared';
+import { Button, ButtonLink, FormErrors, PasswordField, TextField, Title } from '~/shared';
 
 export const Route = createFileRoute('/auth/_authLayout/signup')({
   head: () => ({ meta: [{ title: i18n.t('Signup') }] }),
+  beforeLoad: ({ context }) => {
+    if (context.user) {
+      throw redirect({ to: '/' });
+    }
+  },
   component: RouteComponent,
 });
 
@@ -25,13 +30,8 @@ function RouteComponent() {
   });
   const { signup, isPending, error } = useSignup({
     onSuccess: (data) => {
-      if (data.access_token) {
-        localStorage.setItem('access_token', data.access_token);
-      }
+      sessionStorage.setItem('access_token', data.access_token);
       nav({ to: '/auth/login' });
-    },
-    onError: (error) => {
-      console.log(error);
     },
   });
 
@@ -67,15 +67,7 @@ function RouteComponent() {
             {...form.register('password')}
           />
 
-          {error?.errors?.length === 0 && <p className="text-error">{error.message}</p>}
-
-          {error?.errors && (
-            <ul className="text-error">
-              {error.errors.map((e) => (
-                <li key={e}>{e}</li>
-              ))}
-            </ul>
-          )}
+          <FormErrors error={error} />
         </div>
 
         <div className="mt-15 flex flex-col gap-2 self-center">

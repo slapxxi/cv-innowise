@@ -16,7 +16,7 @@ import { queryClient } from '~/shared';
 // Create a new router instance
 const router = createRouter({
   routeTree,
-  context: { queryClient },
+  context: { queryClient, user: null },
   defaultPreload: 'intent',
   scrollRestoration: true,
   defaultStructuralSharing: true,
