@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useRouter, useSearch } from '@tanstack/react-router';
 import type { AuthInput } from 'cv-graphql';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -7,16 +7,15 @@ import { type LoginFormValues, loginSchema, useLogin } from '~/features';
 import { Button, ButtonLink, FormErrors, PasswordField, TextField } from '~/shared';
 
 export const LoginForm = () => {
-  const nav = useNavigate();
   const { t } = useTranslation();
   const { register, formState, handleSubmit } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   });
   const search = useSearch({ from: '/auth/_authLayout/login' });
+  const router = useRouter();
   const { login, isPending, error } = useLogin({
-    onSuccess: (data) => {
-      sessionStorage.setItem('access_token', data.access_token);
-      nav({ to: search.redirect });
+    onSuccess: () => {
+      router.invalidate();
     },
   });
 

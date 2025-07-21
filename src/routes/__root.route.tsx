@@ -1,19 +1,18 @@
 import { QueryClient } from '@tanstack/react-query';
 import { HeadContent, Outlet, createRootRouteWithContext } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import type { User } from '~/shared';
+import { type Auth, type User } from '~/shared';
 
 export type CVRouterContext = {
   queryClient: QueryClient;
-  user: User | null;
+  auth: Auth;
 };
 
 export const Route = createRootRouteWithContext<CVRouterContext>()({
   beforeLoad: ({ context }) => {
-    console.log('root beforeLoad', { context });
-  },
-  loader: () => {
-    console.log('root loader');
+    const qc = context.queryClient;
+    const user = qc.getQueryData<User>(['auth', 'user']);
+    return { auth: { user } };
   },
   component: () => {
     return (

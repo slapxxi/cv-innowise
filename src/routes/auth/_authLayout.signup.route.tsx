@@ -10,7 +10,7 @@ import { Button, ButtonLink, FormErrors, PasswordField, TextField, Title } from 
 export const Route = createFileRoute('/auth/_authLayout/signup')({
   head: () => ({ meta: [{ title: i18n.t('Signup') }] }),
   beforeLoad: ({ context }) => {
-    if (context.user) {
+    if (context.auth.user) {
       throw redirect({ to: '/' });
     }
   },

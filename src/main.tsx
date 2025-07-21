@@ -5,18 +5,18 @@ import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 
 // Import the generated route tree
+import { QueryClientProvider } from '@tanstack/react-query';
 import '~/app/i18n';
-import { ThemeProvider } from '~/app/providers';
+import { AuthProvider, ThemeProvider, useAuth } from '~/app';
 import '~/app/styles/styles.css';
+import { queryClient } from '~/shared';
 import reportWebVitals from './reportWebVitals.ts';
 import { routeTree } from './routeTree.gen';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from '~/shared';
 
 // Create a new router instance
 const router = createRouter({
   routeTree,
-  context: { queryClient, user: null },
+  context: { queryClient, auth: { user: null } },
   defaultPreload: 'intent',
   scrollRestoration: true,
   defaultStructuralSharing: true,
@@ -40,12 +40,19 @@ if (rootElement && !rootElement.innerHTML) {
         <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
         <ThemeProvider>
           <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
+            <AuthProvider>
+              <App />
+            </AuthProvider>
           </QueryClientProvider>
         </ThemeProvider>
       </StyledEngineProvider>
     </StrictMode>
   );
+}
+
+function App() {
+  const auth = useAuth();
+  return <RouterProvider router={router} context={{ auth }} />;
 }
 
 // If you want to start measuring performance in your app, pass a function

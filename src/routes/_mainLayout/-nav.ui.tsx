@@ -2,6 +2,7 @@ import { ChevronLeft, ChevronRight, ContactPageOutlined, Group, GTranslate, Tren
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '~/app';
 import { cn, UserAvatar } from '~/shared';
 
 // todo: move this file to the relevant subdir
@@ -15,6 +16,7 @@ const navItems = [
 
 export function Sidebar() {
   const { t } = useTranslation();
+  const auth = useAuth();
   const [open, setOpen] = useState(true);
 
   function handleToggleOpen() {
@@ -43,17 +45,19 @@ export function Sidebar() {
           <li className="overflow-hidden xl:mt-auto">
             <Link
               to="/users/$userId/profile"
-              params={{ userId: '1' }}
+              params={{ userId: auth.user!.id }}
               className={cn(
                 'flex items-center gap-4 rounded-full p-1 pr-6 text-base hover:bg-neutral-200',
                 'dark:text-neutral-300 dark:hover:bg-neutral-600 dark:hover:text-white',
                 'xl:rounded-none xl:rounded-r-full'
               )}
             >
-              <UserAvatar className="size-10 bg-primary text-white dark:text-neutral-600">H</UserAvatar>
+              <UserAvatar className="size-10 bg-primary text-white dark:text-neutral-600">
+                {auth.user!.email[0].toUpperCase()}
+              </UserAvatar>
               {
                 <span className={cn('overflow-hidden text-nowrap text-ellipsis', !open && 'xl:hidden')}>
-                  Rostislav Bobrov
+                  {auth.user!.email}
                 </span>
               }
             </Link>
