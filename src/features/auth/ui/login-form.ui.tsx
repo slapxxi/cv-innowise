@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter, useSearch } from '@tanstack/react-router';
-import type { AuthInput } from 'cv-graphql';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { type LoginFormValues, loginSchema, useLogin } from '~/features';
@@ -19,7 +18,7 @@ export const LoginForm = () => {
     },
   });
 
-  const onSubmit = (data: AuthInput) => {
+  const onSubmit = (data: LoginFormValues) => {
     login(data);
   };
 
