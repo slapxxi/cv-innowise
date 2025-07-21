@@ -1,38 +1,29 @@
-import { Button, ButtonLink, PasswordField, TextField } from '~/shared';
-import { useNavigate } from '@tanstack/react-router';
-import { useTranslation } from 'react-i18next';
-import { useForm } from 'react-hook-form';
-import type { AuthInput } from 'cv-graphql';
-import { type LoginFormValues, loginSchema, useLogin } from '~/features';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from '@tanstack/react-router';
+import { identity } from 'lodash';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { type LoginFormValues, loginSchema, useLogin } from '~/features';
+import { Button, ButtonLink, FormErrors, PasswordField, TextField } from '~/shared';
 
 export const LoginForm = () => {
-  const nav = useNavigate();
   const { t } = useTranslation();
-
   const { register, formState, handleSubmit } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   });
-  const {
-    mutateAsync: login,
-    isPending,
-    error,
-  } = useLogin({
-    onSuccess: (data) => {
-      if (data.access_token) {
-        localStorage.setItem('access_token', data.access_token);
-      }
-      nav({ to: '/' });
-    },
-    onError: (error) => {
-      console.log(error);
+  const router = useRouter();
+  const { login, isPending, error } = useLogin({
+    onSuccess: () => {
+      router.invalidate();
     },
   });
-  const onSubmit = (data: AuthInput) => {
+
+  const onSubmit = (data: LoginFormValues) => {
     login(data);
   };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="contents">
+    <form onSubmit={handleSubmit(onSubmit)} className="contents" noValidate>
       <div className="flex flex-col gap-4">
         <TextField
           label={t('Email')}
@@ -48,23 +39,15 @@ export const LoginForm = () => {
           helperText={formState.errors.password?.message}
           {...register('password')}
         />
-        {error?.errors?.length === 0 && <p className="text-error">{t(error.message)}</p>}
 
-        {error?.errors && (
-          <ul className="text-error">
-            {error.errors.map((e) => (
-              <li key={e}>{e}</li>
-            ))}
-          </ul>
-        )}
+        <FormErrors error={error} />
       </div>
 
       <div className="mt-15 flex flex-col gap-2 self-center">
         <Button type="submit" disabled={isPending}>
-          {' '}
           {t('Login')}
         </Button>
-        <ButtonLink to="/auth/forgot-password" variant="text">
+        <ButtonLink to="/auth/forgot-password" search={identity} variant="text">
           {t('Forgot password')}
         </ButtonLink>
       </div>
