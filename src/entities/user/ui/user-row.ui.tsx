@@ -4,8 +4,9 @@ import Avatar from '@mui/material/Avatar';
 
 type PropsType = {
   userData: User;
+  hiddenCell?: string;
 };
-export const UserRow = ({ userData }: PropsType) => {
+export const UserRow = ({ userData, hiddenCell }: PropsType) => {
   const { profile, email, department_name, position_name } = { ...userData };
   return (
     <TableRow className={'w-full'}>
@@ -14,7 +15,7 @@ export const UserRow = ({ userData }: PropsType) => {
       </TableCell>
       <TableCell>{profile.first_name}</TableCell>
       <TableCell>{profile.last_name}</TableCell>
-      <TableCell>{email}</TableCell>
+      <TableCell className={hiddenCell}>{email}</TableCell>
       <TableCell>{department_name}</TableCell>
       <TableCell>{position_name}</TableCell>
     </TableRow>
