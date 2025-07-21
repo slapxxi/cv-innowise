@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter, useSearch } from '@tanstack/react-router';
+import { useRouter } from '@tanstack/react-router';
+import { identity } from 'lodash';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
@@ -16,7 +17,6 @@ export const SignupForm = () => {
   const form = useForm<SignupForm>({
     resolver: zodResolver(formSchema),
   });
-  const search = useSearch({ from: '/auth/_authLayout/signup' });
   const router = useRouter();
   const { signup, isPending, error } = useSignup({
     onSuccess: () => {
@@ -55,7 +55,7 @@ export const SignupForm = () => {
         <Button type="submit" disabled={isPending}>
           {t('Signup')}
         </Button>
-        <ButtonLink variant="text" to="/auth/login" search={search}>
+        <ButtonLink variant="text" to="/auth/login" search={identity}>
           {t('I have an account')}
         </ButtonLink>
       </div>

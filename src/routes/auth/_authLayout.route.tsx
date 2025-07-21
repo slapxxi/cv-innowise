@@ -1,5 +1,6 @@
 import { Tab, Tabs } from '@mui/material';
 import { createFileRoute, Outlet, useLocation } from '@tanstack/react-router';
+import { identity } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 
@@ -14,10 +15,9 @@ function RouteComponent() {
   const { t } = useTranslation();
   const location = useLocation();
   const nav = Route.useNavigate();
-  const search = Route.useSearch();
 
   const handleChangeTab = (_event: React.SyntheticEvent, newValue: string) => {
-    nav({ to: `/auth/${newValue}`, search });
+    nav({ to: `/auth/${newValue}`, search: identity });
   };
 
   return (

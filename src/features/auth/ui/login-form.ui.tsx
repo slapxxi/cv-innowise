@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter, useSearch } from '@tanstack/react-router';
+import { useRouter } from '@tanstack/react-router';
+import { identity } from 'lodash';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { type LoginFormValues, loginSchema, useLogin } from '~/features';
@@ -10,7 +11,6 @@ export const LoginForm = () => {
   const { register, formState, handleSubmit } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   });
-  const search = useSearch({ from: '/auth/_authLayout/login' });
   const router = useRouter();
   const { login, isPending, error } = useLogin({
     onSuccess: () => {
@@ -47,7 +47,7 @@ export const LoginForm = () => {
         <Button type="submit" disabled={isPending}>
           {t('Login')}
         </Button>
-        <ButtonLink to="/auth/forgot-password" search={search} variant="text">
+        <ButtonLink to="/auth/forgot-password" search={identity} variant="text">
           {t('Forgot password')}
         </ButtonLink>
       </div>

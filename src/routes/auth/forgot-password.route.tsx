@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { identity } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { Button, TextField, Title } from '~/shared';
@@ -13,7 +14,6 @@ export const Route = createFileRoute('/auth/forgot-password')({
 function RouteComponent() {
   const { t } = useTranslation();
   const nav = Route.useNavigate();
-  const search = Route.useSearch();
 
   return (
     <div className="flex h-screen items-center justify-center">
@@ -31,7 +31,7 @@ function RouteComponent() {
 
         <div className="mt-15 flex flex-col gap-2 self-center">
           <Button>{t('Reset password')}</Button>
-          <Button onClick={() => nav({ to: '/auth/login', search })} variant="text">
+          <Button onClick={() => nav({ to: '/auth/login', search: identity })} variant="text">
             {t('Cancel')}
           </Button>
         </div>
