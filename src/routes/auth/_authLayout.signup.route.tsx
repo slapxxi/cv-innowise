@@ -6,6 +6,7 @@ import * as z from 'zod/v4';
 import i18n from '~/app/i18n';
 import { useSignup } from '~/features';
 import { Button, ButtonLink, PasswordField, TextField, Title } from '~/shared';
+import { setCookie } from 'typescript-cookie';
 
 export const Route = createFileRoute('/auth/_authLayout/signup')({
   head: () => ({ meta: [{ title: i18n.t('Signup') }] }),
@@ -25,8 +26,14 @@ function RouteComponent() {
   });
   const { signup, isPending, error } = useSignup({
     onSuccess: (data) => {
-      if (data.access_token) {
+      if (data.access_token && data.refresh_token) {
         localStorage.setItem('access_token', data.access_token);
+        setCookie('refresh_token', data.refresh_token, {
+          sameSite: 'strict',
+          secure: true,
+          path: '/',
+          expires: 7,
+        });
       }
       nav({ to: '/auth/login' });
     },

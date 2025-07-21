@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import type { AuthInput } from 'cv-graphql';
 import { type LoginFormValues, loginSchema, useLogin } from '~/features';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { setCookie } from 'typescript-cookie';
 
 export const LoginForm = () => {
   const nav = useNavigate();
@@ -19,8 +20,14 @@ export const LoginForm = () => {
     error,
   } = useLogin({
     onSuccess: (data) => {
-      if (data.access_token) {
+      if (data.access_token && data.refresh_token) {
         localStorage.setItem('access_token', data.access_token);
+        setCookie('refresh_token', data.refresh_token, {
+          sameSite: 'strict',
+          secure: true,
+          path: '/',
+          expires: 7,
+        });
       }
       nav({ to: '/' });
     },

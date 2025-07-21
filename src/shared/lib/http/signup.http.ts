@@ -1,7 +1,7 @@
 import type { AuthResult } from 'cv-graphql';
 import * as z from 'zod/v4';
 import type { HttpError, HttpResult } from '~/shared';
-import { ClientError, gql, graphQLClient } from './graphql.http';
+import { ClientError, gql, unAuthClient } from './graphql.http';
 
 const SIGNUP_QUERY = gql`
   mutation Signup($auth: AuthInput!) {
@@ -11,6 +11,7 @@ const SIGNUP_QUERY = gql`
         email
       }
       access_token
+      refresh_token
     }
   }
 `;
@@ -51,7 +52,7 @@ const errorsSchema = errorResponseSchema.transform((data) => {
 
 export async function signup(params: SignupParams): Promise<SignupResult> {
   try {
-    const response = await graphQLClient.request<{ signup: AuthResult }>(SIGNUP_QUERY, { auth: params });
+    const response = await unAuthClient.request<{ signup: AuthResult }>(SIGNUP_QUERY, { auth: params });
     return { ok: true, data: response.signup };
   } catch (e) {
     if (e instanceof ClientError) {
