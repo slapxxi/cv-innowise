@@ -8,7 +8,7 @@ type PropsType = {
 export const UserRow = ({ userData }: PropsType) => {
   const { profile, email, department_name, position_name } = { ...userData };
   return (
-    <TableRow>
+    <TableRow className={'w-full'}>
       <TableCell>
         <Avatar src={profile.avatar ?? undefined}>{profile.full_name?.[0] || email[0]}</Avatar>
       </TableCell>
@@ -16,7 +16,7 @@ export const UserRow = ({ userData }: PropsType) => {
       <TableCell>{profile.last_name}</TableCell>
       <TableCell>{email}</TableCell>
       <TableCell>{department_name}</TableCell>
-      <TableCell>{position_name}</TableCell>;
+      <TableCell>{position_name}</TableCell>
     </TableRow>
   );
 };

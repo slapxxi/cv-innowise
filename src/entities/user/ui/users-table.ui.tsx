@@ -1,4 +1,4 @@
-import { Table, TableCell, TableRow, TableSortLabel } from '@mui/material';
+import { CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { getUsers } from '~/entities/user/api/users.api.ts';
 import { UserRow } from '~/entities/user/ui/user-row.ui.tsx';
@@ -14,28 +14,34 @@ export const UsersTable = () => {
   });
 
   const tableHeadData = [
-    { key: 'profile.first_name', title: 'First Name' },
-    { key: 'profile.last_name', title: 'Last Name' },
+    { key: '', title: '' },
+    { key: 'first_name', title: 'First Name' },
+    { key: 'last_name', title: 'Last Name' },
     { key: 'email', title: 'Email' },
     { key: 'department_name', title: 'Department' },
     { key: 'position_name', title: 'Position' },
   ];
+
   const handleSortClick = () => {};
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <CircularProgress />;
   if (error) return <div>Users fetching error</div>;
-  console.log(usersData);
   return (
-    <Table>
-      <TableRow>
-        {tableHeadData.map((item) => (
-          <TableCell key={item.key}>
-            <TableSortLabel onClick={handleSortClick} />
-          </TableCell>
+    <Table className="mt-2">
+      <TableHead>
+        <TableRow>
+          {tableHeadData.map((item, index) => (
+            <TableCell className={'p-4'} key={item.key}>
+              {item.title}
+              {index !== 0 && <TableSortLabel onClick={handleSortClick} />}
+            </TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {usersData?.map((user) => (
+          <UserRow key={user.id} userData={user} />
         ))}
-      </TableRow>
-      {usersData?.map((user) => (
-        <UserRow key={user.id} userData={user} />
-      ))}
+      </TableBody>
     </Table>
   );
 };
