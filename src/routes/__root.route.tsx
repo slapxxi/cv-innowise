@@ -9,6 +9,12 @@ export type CVRouterContext = {
 };
 
 export const Route = createRootRouteWithContext<CVRouterContext>()({
+  beforeLoad: ({ context }) => {
+    console.log('root beforeLoad', { context });
+  },
+  loader: () => {
+    console.log('root loader');
+  },
   component: () => {
     return (
       <>

@@ -28,10 +28,11 @@ function RouteComponent() {
   const form = useForm<Form>({
     resolver: zodResolver(formSchema),
   });
+  const search = Route.useSearch();
   const { signup, isPending, error } = useSignup({
     onSuccess: (data) => {
       sessionStorage.setItem('access_token', data.access_token);
-      nav({ to: '/auth/login' });
+      nav({ to: '/' });
     },
   });
 
@@ -74,7 +75,7 @@ function RouteComponent() {
           <Button type="submit" disabled={isPending}>
             {t('Signup')}
           </Button>
-          <ButtonLink variant="text" to="/auth/login">
+          <ButtonLink variant="text" to="/auth/login" search={search}>
             {t('I have an account')}
           </ButtonLink>
         </div>

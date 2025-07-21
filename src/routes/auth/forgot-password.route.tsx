@@ -1,14 +1,20 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
+import * as z from 'zod/v4';
 import { Button, TextField, Title } from '~/shared';
+
+const forgotPasswordSearchSchema = z.object({ redirect: z.string().catch('/') });
 
 export const Route = createFileRoute('/auth/forgot-password')({
   component: RouteComponent,
+  validateSearch: forgotPasswordSearchSchema,
 });
 
 function RouteComponent() {
   const { t } = useTranslation();
   const nav = Route.useNavigate();
+  const search = Route.useSearch();
+
   return (
     <div className="flex h-screen items-center justify-center">
       <section className="flex w-full max-w-xl flex-col items-center p-6">
@@ -25,7 +31,7 @@ function RouteComponent() {
 
         <div className="mt-15 flex flex-col gap-2 self-center">
           <Button>{t('Reset password')}</Button>
-          <Button onClick={() => nav({ to: '/auth/login' })} variant="text">
+          <Button onClick={() => nav({ to: '/auth/login', search })} variant="text">
             {t('Cancel')}
           </Button>
         </div>

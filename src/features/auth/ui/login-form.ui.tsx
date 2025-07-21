@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from '@tanstack/react-router';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 import type { AuthInput } from 'cv-graphql';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -12,10 +12,11 @@ export const LoginForm = () => {
   const { register, formState, handleSubmit } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   });
+  const search = useSearch({ from: '/auth/_authLayout/login' });
   const { login, isPending, error } = useLogin({
     onSuccess: (data) => {
       sessionStorage.setItem('access_token', data.access_token);
-      nav({ to: '/' });
+      nav({ to: search.redirect });
     },
   });
 
@@ -48,7 +49,7 @@ export const LoginForm = () => {
         <Button type="submit" disabled={isPending}>
           {t('Login')}
         </Button>
-        <ButtonLink to="/auth/forgot-password" variant="text">
+        <ButtonLink to="/auth/forgot-password" search={search} variant="text">
           {t('Forgot password')}
         </ButtonLink>
       </div>

@@ -6,7 +6,7 @@ export const Route = createFileRoute('/')({
     if (context.user) {
       throw redirect({ to: '/users' });
     }
-    throw redirect({ to: '/auth/login' });
+    throw redirect({ to: '/auth/login', search: { redirect: '/' } });
   },
   component: IndexPage,
 });
