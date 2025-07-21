@@ -87,29 +87,27 @@ const DEPARTMENT_QUERY = gql`
 `;
 
 const USER_QUERY = gql`
-  user {
-    id
-    email
-    created_at
-    is_verified
-    department_name
-    position_name
-    profile {
-      ${PROFILE_QUERY}
-    }
-    cvs {
-      ${CV_QUERY}
-    }
-    department {
-      ${DEPARTMENT_QUERY}
-    }
-    department_name
-    position {
-      ${POSITION_QUERY}
-    }
-    position_name
-    role
+  id
+  email
+  created_at
+  is_verified
+  department_name
+  position_name
+  profile {
+    ${PROFILE_QUERY}
   }
+  cvs {
+    ${CV_QUERY}
+  }
+  department {
+    ${DEPARTMENT_QUERY}
+  }
+  department_name
+  position {
+    ${POSITION_QUERY}
+  }
+  position_name
+  role
 `;
 
 export const QUERIES = {

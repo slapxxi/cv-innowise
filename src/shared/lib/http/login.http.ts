@@ -8,7 +8,9 @@ const LOGIN_QUERY = gql`
     login(auth: $auth) {
       access_token
       refresh_token
-      ${QUERIES.USER_QUERY}
+      user {
+        ${QUERIES.USER_QUERY}
+      }
     }
   }
 `;
