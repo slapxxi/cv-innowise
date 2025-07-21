@@ -1,5 +1,5 @@
-import { gql, graphQLClient } from '~/shared';
 import type { User } from 'cv-graphql';
+import { getAuthClient, gql } from '~/shared';
 
 const getUsersQuery = gql`
   query Users {
@@ -21,6 +21,6 @@ const getUsersQuery = gql`
 `;
 
 export const getUsers = async (): Promise<User[]> => {
-  const response = await graphQLClient.request<{ users: User[] }>(getUsersQuery);
+  const response = await getAuthClient<{ users: User[] }>(getUsersQuery);
   return response.users;
 };

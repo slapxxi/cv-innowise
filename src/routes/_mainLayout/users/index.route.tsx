@@ -1,9 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { queryClient, SearchField, Text } from '~/shared';
-import { UsersTable } from '~/entities/user/ui/users-table.ui.tsx';
-import { getUsers } from '~/entities/user/api/users.api.ts';
 import i18n from '~/app/i18n.ts';
+import { getUsers, UsersTable } from '~/entities';
 
 export const Route = createFileRoute('/_mainLayout/users/')({
   component: RouteComponent,
