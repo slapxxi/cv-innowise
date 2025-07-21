@@ -1,7 +1,12 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router';
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
 import { Sidebar } from './-nav.ui';
 
 export const Route = createFileRoute('/_mainLayout')({
+  beforeLoad: ({ context, location }) => {
+    if (!context.auth.user) {
+      throw redirect({ to: '/auth/login', search: { redirect: location.pathname } });
+    }
+  },
   component: RouteComponent,
 });
 

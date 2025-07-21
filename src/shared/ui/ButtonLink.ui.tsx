@@ -1,10 +1,8 @@
-import { createLink } from '@tanstack/react-router';
+import { createLink, type LinkComponent } from '@tanstack/react-router';
 import { Button } from '~/shared';
 
 const CustomLink = createLink(Button);
 
-type ButtonProps = React.ComponentProps<typeof CustomLink>;
-
-export const ButtonLink: React.FC<ButtonProps> = (props) => {
+export const ButtonLink: LinkComponent<typeof Button> = (props) => {
   return <CustomLink {...props} />;
 };

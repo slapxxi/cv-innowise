@@ -1,7 +1,6 @@
 import { CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import { getUsers } from '~/entities/user/api/users.api.ts';
-import { UserRow } from '~/entities/user/ui/user-row.ui.tsx';
+import { getUsers, UserRow } from '~/entities';
 
 export const UsersTable = () => {
   const {

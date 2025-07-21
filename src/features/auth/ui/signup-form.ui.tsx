@@ -3,21 +3,23 @@ import { useRouter } from '@tanstack/react-router';
 import { identity } from 'lodash';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { type LoginFormValues, loginSchema, useLogin } from '~/features';
-import { setCookie } from 'typescript-cookie';
+import * as z from 'zod/v4';
+import { useSignup } from '~/features';
 import { Button, ButtonLink, FormErrors, PasswordField, TextField } from '~/shared';
+import { setCookie } from 'typescript-cookie';
 
-export const LoginForm = () => {
+export const SignupForm = () => {
   const { t } = useTranslation();
-  const { register, formState, handleSubmit } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  const formSchema = z.object({
+    email: z.string().nonempty(t('Email is required')),
+    password: z.string().nonempty(t('Password is required')),
+  });
+  type SignupForm = z.infer<typeof formSchema>;
+  const form = useForm<SignupForm>({
+    resolver: zodResolver(formSchema),
   });
   const router = useRouter();
-  const {
-    mutateAsync: login,
-    isPending,
-    error,
-  } = useLogin({
+  const { signup, isPending, error } = useSignup({
     onSuccess: (data) => {
       router.invalidate();
       if (data.access_token && data.refresh_token) {
@@ -35,26 +37,28 @@ export const LoginForm = () => {
     },
   });
 
-  const onSubmit = (data: LoginFormValues) => {
-    login(data);
+  const handleSubmit = (data: SignupForm) => {
+    signup(data);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="contents" noValidate>
+    <form onSubmit={form.handleSubmit(handleSubmit)} noValidate className="contents">
       <div className="flex flex-col gap-4">
         <TextField
           label={t('Email')}
+          placeholder="example@email.com"
+          error={!!form.formState.errors.email}
           type="email"
-          error={!!formState.errors.email}
-          helperText={formState.errors.email?.message}
-          {...register('email')}
+          helperText={form.formState.errors.email?.message}
+          {...form.register('email')}
         />
 
         <PasswordField
           label={t('Password')}
-          error={!!formState.errors.password}
-          helperText={formState.errors.password?.message}
-          {...register('password')}
+          placeholder={t('Password')}
+          error={!!form.formState.errors.password}
+          helperText={form.formState.errors.password?.message}
+          {...form.register('password')}
         />
 
         <FormErrors error={error} />
@@ -62,10 +66,10 @@ export const LoginForm = () => {
 
       <div className="mt-15 flex flex-col gap-2 self-center">
         <Button type="submit" disabled={isPending}>
-          {t('Login')}
+          {t('Signup')}
         </Button>
-        <ButtonLink to="/auth/forgot-password" search={identity} variant="text">
-          {t('Forgot password')}
+        <ButtonLink variant="text" to="/auth/login" search={identity}>
+          {t('I have an account')}
         </ButtonLink>
       </div>
     </form>
