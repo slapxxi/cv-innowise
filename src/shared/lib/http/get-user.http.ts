@@ -1,5 +1,5 @@
-import type { HttpError, HttpResult, User } from '~/shared';
-import { ClientError, gql, graphQLClient } from './graphql.http';
+import { type HttpError, type HttpResult, unAuthClient, type User } from '~/shared';
+import { ClientError, gql } from './graphql.http';
 import { errorsSchema } from './schema';
 import { QUERIES } from './queries';
 
@@ -27,7 +27,7 @@ export type GetUserResult = HttpResult<GetUserData, GetUserError>;
 
 export async function getUser(params: GetUserParams): Promise<GetUserResult> {
   try {
-    const response = await graphQLClient.request<GetUserQueryResult>(GET_USER_QUERY, { userId: String(params.id) });
+    const response = await unAuthClient.request<GetUserQueryResult>(GET_USER_QUERY, { userId: String(params.id) });
     return { ok: true, data: response.user };
   } catch (e) {
     if (e instanceof ClientError) {

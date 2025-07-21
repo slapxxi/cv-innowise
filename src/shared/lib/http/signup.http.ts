@@ -1,5 +1,5 @@
 import type { AuthResult, HttpError, HttpResult } from '~/shared';
-import { ClientError, gql, graphQLClient } from './graphql.http';
+import { ClientError, gql, unAuthClient } from './graphql.http';
 import { errorsSchema } from './schema';
 import { QUERIES } from './queries';
 
@@ -30,7 +30,8 @@ export type SignupResult = HttpResult<SignupData, SignupError>;
 
 export async function signup(params: SignupParams): Promise<SignupResult> {
   try {
-    const response = await graphQLClient.request<SignupQueryResult>(SIGNUP_QUERY, { auth: params });
+    const response = await unAuthClient.request<SignupQueryResult>(SIGNUP_QUERY, { auth: params });
+    // const response = await unAuthClient.request<{ signup: AuthResult }>(SIGNUP_QUERY, { auth: params });
     return { ok: true, data: response.signup };
   } catch (e) {
     if (e instanceof ClientError) {

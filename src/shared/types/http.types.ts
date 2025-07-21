@@ -1,5 +1,5 @@
 import { type AuthResult as CVAuthResult } from 'cv-graphql';
-import type { Prettify, Result } from './utility.types';
+import type { Prettify, Result } from '~/shared';
 
 export type HttpError = {
   message: string;

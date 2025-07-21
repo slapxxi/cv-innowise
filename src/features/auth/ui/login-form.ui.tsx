@@ -4,6 +4,7 @@ import { identity } from 'lodash';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { type LoginFormValues, loginSchema, useLogin } from '~/features';
+import { setCookie } from 'typescript-cookie';
 import { Button, ButtonLink, FormErrors, PasswordField, TextField } from '~/shared';
 
 export const LoginForm = () => {
@@ -12,9 +13,25 @@ export const LoginForm = () => {
     resolver: zodResolver(loginSchema),
   });
   const router = useRouter();
-  const { login, isPending, error } = useLogin({
-    onSuccess: () => {
+  const {
+    mutateAsync: login,
+    isPending,
+    error,
+  } = useLogin({
+    onSuccess: (data) => {
       router.invalidate();
+      if (data.access_token && data.refresh_token) {
+        localStorage.setItem('access_token', data.access_token);
+        setCookie('refresh_token', data.refresh_token, {
+          sameSite: 'strict',
+          secure: true,
+          path: '/',
+          expires: 7,
+        });
+      }
+    },
+    onError: (error) => {
+      console.log(error);
     },
   });
 

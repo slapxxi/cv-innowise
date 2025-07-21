@@ -25,7 +25,6 @@ function RouteComponent() {
         </Title>
         <p>{t('Welcome')}</p>
       </header>
-
       <SignupForm />
     </section>
   );

@@ -1,9 +1,17 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { SearchField, Text } from '~/shared';
+import { queryClient, SearchField, Text } from '~/shared';
+import i18n from '~/app/i18n.ts';
+import { getUsers, UsersTable } from '~/entities';
 
 export const Route = createFileRoute('/_mainLayout/users/')({
   component: RouteComponent,
+  head: () => ({ meta: [{ title: i18n.t('Employees') }] }),
+  loader: () =>
+    queryClient.ensureQueryData({
+      queryKey: ['users'],
+      queryFn: getUsers,
+    }),
 });
 
 function RouteComponent() {
@@ -22,6 +30,7 @@ function RouteComponent() {
 
         <form onSubmit={handleSearch}>
           <SearchField placeholder={t('Search')} />
+          <UsersTable />
         </form>
       </header>
     </section>

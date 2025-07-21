@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { useSignup } from '~/features';
 import { Button, ButtonLink, FormErrors, PasswordField, TextField } from '~/shared';
+import { setCookie } from 'typescript-cookie';
 
 export const SignupForm = () => {
   const { t } = useTranslation();
@@ -19,8 +20,20 @@ export const SignupForm = () => {
   });
   const router = useRouter();
   const { signup, isPending, error } = useSignup({
-    onSuccess: () => {
+    onSuccess: (data) => {
       router.invalidate();
+      if (data.access_token && data.refresh_token) {
+        localStorage.setItem('access_token', data.access_token);
+        setCookie('refresh_token', data.refresh_token, {
+          sameSite: 'strict',
+          secure: true,
+          path: '/',
+          expires: 7,
+        });
+      }
+    },
+    onError: (error) => {
+      console.log(error);
     },
   });
 
