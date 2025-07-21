@@ -1,9 +1,16 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { SearchField, Text } from '~/shared';
+import { queryClient, SearchField, Text } from '~/shared';
+import { UsersTable } from '~/entities/user/ui/users-table.ui.tsx';
+import { getUsers } from '~/entities/user/api/users.api.ts';
 
 export const Route = createFileRoute('/_mainLayout/users/')({
   component: RouteComponent,
+  loader: () =>
+    queryClient.ensureQueryData({
+      queryKey: ['users'],
+      queryFn: getUsers,
+    }),
 });
 
 function RouteComponent() {
@@ -22,6 +29,7 @@ function RouteComponent() {
 
         <form onSubmit={handleSearch}>
           <SearchField placeholder={t('Search')} />
+          <UsersTable />
         </form>
       </header>
     </section>
