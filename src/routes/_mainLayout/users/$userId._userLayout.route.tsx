@@ -1,15 +1,33 @@
 import { Tabs } from '@mui/material';
 import { Outlet, useMatches } from '@tanstack/react-router';
-import { TabLink } from '~/shared';
+import { getUser, TabLink } from '~/shared';
 import { createFileRoute } from '@tanstack/react-router';
+import { useUser } from '~/features';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout')({
   component: RouteComponent,
+  loader: async ({ params, context }) => {
+    const { queryClient, auth } = context;
+    const cachedUser = queryClient.getQueryData(['user', params.userId]);
+
+    if (cachedUser) {
+      return { user: cachedUser };
+    }
+
+    const userResult = await getUser({ id: params.userId, accessToken: auth!.accessToken });
+
+    if (userResult.ok) {
+      queryClient.setQueryData(['user', params.userId], userResult.data);
+      return { user: userResult.data };
+    }
+  },
 });
 
 function RouteComponent() {
   const params = Route.useParams();
   const matches = useMatches();
+
+  useUser({ id: params.userId });
 
   return (
     <div>
