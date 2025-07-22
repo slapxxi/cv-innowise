@@ -1,4 +1,7 @@
-import { TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableSortLabel from '@mui/material/TableSortLabel';
 import { type Dispatch, type SetStateAction } from 'react';
 import { cn } from '~/shared';
 import { useTranslation } from 'react-i18next';
@@ -12,7 +15,6 @@ type PropsType = {
 };
 export const UsersTableHead = ({ cellHidden, orderBy, setOrderBy, orderDirection, setOrderDirection }: PropsType) => {
   const { t } = useTranslation();
-
   const tableHeadData = [
     { key: '', title: '' },
     { key: 'first_name', title: t('First Name') },
@@ -21,6 +23,7 @@ export const UsersTableHead = ({ cellHidden, orderBy, setOrderBy, orderDirection
     { key: 'department_name', title: t('Department') },
     { key: 'position_name', title: t('Position') },
   ];
+
   const handleSortClick = (key: string) => {
     if (orderBy === key) {
       setOrderDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'));
@@ -29,6 +32,7 @@ export const UsersTableHead = ({ cellHidden, orderBy, setOrderBy, orderDirection
       setOrderDirection('asc');
     }
   };
+
   return (
     <TableHead className={'sticky top-0 bg z-10 align-middle'}>
       <TableRow>

@@ -1,13 +1,16 @@
-import { TableCell, TableRow } from '@mui/material';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
 import type { User } from 'cv-graphql';
 import Avatar from '@mui/material/Avatar';
+import * as React from 'react';
 
 type PropsType = {
   userData: User;
   hiddenCell?: string;
 };
-export const UserRow = ({ userData, hiddenCell }: PropsType) => {
+export const UserRow = React.memo(({ userData, hiddenCell }: PropsType) => {
   const { profile, email, department_name, position_name } = { ...userData };
+
   return (
     <TableRow className={'w-full'}>
       <TableCell>
@@ -20,4 +23,4 @@ export const UserRow = ({ userData, hiddenCell }: PropsType) => {
       <TableCell>{position_name}</TableCell>
     </TableRow>
   );
-};
+});

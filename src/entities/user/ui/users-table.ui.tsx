@@ -1,10 +1,9 @@
-import { Table, TableBody } from '@mui/material';
-import { UserRow } from '~/entities';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import { UserRow, UsersTableHead, useSortedUsers } from '~/entities';
 import { type User } from '~/shared';
 import { useState } from 'react';
-import { useSortedUsers } from '~/entities/user/hooks/use-sorted-users.ts';
 import { useAuth } from '~/app';
-import { UsersTableHead } from '~/entities/user/ui/users-table-head.ui.tsx';
 
 type UsersTableProps = {
   users: User[];
