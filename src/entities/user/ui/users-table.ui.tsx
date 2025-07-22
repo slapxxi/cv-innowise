@@ -1,18 +1,15 @@
-import { CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
-import { getUsers, UserRow } from '~/entities';
+import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { UserRow } from '~/entities';
+import type { User } from '~/shared';
 
-export const UsersTable = () => {
+type UsersTableProps = {
+  users: User[];
+};
+
+export const UsersTable: React.FC<UsersTableProps> = (props) => {
+  const { users } = props;
   const { t } = useTranslation();
-  const {
-    data: usersData,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ['users'],
-    queryFn: getUsers,
-  });
   //TODO translation, DataGrid
   const tableHeadData = [
     { key: '', title: '' },
@@ -22,11 +19,9 @@ export const UsersTable = () => {
     { key: 'department_name', title: t('Department') },
     { key: 'position_name', title: t('Position') },
   ];
-
   const handleSortClick = () => {};
-  if (isLoading) return <CircularProgress />;
-  if (error) return <div>Users fetching error</div>;
   const cellHidden = 'hidden md:table-cell';
+
   return (
     <Table className="mt-2">
       <TableHead className={'sticky top-0  bg z-10   align-middle'}>
@@ -40,7 +35,7 @@ export const UsersTable = () => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {usersData?.map((user) => (
+        {users.map((user) => (
           <UserRow hiddenCell={cellHidden} key={user.id} userData={user} />
         ))}
       </TableBody>

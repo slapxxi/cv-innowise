@@ -1,7 +1,7 @@
 import { QueryClient } from '@tanstack/react-query';
 import { HeadContent, Outlet, createRootRouteWithContext } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import { decodeJWT, getUser, type Auth, type User } from '~/shared';
+import { decodeJWT, getUser, updateToken, type Auth } from '~/shared';
 
 export type CVRouterContext = {
   queryClient: QueryClient;
@@ -10,30 +10,52 @@ export type CVRouterContext = {
 
 export const Route = createRootRouteWithContext<CVRouterContext>()({
   beforeLoad: async ({ context }) => {
-    const token = sessionStorage.getItem('access_token');
+    const { queryClient } = context;
+    const auth = queryClient.getQueryData<Auth>(['auth']);
 
-    if (token) {
-      const { payload } = decodeJWT(token);
+    if (auth) {
+      //check if accessToken is still fresh
+      const { accessToken } = auth;
+      const { payload } = decodeJWT(accessToken);
 
+      // attempt to refresh token
       if (payload.exp < Date.now() / 1000) {
-        sessionStorage.removeItem('access_token');
-        return { auth: { user: null } };
+        const refreshToken = localStorage.getItem('refreshToken')!;
+        const updateTokenResult = await updateToken({ refreshToken });
+
+        if (updateTokenResult.ok) {
+          const { accessToken, refreshToken } = updateTokenResult.data;
+          localStorage.setItem('refreshToken', refreshToken);
+          const { payload } = decodeJWT(accessToken);
+          const getUserResult = await getUser({ id: payload.sub, accessToken });
+
+          if (getUserResult.ok) {
+            const user = getUserResult.data;
+            queryClient.setQueryData(['auth'], { user, accessToken });
+            return { auth: { user, accessToken } };
+          }
+        }
       }
 
-      if (!context.auth.user) {
-        const { queryClient } = context;
-        const user = queryClient.getQueryData<User>(['auth', 'user']);
+      return { auth };
+    }
 
-        if (user) {
-          return { auth: { user } };
-        }
+    const refreshToken = localStorage.getItem('refreshToken');
 
-        const userResult = await getUser({ id: payload.sub });
+    // attempt to refresh token
+    if (refreshToken) {
+      const updateTokenResult = await updateToken({ refreshToken });
 
-        if (userResult.ok) {
-          const user = userResult.data;
-          queryClient.setQueryData(['auth', 'user'], user);
-          return { auth: { user } };
+      if (updateTokenResult.ok) {
+        const { accessToken, refreshToken } = updateTokenResult.data;
+        localStorage.setItem('refreshToken', refreshToken);
+        const { payload } = decodeJWT(accessToken);
+        const getUserResult = await getUser({ id: payload.sub, accessToken });
+
+        if (getUserResult.ok) {
+          const user = getUserResult.data;
+          queryClient.setQueryData(['auth'], { user, accessToken });
+          return { auth: { user, accessToken } };
         }
       }
     }

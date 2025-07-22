@@ -1,12 +1,13 @@
-import { type HttpError, type HttpResult, unAuthClient, type User } from '~/shared';
-import { ClientError, gql } from './graphql.http';
+import { type HttpError, type HttpResult, type User } from '~/shared';
+import { ClientError, gql, request } from './graphql.http';
 import { errorsSchema } from './schema';
-import { QUERIES } from './queries';
+import { Queries } from './queries';
+import { API_URL } from './const';
 
 const GET_USER_QUERY = gql`
   query User($userId: ID!) {
     user(userId: $userId) {
-      ${QUERIES.USER_QUERY}
+      ${Queries.USER_QUERY}
     }
   }
 `;
@@ -21,13 +22,21 @@ export type GetUserError = HttpError;
 
 export type GetUserParams = {
   id: string;
+  accessToken: string;
 };
 
 export type GetUserResult = HttpResult<GetUserData, GetUserError>;
 
 export async function getUser(params: GetUserParams): Promise<GetUserResult> {
   try {
-    const response = await unAuthClient.request<GetUserQueryResult>(GET_USER_QUERY, { userId: String(params.id) });
+    const response = await request<GetUserQueryResult>({
+      url: API_URL,
+      document: GET_USER_QUERY,
+      variables: { userId: params.id },
+      requestHeaders: {
+        Authorization: `Bearer ${params.accessToken}`,
+      },
+    });
     return { ok: true, data: response.user };
   } catch (e) {
     if (e instanceof ClientError) {
@@ -38,6 +47,6 @@ export async function getUser(params: GetUserParams): Promise<GetUserResult> {
       }
     }
 
-    return { ok: false, error: { message: 'Login failed' } };
+    return { ok: false, error: { message: 'Get user failed' } };
   }
 }

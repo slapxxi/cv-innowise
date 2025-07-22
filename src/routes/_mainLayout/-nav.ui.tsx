@@ -18,6 +18,7 @@ export function Sidebar() {
   const { t } = useTranslation();
   const auth = useAuth();
   const [open, setOpen] = useState(true);
+  const user = auth!.user;
 
   function handleToggleOpen() {
     setOpen((o) => !o);
@@ -26,7 +27,7 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'fixed bottom-0 w-full bg-white',
+        'fixed bottom-0 w-full bg-white z-10',
         'dark:bg-neutral-700',
         'xl:sticky xl:top-0 xl:h-screen xl:flex xl:flex-col xl:w-auto xl:max-w-[300px]'
       )}
@@ -45,19 +46,18 @@ export function Sidebar() {
           <li className="overflow-hidden xl:mt-auto">
             <Link
               to="/users/$userId/profile"
-              params={{ userId: auth.user!.id }}
+              params={{ userId: user.id }}
               className={cn(
                 'flex items-center gap-4 rounded-full p-1 pr-6 text-base hover:bg-neutral-200',
                 'dark:text-neutral-300 dark:hover:bg-neutral-600 dark:hover:text-white',
                 'xl:rounded-none xl:rounded-r-full'
               )}
             >
-              <UserAvatar className="size-10 bg-primary text-white dark:text-neutral-600">
-                {auth.user!.email[0].toUpperCase()}
-              </UserAvatar>
+              <UserAvatar user={user} className="size-10 bg-primary text-white dark:text-neutral-600" />
+
               {
                 <span className={cn('overflow-hidden text-nowrap text-ellipsis', !open && 'xl:hidden')}>
-                  {auth.user!.email}
+                  {user.email}
                 </span>
               }
             </Link>

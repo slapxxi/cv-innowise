@@ -1,25 +1,30 @@
-import type { AuthResult, HttpError, HttpResult } from '~/shared';
-import { ClientError, gql, unAuthClient } from './graphql.http';
+import type { AuthResponse, HttpError, HttpResult, User } from '~/shared';
+import { ClientError, gql, request } from './graphql.http';
 import { errorsSchema } from './schema';
-import { QUERIES } from './queries';
+import { Queries } from './queries';
+import { API_URL } from './const';
 
 const LOGIN_QUERY = gql`
   query Login($auth: AuthInput!) {
     login(auth: $auth) {
-      access_token
+      access_token 
       refresh_token
       user {
-        ${QUERIES.USER_QUERY}
+        ${Queries.USER_QUERY}
       }
     }
   }
 `;
 
 type LoginQueryResult = {
-  login: AuthResult;
+  login: AuthResponse;
 };
 
-export type LoginData = LoginQueryResult['login'];
+export type LoginData = {
+  accessToken: string;
+  refreshToken: string;
+  user: User;
+};
 
 export type LoginError = HttpError;
 
@@ -32,9 +37,13 @@ export type LoginResult = HttpResult<LoginData, LoginError>;
 
 export async function login(params: LoginParams): Promise<LoginResult> {
   try {
-    const response = await unAuthClient.request<LoginQueryResult>(LOGIN_QUERY, { auth: params });
-    // const response = await unAuthClient.request<{ login: AuthResult }>(LOGIN_QUERY, { auth: params });
-    return { ok: true, data: response.login };
+    const response = await request<LoginQueryResult>({
+      url: API_URL,
+      document: LOGIN_QUERY,
+      variables: { auth: params },
+    });
+    const { access_token, refresh_token, user } = response.login;
+    return { ok: true, data: { accessToken: access_token, refreshToken: refresh_token, user } };
   } catch (e) {
     if (e instanceof ClientError) {
       const parseResult = errorsSchema.safeParse(e.response);

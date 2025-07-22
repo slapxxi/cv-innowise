@@ -3,7 +3,7 @@ import { IndexPage } from '~/pages';
 
 export const Route = createFileRoute('/')({
   beforeLoad: ({ context }) => {
-    if (context.auth.user) {
+    if (context.auth) {
       throw redirect({ to: '/users' });
     }
     throw redirect({ to: '/auth/login', search: { redirect: '/' } });
