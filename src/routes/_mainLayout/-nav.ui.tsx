@@ -28,7 +28,7 @@ export function Sidebar() {
       className={cn(
         'fixed bottom-0 w-full bg-white',
         'dark:bg-neutral-700',
-        'xl:static xl:flex xl:flex-col xl:w-auto xl:max-w-[300px]'
+        'xl:sticky xl:top-0 xl:h-screen xl:flex xl:flex-col xl:w-auto xl:max-w-[300px]'
       )}
     >
       <nav className="xl:flex xl:flex-1 xl:flex-col">
