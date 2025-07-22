@@ -1,6 +1,5 @@
-import { Tabs } from '@mui/material';
 import { Outlet, useMatches } from '@tanstack/react-router';
-import { Breadcrumbs, TabLink } from '~/shared';
+import { Breadcrumbs, TabLink, Tabs } from '~/shared';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout')({

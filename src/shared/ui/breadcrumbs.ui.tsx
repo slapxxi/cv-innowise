@@ -13,9 +13,9 @@ export const Breadcrumbs: React.FC = () => {
           <Fragment key={pathname}>
             <li>
               <Link
-                className="flex items-center gap-3 text-neutral-600"
+                className="flex items-center gap-3 text-neutral-600 dark:text-neutral-400"
                 to={pathname}
-                activeProps={{ className: 'text-primary/60' }}
+                activeProps={{ className: 'text-primary/60 dark:text-primary/60' }}
                 activeOptions={{ exact: true }}
               >
                 {icon}
@@ -23,7 +23,7 @@ export const Breadcrumbs: React.FC = () => {
               </Link>
             </li>
             <li className="last:hidden">
-              <ChevronRight fontSize="small" className="text-neutral-400" />
+              <ChevronRight fontSize="small" className="text-neutral-400 dark:text-neutral-500" />
             </li>
           </Fragment>
         ))}

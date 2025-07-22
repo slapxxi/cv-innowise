@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { Text } from '~/shared';
+import { Button, Text } from '~/shared';
+import { Add, DeleteForever } from '@mui/icons-material';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/skills')({
   component: RouteComponent,
@@ -14,9 +15,16 @@ function RouteComponent() {
 
   return (
     <div>
-      <Text asChild>
-        <h2>{t('Employees')}</h2>
+      <Text asChild variant="light">
+        <h2>{t('Skills')}</h2>
       </Text>
+
+      <Button variant="text" startIcon={<Add />}>
+        Add Skill
+      </Button>
+      <Button variant="text" startIcon={<DeleteForever />} dangerous>
+        Remove Skills
+      </Button>
     </div>
   );
 }
