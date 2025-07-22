@@ -1,10 +1,10 @@
 import { clamp } from 'lodash';
 import { cn, lerp, smoothstep } from '~/shared';
 
-type UserSkillProps = { level: number; className?: string };
+type UserSkillProps = { level: number; color?: string; className?: string };
 
-export const UserSkill: React.FC<UserSkillProps> = (props) => {
-  const { level, className } = props;
+export const SkillBar: React.FC<UserSkillProps> = (props) => {
+  const { level, color, className } = props;
   const cLevel = clamp(level, 0, 10);
   const t = cLevel / 10;
 
@@ -13,14 +13,15 @@ export const UserSkill: React.FC<UserSkillProps> = (props) => {
       <rect
         className="fill-neutral-700 transition-[width,fill] w-full h-full"
         style={{
-          fill: `hsl(${lerp(240, 0, t)}, ${lerp(0, 25, smoothstep(0, 0.5, t))}%, 80%)`,
+          fill: color ? color : `hsl(${lerp(240, 0, t)}, ${lerp(0, 25, smoothstep(0, 0.5, t))}%, 80%)`,
+          opacity: color ? 0.3 : 1,
         }}
       />
       <rect
         className="fill-neutral-700 transition-[width,fill] h-full animate-enter"
         style={{
           width: `${t * 100}%`,
-          fill: `hsl(${lerp(240, 0, t)}, ${lerp(0, 100, smoothstep(0, 0.35, t))}%, 35%)`,
+          fill: color ? color : `hsl(${lerp(240, 0, t)}, ${lerp(0, 100, smoothstep(0, 0.35, t))}%, 35%)`,
         }}
       />
     </svg>
