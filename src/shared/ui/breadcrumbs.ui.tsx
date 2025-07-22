@@ -1,0 +1,33 @@
+import { ChevronRight } from '@mui/icons-material';
+import { Link } from '@tanstack/react-router';
+import { Fragment } from 'react';
+import { useBreadcrumbs } from '~/shared';
+
+export const Breadcrumbs: React.FC = () => {
+  const breadcrumbs = useBreadcrumbs();
+
+  return (
+    <nav>
+      <ul className="flex items-center gap-3">
+        {breadcrumbs.map(({ title, pathname, icon }) => (
+          <Fragment key={pathname}>
+            <li>
+              <Link
+                className="flex items-center gap-3 text-neutral-600"
+                to={pathname}
+                activeProps={{ className: 'text-primary/60' }}
+                activeOptions={{ exact: true }}
+              >
+                {icon}
+                {title}
+              </Link>
+            </li>
+            <li className="last:hidden">
+              <ChevronRight fontSize="small" className="text-neutral-400" />
+            </li>
+          </Fragment>
+        ))}
+      </ul>
+    </nav>
+  );
+};

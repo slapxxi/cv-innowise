@@ -7,6 +7,7 @@ import { decodeJWT, getUser, updateToken, type Auth } from '~/shared';
 export type CVRouterContext = {
   queryClient: QueryClient;
   auth: Auth;
+  breadcrumb?: { title: string; pathname: string; icon?: React.ReactNode };
 };
 
 export const Route = createRootRouteWithContext<CVRouterContext>()({

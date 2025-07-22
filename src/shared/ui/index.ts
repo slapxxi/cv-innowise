@@ -6,6 +6,7 @@ export * from './UserAvatar.ui';
 export * from './Text.ui';
 export * from './SearchField.ui';
 export * from './FormErrors.ui';
+export * from './breadcrumbs.ui';
 
 export * from './ButtonLink.ui';
 export * from './TabLink.ui';
