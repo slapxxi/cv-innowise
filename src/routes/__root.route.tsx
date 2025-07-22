@@ -1,6 +1,7 @@
 import { QueryClient } from '@tanstack/react-query';
 import { HeadContent, Outlet, createRootRouteWithContext } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { decodeJWT, getUser, updateToken, type Auth } from '~/shared';
 
 export type CVRouterContext = {
@@ -66,6 +67,7 @@ export const Route = createRootRouteWithContext<CVRouterContext>()({
         <HeadContent />
         <Outlet />
         <TanStackRouterDevtools position="top-right" />
+        <ReactQueryDevtools initialIsOpen={false} />
       </>
     );
   },
