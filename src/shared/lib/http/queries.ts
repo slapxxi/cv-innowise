@@ -1,5 +1,10 @@
 import { gql } from './graphql.http';
 
+const REFRESH_TOKEN = gql`
+  access_token
+  refresh_token
+`;
+
 const SKILL_MASTERY_QUERY = gql`
   name
   categoryId
@@ -110,7 +115,7 @@ const USER_QUERY = gql`
   role
 `;
 
-export const QUERIES = {
+export const Queries = {
   USER_QUERY,
   CVPROJECT_QUERY,
   PROJECT_QUERY,
@@ -121,4 +126,5 @@ export const QUERIES = {
   PROFILE_QUERY,
   CV_QUERY,
   DEPARTMENT_QUERY,
+  REFRESH_TOKEN,
 };

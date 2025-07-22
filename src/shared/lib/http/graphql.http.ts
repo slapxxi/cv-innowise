@@ -2,7 +2,7 @@ import type { UpdateTokenResult } from 'cv-graphql';
 import { GraphQLClient } from 'graphql-request';
 import { getCookie, setCookie } from 'typescript-cookie';
 
-export { ClientError, gql } from 'graphql-request';
+export { ClientError, gql, request } from 'graphql-request';
 
 const API_URL = import.meta.env.VITE_API_URL;
 

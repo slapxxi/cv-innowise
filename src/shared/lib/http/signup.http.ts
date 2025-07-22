@@ -1,7 +1,8 @@
-import type { AuthResult, HttpError, HttpResult } from '~/shared';
-import { ClientError, gql, unAuthClient } from './graphql.http';
+import type { AuthResponse, HttpError, HttpResult, User } from '~/shared';
+import { ClientError, gql, request } from './graphql.http';
 import { errorsSchema } from './schema';
-import { QUERIES } from './queries';
+import { Queries } from './queries';
+import { API_URL } from './const';
 
 const SIGNUP_QUERY = gql`
   mutation Signup($auth: AuthInput!) {
@@ -9,15 +10,19 @@ const SIGNUP_QUERY = gql`
       access_token
       refresh_token
       user {
-        ${QUERIES.USER_QUERY}
+        ${Queries.USER_QUERY}
       }
     }
   }
 `;
 
-type SignupQueryResult = { signup: AuthResult };
+type SignupQueryResult = { signup: AuthResponse };
 
-export type SignupData = SignupQueryResult['signup'];
+export type SignupData = {
+  accessToken: string;
+  refreshToken: string;
+  user: User;
+};
 
 export type SignupError = HttpError;
 
@@ -30,9 +35,13 @@ export type SignupResult = HttpResult<SignupData, SignupError>;
 
 export async function signup(params: SignupParams): Promise<SignupResult> {
   try {
-    const response = await unAuthClient.request<SignupQueryResult>(SIGNUP_QUERY, { auth: params });
-    // const response = await unAuthClient.request<{ signup: AuthResult }>(SIGNUP_QUERY, { auth: params });
-    return { ok: true, data: response.signup };
+    const response = await request<SignupQueryResult>({
+      url: API_URL,
+      document: SIGNUP_QUERY,
+      variables: { auth: params },
+    });
+    const { access_token, refresh_token, user } = response.signup;
+    return { ok: true, data: { accessToken: access_token, refreshToken: refresh_token, user } };
   } catch (e) {
     if (e instanceof ClientError) {
       const parseResult = errorsSchema.safeParse(e.response);

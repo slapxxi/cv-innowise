@@ -16,7 +16,7 @@ import { routeTree } from './routeTree.gen';
 // Create a new router instance
 const router = createRouter({
   routeTree,
-  context: { queryClient, auth: { user: null } },
+  context: { queryClient, auth: null },
   defaultPreload: 'intent',
   scrollRestoration: true,
   defaultStructuralSharing: true,

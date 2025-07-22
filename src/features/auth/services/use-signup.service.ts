@@ -9,9 +9,10 @@ export function useSignup(params: UseMutationOptions<SignupData, SignupError, Si
       const signupResult = await signup(params);
 
       if (signupResult.ok) {
-        sessionStorage.setItem('access_token', signupResult.data.access_token);
-        queryClient.setQueryData(['auth', 'user'], signupResult.data.user);
-        return signupResult.data;
+        const { user, accessToken, refreshToken } = signupResult.data;
+        queryClient.setQueryData(['auth'], { user, accessToken });
+        localStorage.setItem('refreshToken', refreshToken);
+        return { user, accessToken, refreshToken };
       }
 
       throw signupResult.error;

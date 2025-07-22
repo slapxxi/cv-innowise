@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
-import type { Auth, User } from '~/shared';
+import type { Auth } from '~/shared';
 
-export function useAuth(): Auth {
+export function useAuth(): Auth | null {
   const qc = useQueryClient();
-  return { user: qc.getQueryData<User>(['auth', 'user']) ?? null };
+  return qc.getQueryData<Auth>(['auth']) || null;
 }
