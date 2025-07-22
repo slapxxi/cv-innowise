@@ -14,7 +14,7 @@ export const UserRow = ({ userData, hiddenCell }: PropsType) => {
         <Avatar src={profile.avatar ?? undefined}>{profile.full_name?.[0] || email[0]}</Avatar>
       </TableCell>
       <TableCell>{profile.first_name}</TableCell>
-      <TableCell>{profile.last_name}</TableCell>
+      <TableCell className={hiddenCell}>{profile.last_name}</TableCell>
       <TableCell className={hiddenCell}>{email}</TableCell>
       <TableCell>{department_name}</TableCell>
       <TableCell>{position_name}</TableCell>
