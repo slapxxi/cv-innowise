@@ -30,6 +30,10 @@ const resources = {
       'Welcome to React': 'Welcome to React and react-i18next',
       Welcome: 'Welcome! Sign up to continue',
       'We will send you an email with further instructions': 'We will send you an email with further instructions',
+      'First Name': 'First Name',
+      'Last Name': 'Last Name',
+      Department: 'Department',
+      Position: 'Position',
     },
   },
   ru: {
@@ -58,6 +62,10 @@ const resources = {
       Welcome: 'Добро пожаловать! Создайте аккаунт, чтобы продолжить',
       'We will send you an email with further instructions':
         'Мы отправим вам электронное письмо с дальнейшими инструкциями',
+      'First Name': 'Имя',
+      'Last Name': 'Фамилия',
+      Department: 'Отдел',
+      Position: 'Должность',
     },
   },
 };

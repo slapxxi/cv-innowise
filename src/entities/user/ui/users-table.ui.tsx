@@ -1,7 +1,9 @@
-import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { UserRow } from '~/entities';
-import type { User } from '~/shared';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import { UserRow, UsersTableHead, useSortedUsers } from '~/entities';
+import { type User } from '~/shared';
+import { useState } from 'react';
+import { useAuth } from '~/app';
 
 type UsersTableProps = {
   users: User[];
@@ -9,33 +11,30 @@ type UsersTableProps = {
 
 export const UsersTable: React.FC<UsersTableProps> = (props) => {
   const { users } = props;
-  const { t } = useTranslation();
-  //TODO translation, DataGrid
-  const tableHeadData = [
-    { key: '', title: '' },
-    { key: 'first_name', title: t('First Name') },
-    { key: 'last_name', title: t('Last Name') },
-    { key: 'email', title: t('Email') },
-    { key: 'department_name', title: t('Department') },
-    { key: 'position_name', title: t('Position') },
-  ];
-  const handleSortClick = () => {};
+  const auth = useAuth();
+  const currentProfileId = auth?.user.id;
+
+  const [orderBy, setOrderBy] = useState<string>('');
+  const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc');
+
+  const currentUser = users.find((u) => u.id == currentProfileId);
+  const otherUsers = users.filter((u) => u.id !== currentProfileId);
+  const sortedUsers = useSortedUsers(otherUsers, orderBy, orderDirection);
+
   const cellHidden = 'hidden md:table-cell';
 
   return (
     <Table className="mt-2">
-      <TableHead className={'sticky top-0  bg z-10   align-middle'}>
-        <TableRow>
-          {tableHeadData.map((item, index) => (
-            <TableCell className={`p-4 text-nowrap  ${index === 3 ? cellHidden : ''}`} key={item.key}>
-              {item.title}
-              {index !== 0 && <TableSortLabel onClick={handleSortClick} />}
-            </TableCell>
-          ))}
-        </TableRow>
-      </TableHead>
+      <UsersTableHead
+        cellHidden={cellHidden}
+        orderBy={orderBy}
+        setOrderBy={setOrderBy}
+        orderDirection={orderDirection}
+        setOrderDirection={setOrderDirection}
+      />
       <TableBody>
-        {users.map((user) => (
+        {currentUser && <UserRow userData={currentUser} />}
+        {sortedUsers.map((user) => (
           <UserRow hiddenCell={cellHidden} key={user.id} userData={user} />
         ))}
       </TableBody>

@@ -18,11 +18,12 @@ export function Sidebar() {
   const { t } = useTranslation();
   const auth = useAuth();
   const [open, setOpen] = useState(true);
-  const user = auth!.user;
+  const user = auth?.user;
 
   function handleToggleOpen() {
     setOpen((o) => !o);
   }
+  if (!user) return <p>Loading....</p>;
 
   return (
     <aside
