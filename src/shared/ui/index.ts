@@ -8,6 +8,7 @@ export * from './SearchField.ui';
 export * from './FormErrors.ui';
 export * from './tabs.ui';
 export * from './breadcrumbs.ui';
+export * from './user-skill.ui';
 
 export * from './ButtonLink.ui';
 export * from './TabLink.ui';
