@@ -16,12 +16,13 @@ type PropsType = {
 export const UsersTableHead = ({ cellHidden, orderBy, setOrderBy, orderDirection, setOrderDirection }: PropsType) => {
   const { t } = useTranslation();
   const tableHeadData = [
-    { key: '', title: '' },
-    { key: 'first_name', title: t('First Name') },
-    { key: 'last_name', title: t('Last Name') },
-    { key: 'email', title: t('Email') },
-    { key: 'department_name', title: t('Department') },
-    { key: 'position_name', title: t('Position') },
+    { key: '', title: '', sortable: false },
+    { key: 'first_name', title: t('First Name'), sortable: true },
+    { key: 'last_name', title: t('Last Name'), sortable: true },
+    { key: 'email', title: t('Email'), sortable: true },
+    { key: 'department_name', title: t('Department'), sortable: true },
+    { key: 'position_name', title: t('Position'), sortable: true },
+    { key: '', title: '', sortable: false },
   ];
 
   const handleSortClick = (key: string) => {
@@ -47,7 +48,7 @@ export const UsersTableHead = ({ cellHidden, orderBy, setOrderBy, orderDirection
             key={item.key}
           >
             {item.title}
-            {index !== 0 && (
+            {item.sortable && (
               <TableSortLabel
                 active={orderBy === item.key}
                 direction={orderBy === item.key ? orderDirection : 'asc'}
