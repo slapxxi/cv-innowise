@@ -27,6 +27,16 @@ const SKILL_QUERY = gql`
   id
   created_at
   name
+  category_name
+  category_parent_name
+  category {
+    id
+    name
+    parent {
+      id
+      name
+    }
+  }
 `;
 
 const PROJECT_QUERY = gql`

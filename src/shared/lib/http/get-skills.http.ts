@@ -1,50 +1,46 @@
-import type { User } from 'cv-graphql';
-import { ClientError, gql, request, type HttpError, type HttpResult } from '~/shared';
+import { ClientError, gql, request, type HttpError, type HttpResult, type Skill } from '~/shared';
 import { API_URL, StatusCodes } from '~/shared/lib/http/const';
-import { Queries } from '~/shared/lib/http/queries';
+import { Queries } from './queries';
 
-const GET_SKILLS_QUERY = gql`
+const GET_SKILLS = gql`
   query Skills {
     skills {
-      ${Queries.USER_QUERY}
+      ${Queries.SKILL_QUERY}
     }
   }
 `;
 
-type GetUsersQueryResult = {
-  users: User[];
+type GetSkillsQueryResult = {
+  skills: Skill[];
 };
 
-export type GetUsersData = {
-  users: User[];
-};
+export type GetSkillsData = Skill[];
 
-export type GetUsersError = HttpError;
+export type GetSkillsError = HttpError;
 
 export type GetSkillsParams = {
-  id: string;
   accessToken: string;
 };
 
-export type GetUsersResult = HttpResult<GetUsersData, GetUsersError>;
+export type GetSkillsResult = HttpResult<GetSkillsData, GetSkillsError>;
 
-export const getSkills = async (params: GetSkillsParams): Promise<GetUsersResult> => {
+export const getSkills = async (params: GetSkillsParams): Promise<GetSkillsResult> => {
   try {
-    const response = await request<GetUsersQueryResult>({
+    const response = await request<GetSkillsQueryResult>({
       url: API_URL,
-      document: GET_SKILLS_QUERY,
+      document: GET_SKILLS,
       requestHeaders: {
         Authorization: `Bearer ${params.accessToken}`,
       },
     });
-    const { users } = response;
-    return { ok: true, data: { users } };
+    return { ok: true, data: response.skills };
   } catch (e) {
     if (e instanceof ClientError) {
+      console.log(e);
       if (e.response.errors?.find((e) => e.message.toLowerCase() === 'unauthorized')) {
         return { ok: false, error: { message: 'Unauthorized', status: StatusCodes.UNAUTHORIZED } };
       }
     }
-    return { ok: false, error: { message: 'Get users failed' } };
+    return { ok: false, error: { message: 'Get skills failed' } };
   }
 };

@@ -7,6 +7,7 @@ const buttonVariants = cva('rounded-full px-6 py-2', {
     variant: {
       contained: 'text-white',
       text: 'text-neutral-500',
+      outlined: 'border-primary',
     },
     dangerous: {
       true: 'text-primary hover:bg-primary/10',
@@ -17,7 +18,9 @@ const buttonVariants = cva('rounded-full px-6 py-2', {
   },
 });
 
-type ButtonProps = { variant?: 'contained' | 'text'; dangerous?: boolean } & React.ComponentProps<typeof BaseButton>;
+type ButtonProps = { variant?: 'contained' | 'text' | 'outlined'; dangerous?: boolean } & React.ComponentProps<
+  typeof BaseButton
+>;
 
 export const Button: React.FC<ButtonProps> = (props) => {
   const { variant = 'contained', className, dangerous, ...rest } = props;

@@ -4,8 +4,11 @@ import type {
   SkillCategory as CVSkillCategory,
   SkillMastery as CVSkillMastery,
   User as CVUser,
+  Profile as CVProfile,
 } from 'cv-graphql';
 import type { Prettify } from '~/shared';
+
+export type Profile = Prettify<CVProfile>;
 
 export type User = Prettify<CVUser>;
 
@@ -28,4 +31,4 @@ export type Auth = {
 
 export type Mastery = Prettify<BaseMastery>;
 
-export type MasteryLevel = Lowercase<`${Mastery}`>;
+export type MasteryLevel = `${Mastery}`;

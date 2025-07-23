@@ -33,7 +33,7 @@ export const skillCategorySchema = z.object({
 export const skillSchema = z.object({
   name: z.string(),
   mastery: z.string(),
-  categoryId: z.string(),
+  categoryId: z.string().nullable(),
 });
 
 export const profileSchema = z.object({
