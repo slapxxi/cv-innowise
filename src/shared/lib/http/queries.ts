@@ -11,6 +11,12 @@ const SKILL_MASTERY_QUERY = gql`
   mastery
 `;
 
+const SKILL_QUERY = gql`
+  name
+  categoryId
+  mastery
+`;
+
 const PROJECT_QUERY = gql`
   id
   created_at
@@ -39,12 +45,6 @@ const CVPROJECT_QUERY = gql`
   responsibilities
 `;
 
-const SKILL_QUERY = gql`
-  name
-  categoryId
-  mastery
-`;
-
 const POSITION_QUERY = gql`
   id
   created_at
@@ -64,7 +64,7 @@ const PROFILE_QUERY = gql`
   full_name
   avatar
   skills {
-    ${SKILL_QUERY}
+    ${SKILL_MASTERY_QUERY}
   }
   languages {
     ${LANGUAGE_QUERY}

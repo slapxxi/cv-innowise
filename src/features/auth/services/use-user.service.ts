@@ -1,15 +1,17 @@
-import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
+import { useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import { useAuth } from '~/app';
-import { getUser, type LoginData, type LoginParams, type UpdateTokenError } from '~/shared';
+import { getUser, type GetUserData, type GetUserError } from '~/shared';
 
-type Params = { id: string } & Omit<UseQueryOptions<LoginData, UpdateTokenError, LoginParams>, 'queryKey' | 'queryFn'>;
+type QueryOptions = UseSuspenseQueryOptions<GetUserData, GetUserError>;
 
-export function useUser(params: Params) {
-  const auth = useAuth();
-  const userQuery = useQuery({
-    queryKey: ['user', params.id],
+type Params = { id: string } & Omit<QueryOptions, 'queryKey' | 'queryFn'>;
+
+export const getUserQueryOptions = (params: { id: string; accessToken: string }) => {
+  const { id, accessToken } = params;
+  return {
+    queryKey: ['user', id],
     queryFn: async () => {
-      const userResult = await getUser({ id: params.id, accessToken: auth!.accessToken });
+      const userResult = await getUser({ id, accessToken });
 
       if (userResult.ok) {
         return userResult.data;
@@ -17,7 +19,15 @@ export function useUser(params: Params) {
 
       throw userResult.error;
     },
-  });
+  };
+};
 
-  return userQuery;
+export function useUser(params: Params) {
+  const { id, ...restParams } = params;
+  const auth = useAuth();
+  const { data, ...rest } = useSuspenseQuery({
+    ...getUserQueryOptions({ id, accessToken: auth!.accessToken }),
+    ...restParams,
+  });
+  return { user: data, ...rest };
 }

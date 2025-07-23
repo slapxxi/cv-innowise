@@ -1,8 +1,8 @@
+import { Add, DeleteForever } from '@mui/icons-material';
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
+import { useUser } from '~/features';
 import { Button, SkillBar, Text } from '~/shared';
-import { Add, DeleteForever } from '@mui/icons-material';
-import { useState } from 'react';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/skills')({
   component: RouteComponent,
@@ -13,33 +13,22 @@ export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/ski
 
 function RouteComponent() {
   const { t } = useTranslation();
-  const [level, setLevel] = useState(3);
+  const params = Route.useParams();
+  const { user } = useUser({ id: params.userId });
+  const skills = user.profile.skills;
 
   return (
-    <div onClick={() => setLevel(() => Math.random() * 10)}>
+    <div>
       <Text asChild variant="light">
         <h2>{t('Skills')}</h2>
       </Text>
 
       <section>
-        <Text asChild>
-          <h3>Programming Languages</h3>
-        </Text>
-
         <div className="grid grid-cols-2 gap-4 auto-rows-[minmax(50px,auto)]">
-          {[
-            { name: 'React', level: 3 },
-            { name: 'Angular', level: 9 },
-            { name: 'Vue', level: 7 },
-            { name: 'Svelte', level, color: 'magenta' },
-            { name: 'Node', level: 1 },
-            { name: 'PHP', level: 2 },
-            { name: 'Python', level: 5 },
-            { name: 'Elixir', level: 8, color: 'dodgerblue' },
-          ].map((item, i) => (
+          {skills.map((s, i) => (
             <div className="flex gap-2 items-center select-none" key={i}>
-              <SkillBar level={item.level} className="max-w-[100px]" color={item.color} />
-              <span>{item.name}</span>
+              <SkillBar mastery={s.mastery} className="max-w-[100px]" />
+              <span>{s.name}</span>
             </div>
           ))}
         </div>

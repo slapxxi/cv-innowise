@@ -1,11 +1,16 @@
 import { Outlet, useMatches } from '@tanstack/react-router';
 import { Breadcrumbs, TabLink, Tabs } from '~/shared';
 import { createFileRoute } from '@tanstack/react-router';
+import { getUserQueryOptions } from '~/features';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout')({
   component: RouteComponent,
   beforeLoad: () => {
     return { breadcrumb: { title: 'Employees', pathname: '/users' } };
+  },
+  loader: ({ params, context }) => {
+    const { auth, queryClient } = context;
+    queryClient.prefetchQuery(getUserQueryOptions({ id: params.userId, accessToken: auth!.accessToken }));
   },
 });
 

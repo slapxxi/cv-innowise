@@ -14,7 +14,9 @@ function RouteComponent() {
   return (
     <div className="min-h-screen xl:flex xl:gap-4">
       <Sidebar />
-      <Outlet />
+      <div className="w-full">
+        <Outlet />
+      </div>
     </div>
   );
 }
