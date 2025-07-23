@@ -1,7 +1,25 @@
-import type { Mastery as BaseMastery, User as CVUser } from 'cv-graphql';
+import type {
+  Mastery as BaseMastery,
+  Skill as CVSkill,
+  SkillCategory as CVSkillCategory,
+  SkillMastery as CVSkillMastery,
+  User as CVUser,
+} from 'cv-graphql';
 import type { Prettify } from '~/shared';
 
 export type User = Prettify<CVUser>;
+
+export type Skill = Prettify<CVSkill>;
+
+export type SkillMastery = Prettify<CVSkillMastery>;
+
+export type UserWithSkillsByCategories = Prettify<
+  User & {
+    skillsByCategories: Record<SkillCategory['name'], SkillMastery[]> | null;
+  }
+>;
+
+export type SkillCategory = Prettify<CVSkillCategory>;
 
 export type Auth = {
   user: User;

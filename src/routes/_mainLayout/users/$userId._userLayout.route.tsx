@@ -19,9 +19,9 @@ function RouteComponent() {
   const matches = useMatches();
 
   return (
-    <div className="px-6 py-4">
-      <header className="flex flex-col gap-1">
-        <Breadcrumbs />
+    <div>
+      <header className="px-6 py-4 flex flex-col gap-1 xl:px-0">
+        <Breadcrumbs className="pl-4 mb-4" />
 
         <Tabs value={matches.at(-1)?.fullPath ?? ''}>
           <TabLink

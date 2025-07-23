@@ -3,11 +3,16 @@ import { Link } from '@tanstack/react-router';
 import { Fragment } from 'react';
 import { useBreadcrumbs } from '~/shared';
 
-export const Breadcrumbs: React.FC = () => {
+type BreadcrumbsProps = {
+  className?: string;
+};
+
+export const Breadcrumbs: React.FC<BreadcrumbsProps> = (props) => {
+  const { className } = props;
   const breadcrumbs = useBreadcrumbs();
 
   return (
-    <nav>
+    <nav className={className}>
       <ul className="flex items-center gap-3">
         {breadcrumbs.map(({ title, pathname, icon }) => (
           <Fragment key={pathname}>

@@ -5,6 +5,18 @@ const REFRESH_TOKEN = gql`
   refresh_token
 `;
 
+const SKILL_CATEGORY_QUERY = gql`
+  id
+  name
+  order
+  parent {
+    id
+  }
+  children {
+    id
+  }
+`;
+
 const SKILL_MASTERY_QUERY = gql`
   name
   categoryId
@@ -12,9 +24,9 @@ const SKILL_MASTERY_QUERY = gql`
 `;
 
 const SKILL_QUERY = gql`
+  id
+  created_at
   name
-  categoryId
-  mastery
 `;
 
 const PROJECT_QUERY = gql`
@@ -119,8 +131,9 @@ export const Queries = {
   USER_QUERY,
   CVPROJECT_QUERY,
   PROJECT_QUERY,
-  SKILL_MASTERY_QUERY,
   SKILL_QUERY,
+  SKILL_MASTERY_QUERY,
+  SKILL_CATEGORY_QUERY,
   POSITION_QUERY,
   LANGUAGE_QUERY,
   PROFILE_QUERY,
