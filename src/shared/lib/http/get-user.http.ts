@@ -68,7 +68,6 @@ export async function getUser(params: GetUserParams): Promise<GetUserResult> {
         Authorization: `Bearer ${params.accessToken}`,
       },
     });
-    console.log(response);
     const { data, success } = groupByCategoriesSchema.safeParse(response);
     const result = {
       ...response.user,

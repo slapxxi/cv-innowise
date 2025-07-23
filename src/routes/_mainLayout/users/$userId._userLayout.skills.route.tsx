@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Add, DeleteForever } from '@mui/icons-material';
+import { Add, Close as CloseIcon, DeleteForever } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
@@ -7,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { masteryLevels, useAuth } from '~/app';
 import { getSkillsQueryOptions, useCreateProfileSkill, useSkills, useUser } from '~/features';
-import { Button, Modal, Select, SelectItem, SkillBar, Text } from '~/shared';
+import { Button, deleteProfileSkill, Modal, Select, SelectItem, SkillBar, Text, type SkillMastery } from '~/shared';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/skills')({
   component: RouteComponent,
@@ -50,6 +51,11 @@ function RouteComponent() {
     const categoryId = skill?.category?.id;
     createProfileSkill({ skill: { userId: params.userId, name: skill.name, categoryId, mastery: data.masteryLevel } });
   };
+
+  async function handleDelete(skill: SkillMastery) {
+    await deleteProfileSkill({ skill: { userId: params.userId, name: skill.name }, accessToken: auth!.accessToken });
+    router.invalidate();
+  }
 
   return (
     <div className="px-6 py-4">
@@ -97,10 +103,18 @@ function RouteComponent() {
 
               <div className="grid grid-cols-2 gap-4 auto-rows-[minmax(50px,auto)] xl:grid-cols-3">
                 {skills.map((s, i) => (
-                  <div className="flex gap-2 items-center select-none" key={i}>
-                    <SkillBar mastery={s.mastery} className="max-w-[100px]" />
-                    <span>{s.name}</span>
-                  </div>
+                  <>
+                    <div className="flex gap-2 items-center select-none group" key={i}>
+                      <SkillBar mastery={s.mastery} className="max-w-[100px]" />
+                      <span>{s.name}</span>
+                      <IconButton
+                        className="invisible text-primary group-hover:visible"
+                        onClick={() => handleDelete(s)}
+                      >
+                        <CloseIcon fontSize="small" />
+                      </IconButton>
+                    </div>
+                  </>
                 ))}
               </div>
             </section>
