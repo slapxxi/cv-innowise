@@ -34,11 +34,11 @@ export const UserRow = React.memo(({ userData, hiddenCell, isProfile }: PropsTyp
       <TableCell>
         {!isProfile ? (
           <IconButton>
-            <ArrowForwardIosRounded onClick={() => navigate({ to: `/users/${profile.id}` })} />
+            <ArrowForwardIosRounded onClick={() => navigate({ to: `/users/${profile.id}/profile` })} />
           </IconButton>
         ) : (
           <ActionsMenu>
-            <MenuItem onClick={() => navigate({ to: `/users/${profile.id}` })}>Profile</MenuItem>
+            <MenuItem onClick={() => navigate({ to: `/users/${profile.id}/profile` })}>Profile</MenuItem>
             <MenuItem onClick={handleUpdate}>Update user </MenuItem>
             <MenuItem onClick={handleDelete}>Delete user</MenuItem>
           </ActionsMenu>

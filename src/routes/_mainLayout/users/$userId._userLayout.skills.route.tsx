@@ -7,8 +7,8 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { useAuth } from '~/app';
-import { AddSkillForm, skillsOptions, UpdateSkillForm, useUser } from '~/features';
-import { Button, Count, deleteProfileSkills, Modal, SkillBar, Text, type SkillMastery } from '~/shared';
+import { AddSkillForm, skillsOptions, UpdateSkillForm, useDeleteProfileSkills, useUser } from '~/features';
+import { Button, Count, Modal, SkillBar, Text, type SkillMastery } from '~/shared';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/skills')({
   component: RouteComponent,
@@ -65,6 +65,12 @@ function RouteComponent() {
     resolver: zodResolver(deleteSkillsSchema),
   });
   const [state, send] = useReducer(routeReducer, { status: 'idle' });
+  const { deleteProfileSkills } = useDeleteProfileSkills({
+    onSuccess: () => {
+      handleCancel();
+      invalidateUser();
+    },
+  });
   const isOwner = user.id === auth!.user.id;
 
   const selectedSkills = multipleForm.watch('skills');
@@ -73,24 +79,18 @@ function RouteComponent() {
     send({ type: 'update', skill });
   }
 
-  async function handleDelete(skill: SkillMastery) {
-    await deleteProfileSkills({
+  function handleDelete(skill: SkillMastery) {
+    deleteProfileSkills({
       userId: params.userId,
       skillNames: [skill.name],
-      accessToken: auth!.accessToken,
     });
-    handleCancel();
-    invalidateUser();
   }
 
   const handleMultipleDelete: SubmitHandler<z.infer<typeof deleteSkillsSchema>> = async (data) => {
-    await deleteProfileSkills({
+    deleteProfileSkills({
       userId: params.userId,
       skillNames: data.skills,
-      accessToken: auth!.accessToken,
     });
-    handleCancel();
-    invalidateUser();
   };
 
   function handleCancel() {
@@ -189,11 +189,11 @@ function RouteComponent() {
               </Button>
             ) : (
               <Button
+                key="remove"
                 variant="text"
                 startIcon={<DeleteForever />}
-                dangerous
                 onClick={() => send({ type: 'delete' })}
-                key="remove"
+                dangerous
               >
                 Remove Skills
               </Button>

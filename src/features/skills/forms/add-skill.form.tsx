@@ -9,7 +9,7 @@ import { Button, Select, SelectItem } from '~/shared';
 const routeApi = getRouteApi('/_mainLayout/users/$userId/_userLayout/skills');
 
 const createSkillSchema = z.object({
-  skillId: z.string(),
+  skillId: z.string().trim().nonempty(),
   masteryLevel: z.enum(masteryLevels),
 });
 
@@ -51,7 +51,6 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = (props) => {
           control={form.control}
           render={({ field }) => (
             <Select label="Category" className="w-full" labelProps={labelProps} {...field}>
-              <SelectItem value="">None</SelectItem>
               {filteredSkills.map((s) => (
                 <SelectItem key={s.id} value={s.id}>
                   {s.name}

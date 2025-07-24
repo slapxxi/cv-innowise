@@ -14,19 +14,19 @@ const DELETE_PROFILE_SKILL = gql`
 
 type DeleteProfileMutationResult = { deleteProfileSkill: Profile };
 
-export type DeleteProfileSkillData = Profile;
+export type DeleteProfileSkillsData = Profile;
 
-export type DeleteProfileSkillError = HttpError;
+export type DeleteProfileSkillsError = HttpError;
 
-export type DeleteProfileSkillParams = {
+export type DeleteProfileSkillsParams = {
   userId: string;
   skillNames: string[];
   accessToken: string;
 };
 
-export type DeleteProfileSkillResult = HttpResult<DeleteProfileSkillData, DeleteProfileSkillError>;
+export type DeleteProfileSkillResult = HttpResult<DeleteProfileSkillsData, DeleteProfileSkillsError>;
 
-export async function deleteProfileSkills(params: DeleteProfileSkillParams): Promise<DeleteProfileSkillResult> {
+export async function deleteProfileSkills(params: DeleteProfileSkillsParams): Promise<DeleteProfileSkillResult> {
   try {
     const response = await request<DeleteProfileMutationResult>({
       url: API_URL,
@@ -46,6 +46,6 @@ export async function deleteProfileSkills(params: DeleteProfileSkillParams): Pro
       }
     }
 
-    return { ok: false, error: { message: 'Signup failed' } };
+    return { ok: false, error: { message: 'Deleting profile skills failed' } };
   }
 }
