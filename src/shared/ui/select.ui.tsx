@@ -1,15 +1,15 @@
 import { Select as BaseSelect, FormControl, InputLabel, MenuItem } from '@mui/material';
 import { useId } from 'react';
 
-type SelectProps = {} & React.ComponentProps<typeof BaseSelect>;
+type SelectProps = { labelProps?: React.ComponentProps<typeof InputLabel> } & React.ComponentProps<typeof BaseSelect>;
 
 export const Select: React.FC<SelectProps> = (props) => {
-  const { children, label, ...rest } = props;
+  const { children, label, labelProps, ...rest } = props;
   const labelId = useId();
 
   return (
     <FormControl>
-      <InputLabel id={labelId} className="bg-bg">
+      <InputLabel id={labelId} {...labelProps}>
         {label}
       </InputLabel>
       <BaseSelect labelId={labelId} {...rest}>

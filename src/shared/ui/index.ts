@@ -12,6 +12,7 @@ export * from './breadcrumbs.ui';
 export * from './skill-bar.ui';
 export * from './modal.ui';
 export * from './select.ui';
+export * from './count.ui';
 
 export * from './ButtonLink.ui';
 export * from './TabLink.ui';

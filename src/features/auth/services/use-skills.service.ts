@@ -4,7 +4,7 @@ import { getSkills, type GetSkillsData, type GetSkillsError } from '~/shared/lib
 
 type QueryOptions = UseSuspenseQueryOptions<GetSkillsData, GetSkillsError>;
 
-export const getSkillsQueryOptions = (params: { accessToken: string }) => {
+export const skillsOptions = (params: { accessToken: string }) => {
   const { accessToken } = params;
   return {
     queryKey: ['skills'],
@@ -27,7 +27,7 @@ export function useSkills(params: Params = {}) {
   const { ...restParams } = params ?? {};
   const auth = useAuth();
   const { data, ...rest } = useSuspenseQuery({
-    ...getSkillsQueryOptions({ accessToken: auth!.accessToken }),
+    ...skillsOptions({ accessToken: auth!.accessToken }),
     ...restParams,
   });
   return { skills: data, ...rest };

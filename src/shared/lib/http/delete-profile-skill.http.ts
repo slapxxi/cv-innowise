@@ -19,21 +19,19 @@ export type DeleteProfileSkillData = Profile;
 export type DeleteProfileSkillError = HttpError;
 
 export type DeleteProfileSkillParams = {
-  skill: {
-    userId: string;
-    name: string;
-  };
+  userId: string;
+  skillNames: string[];
   accessToken: string;
 };
 
 export type DeleteProfileSkillResult = HttpResult<DeleteProfileSkillData, DeleteProfileSkillError>;
 
-export async function deleteProfileSkill(params: DeleteProfileSkillParams): Promise<DeleteProfileSkillResult> {
+export async function deleteProfileSkills(params: DeleteProfileSkillParams): Promise<DeleteProfileSkillResult> {
   try {
     const response = await request<DeleteProfileMutationResult>({
       url: API_URL,
       document: DELETE_PROFILE_SKILL,
-      variables: { skill: params.skill },
+      variables: { skill: { userId: params.userId, name: params.skillNames } },
       requestHeaders: {
         Authorization: `Bearer ${params.accessToken}`,
       },
@@ -41,7 +39,6 @@ export async function deleteProfileSkill(params: DeleteProfileSkillParams): Prom
     return { ok: true, data: response.deleteProfileSkill };
   } catch (e) {
     if (e instanceof ClientError) {
-      console.log(e.message);
       const parseResult = errorsSchema.safeParse(e.response);
 
       if (parseResult.success) {

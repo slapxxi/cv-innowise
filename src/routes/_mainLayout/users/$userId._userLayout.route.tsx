@@ -20,8 +20,8 @@ function RouteComponent() {
 
   return (
     <div>
-      <header className="px-6 py-4 flex flex-col gap-1 xl:px-0">
-        <Breadcrumbs className="pl-4 mb-4" />
+      <header className="sticky top-0 z-10 flex flex-col gap-1 bg-bg px-6 py-4 xl:px-0 dark:bg-bg-dark">
+        <Breadcrumbs className="mb-4 pl-4" />
 
         <Tabs value={matches.at(-1)?.fullPath ?? ''}>
           <TabLink

@@ -7,7 +7,7 @@ const buttonVariants = cva('rounded-full px-6 py-2', {
     variant: {
       contained: 'text-white',
       text: 'text-neutral-500',
-      outlined: 'border-primary',
+      outlined: 'border-primary dark:text-white',
     },
     dangerous: {
       true: 'text-primary hover:bg-primary/10',

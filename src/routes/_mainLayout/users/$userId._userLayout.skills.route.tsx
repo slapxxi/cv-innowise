@@ -1,14 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Add, Close as CloseIcon, DeleteForever } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
-import { createFileRoute, useRouter } from '@tanstack/react-router';
-import { useState } from 'react';
+import { Checkbox, IconButton } from '@mui/material';
+import { createFileRoute } from '@tanstack/react-router';
+import { Fragment, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { masteryLevels, useAuth } from '~/app';
-import { getSkillsQueryOptions, useCreateProfileSkill, useSkills, useUser } from '~/features';
-import { Button, deleteProfileSkill, Modal, Select, SelectItem, SkillBar, Text, type SkillMastery } from '~/shared';
+import { useAuth } from '~/app';
+import { AddSkillForm, skillsOptions, useUser } from '~/features';
+import { Button, Count, deleteProfileSkills, Modal, SkillBar, Text, type SkillMastery } from '~/shared';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/skills')({
   component: RouteComponent,
@@ -17,45 +17,46 @@ export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/ski
   },
   loader: ({ context }) => {
     const { auth, queryClient } = context;
-    queryClient.prefetchQuery(getSkillsQueryOptions({ accessToken: auth!.accessToken }));
+    queryClient.prefetchQuery(skillsOptions({ accessToken: auth!.accessToken }));
   },
 });
 
-const createSkillSchema = z.object({
-  skillId: z.string(),
-  masteryLevel: z.enum(masteryLevels),
+const deleteSkillsSchema = z.object({
+  skills: z.string().array().min(1),
 });
 
-type CreateSkillForm = z.infer<typeof createSkillSchema>;
-
 function RouteComponent() {
-  const { t } = useTranslation();
   const params = Route.useParams();
+  const { t } = useTranslation();
   const auth = useAuth();
-  const { user } = useUser({ id: params.userId });
-  const { skills } = useSkills();
+  const { user, invalidateUser } = useUser({ id: params.userId });
   const [open, setOpen] = useState(false);
-  const form = useForm<CreateSkillForm>({
-    resolver: zodResolver(createSkillSchema),
+  const multipleForm = useForm({
+    resolver: zodResolver(deleteSkillsSchema),
   });
-  const router = useRouter();
-  const { createProfileSkill } = useCreateProfileSkill({
-    onSuccess: () => {
-      setOpen(false);
-      router.invalidate();
-    },
-  });
+  const [removeMultiple, setRemoveMultiple] = useState(false);
+  const isOwner = user.id === auth!.user.id;
 
-  const handleSubmit: SubmitHandler<CreateSkillForm> = async (data) => {
-    const skill = skills.find((s) => s.id === data.skillId)!;
-    const categoryId = skill?.category?.id;
-    createProfileSkill({ skill: { userId: params.userId, name: skill.name, categoryId, mastery: data.masteryLevel } });
-  };
+  const selectedSkills = multipleForm.watch('skills');
 
   async function handleDelete(skill: SkillMastery) {
-    await deleteProfileSkill({ skill: { userId: params.userId, name: skill.name }, accessToken: auth!.accessToken });
-    router.invalidate();
+    await deleteProfileSkills({
+      userId: params.userId,
+      skillNames: [skill.name],
+      accessToken: auth!.accessToken,
+    });
+    invalidateUser();
   }
+
+  const handleMultipleDelete: SubmitHandler<z.infer<typeof deleteSkillsSchema>> = async (data) => {
+    await deleteProfileSkills({
+      userId: params.userId,
+      skillNames: data.skills,
+      accessToken: auth!.accessToken,
+    });
+    setRemoveMultiple(false);
+    invalidateUser();
+  };
 
   return (
     <div className="px-6 py-4">
@@ -64,74 +65,86 @@ function RouteComponent() {
       </Text>
 
       <Modal open={open} title="Add Skill" onClose={() => setOpen(false)}>
-        <form className="flex flex-col gap-8 mt-4" onSubmit={form.handleSubmit(handleSubmit)}>
-          <div className="flex flex-col gap-4">
-            <Select label="Category" className="w-full" {...form.register('skillId')}>
-              <SelectItem value="">None</SelectItem>
-              {skills
-                .filter((s) => !user.profile.skills.find((sm) => sm.name === s.name))
-                .map((s) => (
-                  <SelectItem key={s.id} value={s.id}>
-                    {s.name}
-                  </SelectItem>
-                ))}
-            </Select>
-
-            <Select label="Mastery Level" className="w-full" {...form.register('masteryLevel')}>
-              {masteryLevels.map((ml) => (
-                <SelectItem value={ml} key={ml}>
-                  {ml}
-                </SelectItem>
-              ))}
-            </Select>
-          </div>
-
-          <div className="flex gap-2 justify-end">
-            <Button type="button" variant="outlined" onClick={() => setOpen(false)}>
-              Cancel
-            </Button>
-            <Button type="submit">Confirm</Button>
-          </div>
-        </form>
+        <AddSkillForm
+          onSuccess={() => {
+            setOpen(false);
+            invalidateUser();
+          }}
+          onCancel={() => setOpen(false)}
+        />
       </Modal>
 
-      <div className="xl:max-w-[900px] mx-auto">
+      <form className="relative mx-auto xl:max-w-[900px]" onSubmit={multipleForm.handleSubmit(handleMultipleDelete)}>
         {user.skillsByCategories &&
-          Object.entries(user.skillsByCategories).map(([categoryName, skills]) => (
-            <section key={categoryName} className="my-8">
-              <h2 className="mb-4">{categoryName}</h2>
+          Object.entries(user.skillsByCategories)
+            .sort()
+            .map(([categoryName, skills]) => (
+              <section key={categoryName} className="my-8">
+                <h2 className="mb-4">{categoryName}</h2>
 
-              <div className="grid grid-cols-2 gap-4 auto-rows-[minmax(50px,auto)] xl:grid-cols-3">
-                {skills.map((s, i) => (
-                  <>
-                    <div className="flex gap-2 items-center select-none group" key={i}>
-                      <SkillBar mastery={s.mastery} className="max-w-[100px]" />
-                      <span>{s.name}</span>
-                      <IconButton
-                        className="invisible text-primary group-hover:visible"
-                        onClick={() => handleDelete(s)}
-                      >
-                        <CloseIcon fontSize="small" />
-                      </IconButton>
-                    </div>
-                  </>
-                ))}
-              </div>
-            </section>
-          ))}
+                <div className="grid auto-rows-[minmax(50px,auto)] grid-cols-2 gap-4 xl:grid-cols-3">
+                  {skills.map((s, i) => (
+                    <Fragment key={s.name}>
+                      <div className="group flex items-center gap-2 select-none" key={i}>
+                        <label htmlFor={`skill-${s.name}`} className="flex cursor-pointer gap-2">
+                          <SkillBar mastery={s.mastery} className="max-w-[100px]" />
+                          <span>{s.name}</span>
+                        </label>
 
-        {auth!.user.id === user.id && (
-          <div className="flex justify-end xl:gap-15 xl:mt-20">
-            <Button variant="text" startIcon={<Add />} onClick={() => setOpen(true)}>
-              Add Skill
-            </Button>
+                        {removeMultiple ? (
+                          <Checkbox id={`skill-${s.name}`} value={s.name} {...multipleForm.register('skills')} />
+                        ) : (
+                          isOwner && (
+                            <IconButton
+                              className="invisible text-primary group-hover:visible"
+                              onClick={() => handleDelete(s)}
+                            >
+                              <CloseIcon fontSize="small" />
+                            </IconButton>
+                          )
+                        )}
+                      </div>
+                    </Fragment>
+                  ))}
+                </div>
+              </section>
+            ))}
 
-            <Button variant="text" startIcon={<DeleteForever />} dangerous>
-              Remove Skills
-            </Button>
+        {isOwner && (
+          <div className="z-20 flex justify-end bg-bg xl:mt-20 xl:gap-15 dark:bg-bg-dark sticky bottom-16 xl:bottom-4 w-max ml-auto">
+            {removeMultiple ? (
+              <Button variant="outlined" onClick={() => setRemoveMultiple(false)} key="cancel">
+                Cancel
+              </Button>
+            ) : (
+              <Button variant="text" startIcon={<Add />} onClick={() => setOpen(true)} key="add-skill">
+                Add Skill
+              </Button>
+            )}
+
+            {removeMultiple ? (
+              <Button
+                variant="contained"
+                type="submit"
+                key="remove-multiple"
+                endIcon={<Count value={selectedSkills?.length ?? 0} className="xl:ml-5" />}
+              >
+                Delete
+              </Button>
+            ) : (
+              <Button
+                variant="text"
+                startIcon={<DeleteForever />}
+                dangerous
+                onClick={() => setRemoveMultiple(true)}
+                key="remove"
+              >
+                Remove Skills
+              </Button>
+            )}
           </div>
         )}
-      </div>
+      </form>
     </div>
   );
 }
