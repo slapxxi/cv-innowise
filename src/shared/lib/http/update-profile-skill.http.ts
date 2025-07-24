@@ -19,8 +19,8 @@ export type UpdateProfileSkillData = Profile;
 export type UpdateProfileSkillError = HttpError;
 
 export type UpdateProfileSkillParams = {
+  userId: string;
   skill: {
-    userId: string;
     name: string;
     mastery: MasteryLevel;
     categoryId?: string | null;
@@ -35,7 +35,7 @@ export async function updateProfileSkill(params: UpdateProfileSkillParams): Prom
     const response = await request<UpdateProfileMutationResult>({
       url: API_URL,
       document: UPDATE_PROFILE_SKILL,
-      variables: { skill: params.skill },
+      variables: { skill: { userId: params.userId, ...params.skill } },
       requestHeaders: {
         Authorization: `Bearer ${params.accessToken}`,
       },

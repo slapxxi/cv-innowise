@@ -2,8 +2,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { getRouteApi } from '@tanstack/react-router';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import * as z from 'zod/v4';
-import { masteryLevels, useAuth } from '~/app';
-import { Button, Select, SelectItem, updateProfileSkill, type SkillMastery } from '~/shared';
+import { masteryLevels } from '~/app';
+import { useUpdateProfileSkill } from '~/features/auth';
+import { Button, Select, SelectItem, type SkillMastery } from '~/shared';
 
 const routeApi = getRouteApi('/_mainLayout/users/$userId/_userLayout/skills');
 
@@ -17,7 +18,6 @@ type AddSkillFormProps = { skill: SkillMastery; onSuccess: () => void; onCancel:
 
 export const UpdateSkillForm: React.FC<AddSkillFormProps> = (props) => {
   const { skill, onSuccess, onCancel } = props;
-  const auth = useAuth();
   const params = routeApi.useParams();
   const form = useForm<UpdateSkillForm>({
     resolver: zodResolver(updateSkillSchema),
@@ -25,16 +25,18 @@ export const UpdateSkillForm: React.FC<AddSkillFormProps> = (props) => {
       masteryLevel: skill.mastery,
     },
   });
+  const { updateProfileSkill } = useUpdateProfileSkill({
+    onSuccess,
+  });
   const labelProps = {
     className: 'bg-bg dark:bg-neutral-600',
   };
 
-  const handleSubmit: SubmitHandler<UpdateSkillForm> = async (data) => {
-    await updateProfileSkill({
-      skill: { userId: params.userId, name: skill.name, categoryId: skill.categoryId, mastery: data.masteryLevel },
-      accessToken: auth!.accessToken,
+  const handleSubmit: SubmitHandler<UpdateSkillForm> = (data) => {
+    updateProfileSkill({
+      userId: params.userId,
+      skill: { name: skill.name, categoryId: skill.categoryId, mastery: data.masteryLevel },
     });
-    onSuccess();
   };
 
   return (
