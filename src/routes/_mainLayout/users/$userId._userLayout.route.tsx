@@ -4,9 +4,6 @@ import i18n from '~/app/i18n';
 import { getUserQueryOptions } from '~/features';
 import { Breadcrumbs, TabLink, Tabs } from '~/shared';
 
-// todo: delete this little shit :-)
-i18n.changeLanguage('ru');
-
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout')({
   component: RouteComponent,
   beforeLoad: () => {
