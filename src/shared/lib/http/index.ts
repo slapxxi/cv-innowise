@@ -1,4 +1,5 @@
 export * from './create-profile-skill.http';
+export * from './update-profile-skill.http';
 export * from './delete-profile-skill.http';
 export * from './get-skill-categories.http';
 export * from './get-skills.http';

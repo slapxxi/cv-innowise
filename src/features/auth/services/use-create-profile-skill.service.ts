@@ -23,7 +23,6 @@ export function useCreateProfileSkill(params: Params = {}) {
 
       if (createProfileSkillResult.ok) {
         const profile = createProfileSkillResult.data;
-        console.log(profile);
         return profile;
       }
 

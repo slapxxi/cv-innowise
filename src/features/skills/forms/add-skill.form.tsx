@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getRouteApi } from '@tanstack/react-router';
-import { useForm, type SubmitHandler } from 'react-hook-form';
+import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import * as z from 'zod/v4';
 import { masteryLevels } from '~/app';
 import { useCreateProfileSkill, useSkills, useUser } from '~/features';
@@ -25,10 +25,11 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = (props) => {
   const { createProfileSkill } = useCreateProfileSkill({
     onSuccess,
   });
+  const filteredSkills = skills.filter((s) => !user.profile.skills.find((sm) => sm.name === s.name));
   const form = useForm<CreateSkillForm>({
     resolver: zodResolver(createSkillSchema),
     defaultValues: {
-      skillId: '',
+      skillId: filteredSkills[0].id,
       masteryLevel: masteryLevels[0],
     },
   });
@@ -45,24 +46,34 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = (props) => {
   return (
     <form className="flex flex-col gap-8 mt-4" onSubmit={form.handleSubmit(handleSubmit)}>
       <div className="flex flex-col gap-4">
-        <Select label="Category" className="w-full" labelProps={labelProps} {...form.register('skillId')}>
-          <SelectItem value="">None</SelectItem>
-          {skills
-            .filter((s) => !user.profile.skills.find((sm) => sm.name === s.name))
-            .map((s) => (
-              <SelectItem key={s.id} value={s.id}>
-                {s.name}
-              </SelectItem>
-            ))}
-        </Select>
+        <Controller
+          name="skillId"
+          control={form.control}
+          render={({ field }) => (
+            <Select label="Category" className="w-full" labelProps={labelProps} {...field}>
+              <SelectItem value="">None</SelectItem>
+              {filteredSkills.map((s) => (
+                <SelectItem key={s.id} value={s.id}>
+                  {s.name}
+                </SelectItem>
+              ))}
+            </Select>
+          )}
+        />
 
-        <Select label="Mastery Level" className="w-full" labelProps={labelProps} {...form.register('masteryLevel')}>
-          {masteryLevels.map((ml) => (
-            <SelectItem value={ml} key={ml}>
-              {ml}
-            </SelectItem>
-          ))}
-        </Select>
+        <Controller
+          name="masteryLevel"
+          control={form.control}
+          render={({ field }) => (
+            <Select label="Mastery Level" className="w-full" labelProps={labelProps} {...field}>
+              {masteryLevels.map((ml) => (
+                <SelectItem key={ml} value={ml}>
+                  {ml}
+                </SelectItem>
+              ))}
+            </Select>
+          )}
+        />
       </div>
 
       <div className="flex gap-2 justify-end">

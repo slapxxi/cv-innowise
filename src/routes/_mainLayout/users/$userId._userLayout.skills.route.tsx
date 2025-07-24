@@ -2,12 +2,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Add, Close as CloseIcon, DeleteForever } from '@mui/icons-material';
 import { Checkbox, IconButton } from '@mui/material';
 import { createFileRoute } from '@tanstack/react-router';
-import { Fragment, useState } from 'react';
+import { Fragment, useReducer } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { useAuth } from '~/app';
-import { AddSkillForm, skillsOptions, useUser } from '~/features';
+import { AddSkillForm, skillsOptions, UpdateSkillForm, useUser } from '~/features';
 import { Button, Count, deleteProfileSkills, Modal, SkillBar, Text, type SkillMastery } from '~/shared';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/skills')({
@@ -25,19 +25,53 @@ const deleteSkillsSchema = z.object({
   skills: z.string().array().min(1),
 });
 
+type Action = { type: 'add' } | { type: 'delete' } | { type: 'update'; skill: SkillMastery } | { type: 'cancel' };
+
+type State = {
+  status: 'idle' | 'adding' | 'updating' | 'deleting';
+  context?: {
+    skill: SkillMastery;
+  };
+};
+
+function routeReducer(state: State, action: Action): State {
+  if (action.type === 'cancel') {
+    return { status: 'idle' };
+  }
+
+  switch (state.status) {
+    case 'idle':
+      if (action.type === 'add') {
+        return { status: 'adding' };
+      }
+      if (action.type === 'delete') {
+        return { status: 'deleting' };
+      }
+      if (action.type === 'update') {
+        return { status: 'updating', context: { skill: action.skill } };
+      }
+      return state;
+    default:
+      return state;
+  }
+}
+
 function RouteComponent() {
   const params = Route.useParams();
   const { t } = useTranslation();
   const auth = useAuth();
   const { user, invalidateUser } = useUser({ id: params.userId });
-  const [open, setOpen] = useState(false);
   const multipleForm = useForm({
     resolver: zodResolver(deleteSkillsSchema),
   });
-  const [removeMultiple, setRemoveMultiple] = useState(false);
+  const [state, send] = useReducer(routeReducer, { status: 'idle' });
   const isOwner = user.id === auth!.user.id;
 
   const selectedSkills = multipleForm.watch('skills');
+
+  function handleUpdate(skill: SkillMastery) {
+    send({ type: 'update', skill });
+  }
 
   async function handleDelete(skill: SkillMastery) {
     await deleteProfileSkills({
@@ -45,6 +79,7 @@ function RouteComponent() {
       skillNames: [skill.name],
       accessToken: auth!.accessToken,
     });
+    handleCancel();
     invalidateUser();
   }
 
@@ -54,9 +89,13 @@ function RouteComponent() {
       skillNames: data.skills,
       accessToken: auth!.accessToken,
     });
-    setRemoveMultiple(false);
+    handleCancel();
     invalidateUser();
   };
+
+  function handleCancel() {
+    send({ type: 'cancel' });
+  }
 
   return (
     <div className="px-6 py-4">
@@ -64,14 +103,27 @@ function RouteComponent() {
         <h2>{t('Skills')}</h2>
       </Text>
 
-      <Modal open={open} title="Add Skill" onClose={() => setOpen(false)}>
+      <Modal open={state.status === 'adding'} title="Add Skill" onClose={handleCancel}>
         <AddSkillForm
           onSuccess={() => {
-            setOpen(false);
+            handleCancel();
             invalidateUser();
           }}
-          onCancel={() => setOpen(false)}
+          onCancel={handleCancel}
         />
+      </Modal>
+
+      <Modal open={state.status === 'updating'} title="Update Skill" onClose={handleCancel}>
+        {state.status === 'updating' && (
+          <UpdateSkillForm
+            skill={state.context!.skill}
+            onSuccess={() => {
+              handleCancel();
+              invalidateUser();
+            }}
+            onCancel={handleCancel}
+          />
+        )}
       </Modal>
 
       <form className="relative mx-auto xl:max-w-[900px]" onSubmit={multipleForm.handleSubmit(handleMultipleDelete)}>
@@ -86,12 +138,16 @@ function RouteComponent() {
                   {skills.map((s, i) => (
                     <Fragment key={s.name}>
                       <div className="group flex items-center gap-2 select-none" key={i}>
-                        <label htmlFor={`skill-${s.name}`} className="flex cursor-pointer gap-2">
+                        <label
+                          htmlFor={`skill-${s.name}`}
+                          className="flex cursor-pointer gap-2"
+                          onClick={() => handleUpdate(s)}
+                        >
                           <SkillBar mastery={s.mastery} className="max-w-[100px]" />
                           <span>{s.name}</span>
                         </label>
 
-                        {removeMultiple ? (
+                        {state.status === 'deleting' ? (
                           <Checkbox id={`skill-${s.name}`} value={s.name} {...multipleForm.register('skills')} />
                         ) : (
                           isOwner && (
@@ -112,17 +168,17 @@ function RouteComponent() {
 
         {isOwner && (
           <div className="z-20 flex justify-end bg-bg xl:mt-20 xl:gap-15 dark:bg-bg-dark sticky bottom-16 xl:bottom-4 w-max ml-auto">
-            {removeMultiple ? (
-              <Button variant="outlined" onClick={() => setRemoveMultiple(false)} key="cancel">
+            {state.status === 'deleting' ? (
+              <Button variant="outlined" onClick={handleCancel} key="cancel">
                 Cancel
               </Button>
             ) : (
-              <Button variant="text" startIcon={<Add />} onClick={() => setOpen(true)} key="add-skill">
+              <Button variant="text" startIcon={<Add />} onClick={() => send({ type: 'add' })} key="add-skill">
                 Add Skill
               </Button>
             )}
 
-            {removeMultiple ? (
+            {state.status === 'deleting' ? (
               <Button
                 variant="contained"
                 type="submit"
@@ -136,7 +192,7 @@ function RouteComponent() {
                 variant="text"
                 startIcon={<DeleteForever />}
                 dangerous
-                onClick={() => setRemoveMultiple(true)}
+                onClick={() => send({ type: 'delete' })}
                 key="remove"
               >
                 Remove Skills
