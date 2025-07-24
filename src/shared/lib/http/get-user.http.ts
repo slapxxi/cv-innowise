@@ -1,22 +1,37 @@
-import { type HttpError, type HttpResult, type User } from '~/shared';
-import { ClientError, gql, request } from './graphql.http';
-import { errorsSchema } from './schema';
-import { Queries } from './queries';
+import { groupBy } from 'lodash';
+import * as z from 'zod/v4';
+import {
+  type HttpError,
+  type HttpResult,
+  type Mastery,
+  type SkillCategory,
+  type User,
+  type UserWithSkillsByCategories,
+} from '~/shared';
 import { API_URL } from './const';
+import { ClientError, gql, request } from './graphql.http';
+import { Queries } from './queries';
+import { errorsSchema, skillCategorySchema, userSchema } from './schema';
 
 const GET_USER_QUERY = gql`
   query User($userId: ID!) {
     user(userId: $userId) {
       ${Queries.USER_QUERY}
     }
+
+    skillCategories {
+      id
+      name
+    }
   }
 `;
 
 type GetUserQueryResult = {
   user: User;
+  skillCategories: Pick<SkillCategory, 'id' | 'name'>[];
 };
 
-export type GetUserData = GetUserQueryResult['user'];
+export type GetUserData = UserWithSkillsByCategories;
 
 export type GetUserError = HttpError;
 
@@ -26,6 +41,22 @@ export type GetUserParams = {
 };
 
 export type GetUserResult = HttpResult<GetUserData, GetUserError>;
+
+const groupByCategoriesSchema = z
+  .object({
+    user: userSchema,
+    skillCategories: skillCategorySchema.array(),
+  })
+  .transform((data) => {
+    const skills = data.user.profile.skills;
+    const mapped = skills.map((s) => ({
+      name: s.name,
+      mastery: s.mastery as Mastery,
+      categoryId: s.categoryId,
+      categoryName: data.skillCategories.find((c) => c.id === s.categoryId)?.name,
+    }));
+    return groupBy(mapped, 'categoryName');
+  });
 
 export async function getUser(params: GetUserParams): Promise<GetUserResult> {
   try {
@@ -37,7 +68,12 @@ export async function getUser(params: GetUserParams): Promise<GetUserResult> {
         Authorization: `Bearer ${params.accessToken}`,
       },
     });
-    return { ok: true, data: response.user };
+    const { data, success } = groupByCategoriesSchema.safeParse(response);
+    const result = {
+      ...response.user,
+      skillsByCategories: success ? data : null,
+    };
+    return { ok: true, data: result };
   } catch (e) {
     if (e instanceof ClientError) {
       const parseResult = errorsSchema.safeParse(e.response);

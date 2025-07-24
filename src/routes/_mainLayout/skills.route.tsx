@@ -5,5 +5,5 @@ export const Route = createFileRoute('/_mainLayout/skills')({
 });
 
 function RouteComponent() {
-  return <div>Hello "/_mainLayout/languages"!</div>;
+  return <div>skillz</div>;
 }

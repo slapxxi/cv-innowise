@@ -1,5 +1,4 @@
-import type { User } from 'cv-graphql';
-import { ClientError, gql, request, type HttpError, type HttpResult } from '~/shared';
+import { ClientError, gql, request, type HttpError, type HttpResult, type User } from '~/shared';
 import { API_URL, StatusCodes } from '~/shared/lib/http/const';
 import { Queries } from '~/shared/lib/http/queries';
 
@@ -15,9 +14,7 @@ type GetUsersQueryResult = {
   users: User[];
 };
 
-export type GetUsersData = {
-  users: User[];
-};
+export type GetUsersData = User[];
 
 export type GetUsersError = HttpError;
 
@@ -37,7 +34,7 @@ export const getUsers = async (params: GetUsersParams): Promise<GetUsersResult> 
       },
     });
     const { users } = response;
-    return { ok: true, data: { users } };
+    return { ok: true, data: users };
   } catch (e) {
     if (e instanceof ClientError) {
       if (e.response.errors?.find((e) => e.message.toLowerCase() === 'unauthorized')) {

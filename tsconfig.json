@@ -1,5 +1,10 @@
 {
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "src/features/auth/services/use-categories.service.ts__oil_tmp_584992",
+    "src/features/auth/services/use-categories.service.ts__oil_tmp_203916"
+  ],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "target": "es5",

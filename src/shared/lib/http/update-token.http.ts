@@ -39,7 +39,7 @@ export async function updateToken(params: UpdateTokenParams): Promise<UpdateToke
         Authorization: `Bearer ${params.refreshToken}`,
       },
     });
-    const { refresh_token: refreshToken, access_token: accessToken } = response.updateToken;
+    const { refreshToken, accessToken } = response.updateToken;
     return { ok: true, data: { accessToken, refreshToken } };
   } catch (e) {
     if (e instanceof ClientError) {

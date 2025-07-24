@@ -23,9 +23,15 @@ import { Route as MainLayoutCvsRouteRouteImport } from './routes/_mainLayout/cvs
 import { Route as MainLayoutUsersIndexRouteRouteImport } from './routes/_mainLayout/users/index.route'
 import { Route as AuthAuthLayoutSignupRouteRouteImport } from './routes/auth/_authLayout.signup.route'
 import { Route as AuthAuthLayoutLoginRouteRouteImport } from './routes/auth/_authLayout.login.route'
-import { Route as MainLayoutUsersUserIdProfileRouteRouteImport } from './routes/_mainLayout/users/$userId.profile.route'
+import { Route as MainLayoutUsersUserIdUserLayoutRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.route'
+import { Route as MainLayoutUsersUserIdUserLayoutSkillsRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.skills.route'
+import { Route as MainLayoutUsersUserIdUserLayoutProfileRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.profile.route'
+import { Route as MainLayoutUsersUserIdUserLayoutLanguagesRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.languages.route'
 
 const AuthRouteImport = createFileRoute('/auth')()
+const MainLayoutUsersUserIdRouteImport = createFileRoute(
+  '/_mainLayout/users/$userId',
+)()
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -76,6 +82,11 @@ const MainLayoutCvsRouteRoute = MainLayoutCvsRouteRouteImport.update({
   path: '/cvs',
   getParentRoute: () => MainLayoutRouteRoute,
 } as any)
+const MainLayoutUsersUserIdRoute = MainLayoutUsersUserIdRouteImport.update({
+  id: '/users/$userId',
+  path: '/users/$userId',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
 const MainLayoutUsersIndexRouteRoute =
   MainLayoutUsersIndexRouteRouteImport.update({
     id: '/users/',
@@ -94,11 +105,28 @@ const AuthAuthLayoutLoginRouteRoute =
     path: '/login',
     getParentRoute: () => AuthAuthLayoutRouteRoute,
   } as any)
-const MainLayoutUsersUserIdProfileRouteRoute =
-  MainLayoutUsersUserIdProfileRouteRouteImport.update({
-    id: '/users/$userId/profile',
-    path: '/users/$userId/profile',
-    getParentRoute: () => MainLayoutRouteRoute,
+const MainLayoutUsersUserIdUserLayoutRouteRoute =
+  MainLayoutUsersUserIdUserLayoutRouteRouteImport.update({
+    id: '/_userLayout',
+    getParentRoute: () => MainLayoutUsersUserIdRoute,
+  } as any)
+const MainLayoutUsersUserIdUserLayoutSkillsRouteRoute =
+  MainLayoutUsersUserIdUserLayoutSkillsRouteRouteImport.update({
+    id: '/skills',
+    path: '/skills',
+    getParentRoute: () => MainLayoutUsersUserIdUserLayoutRouteRoute,
+  } as any)
+const MainLayoutUsersUserIdUserLayoutProfileRouteRoute =
+  MainLayoutUsersUserIdUserLayoutProfileRouteRouteImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => MainLayoutUsersUserIdUserLayoutRouteRoute,
+  } as any)
+const MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute =
+  MainLayoutUsersUserIdUserLayoutLanguagesRouteRouteImport.update({
+    id: '/languages',
+    path: '/languages',
+    getParentRoute: () => MainLayoutUsersUserIdUserLayoutRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -113,7 +141,10 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthAuthLayoutLoginRouteRoute
   '/auth/signup': typeof AuthAuthLayoutSignupRouteRoute
   '/users': typeof MainLayoutUsersIndexRouteRoute
-  '/users/$userId/profile': typeof MainLayoutUsersUserIdProfileRouteRoute
+  '/users/$userId': typeof MainLayoutUsersUserIdUserLayoutRouteRouteWithChildren
+  '/users/$userId/languages': typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute
+  '/users/$userId/profile': typeof MainLayoutUsersUserIdUserLayoutProfileRouteRoute
+  '/users/$userId/skills': typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRouteRoute
@@ -127,7 +158,10 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthAuthLayoutLoginRouteRoute
   '/auth/signup': typeof AuthAuthLayoutSignupRouteRoute
   '/users': typeof MainLayoutUsersIndexRouteRoute
-  '/users/$userId/profile': typeof MainLayoutUsersUserIdProfileRouteRoute
+  '/users/$userId': typeof MainLayoutUsersUserIdUserLayoutRouteRouteWithChildren
+  '/users/$userId/languages': typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute
+  '/users/$userId/profile': typeof MainLayoutUsersUserIdUserLayoutProfileRouteRoute
+  '/users/$userId/skills': typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -144,7 +178,11 @@ export interface FileRoutesById {
   '/auth/_authLayout/login': typeof AuthAuthLayoutLoginRouteRoute
   '/auth/_authLayout/signup': typeof AuthAuthLayoutSignupRouteRoute
   '/_mainLayout/users/': typeof MainLayoutUsersIndexRouteRoute
-  '/_mainLayout/users/$userId/profile': typeof MainLayoutUsersUserIdProfileRouteRoute
+  '/_mainLayout/users/$userId': typeof MainLayoutUsersUserIdRouteWithChildren
+  '/_mainLayout/users/$userId/_userLayout': typeof MainLayoutUsersUserIdUserLayoutRouteRouteWithChildren
+  '/_mainLayout/users/$userId/_userLayout/languages': typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute
+  '/_mainLayout/users/$userId/_userLayout/profile': typeof MainLayoutUsersUserIdUserLayoutProfileRouteRoute
+  '/_mainLayout/users/$userId/_userLayout/skills': typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -160,7 +198,10 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/users'
+    | '/users/$userId'
+    | '/users/$userId/languages'
     | '/users/$userId/profile'
+    | '/users/$userId/skills'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -174,7 +215,10 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/users'
+    | '/users/$userId'
+    | '/users/$userId/languages'
     | '/users/$userId/profile'
+    | '/users/$userId/skills'
   id:
     | '__root__'
     | '/'
@@ -190,7 +234,11 @@ export interface FileRouteTypes {
     | '/auth/_authLayout/login'
     | '/auth/_authLayout/signup'
     | '/_mainLayout/users/'
-    | '/_mainLayout/users/$userId/profile'
+    | '/_mainLayout/users/$userId'
+    | '/_mainLayout/users/$userId/_userLayout'
+    | '/_mainLayout/users/$userId/_userLayout/languages'
+    | '/_mainLayout/users/$userId/_userLayout/profile'
+    | '/_mainLayout/users/$userId/_userLayout/skills'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -273,6 +321,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainLayoutCvsRouteRouteImport
       parentRoute: typeof MainLayoutRouteRoute
     }
+    '/_mainLayout/users/$userId': {
+      id: '/_mainLayout/users/$userId'
+      path: '/users/$userId'
+      fullPath: '/users/$userId'
+      preLoaderRoute: typeof MainLayoutUsersUserIdRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
     '/_mainLayout/users/': {
       id: '/_mainLayout/users/'
       path: '/users'
@@ -294,22 +349,78 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthAuthLayoutLoginRouteRouteImport
       parentRoute: typeof AuthAuthLayoutRouteRoute
     }
-    '/_mainLayout/users/$userId/profile': {
-      id: '/_mainLayout/users/$userId/profile'
-      path: '/users/$userId/profile'
+    '/_mainLayout/users/$userId/_userLayout': {
+      id: '/_mainLayout/users/$userId/_userLayout'
+      path: '/users/$userId'
+      fullPath: '/users/$userId'
+      preLoaderRoute: typeof MainLayoutUsersUserIdUserLayoutRouteRouteImport
+      parentRoute: typeof MainLayoutUsersUserIdRoute
+    }
+    '/_mainLayout/users/$userId/_userLayout/skills': {
+      id: '/_mainLayout/users/$userId/_userLayout/skills'
+      path: '/skills'
+      fullPath: '/users/$userId/skills'
+      preLoaderRoute: typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRouteImport
+      parentRoute: typeof MainLayoutUsersUserIdUserLayoutRouteRoute
+    }
+    '/_mainLayout/users/$userId/_userLayout/profile': {
+      id: '/_mainLayout/users/$userId/_userLayout/profile'
+      path: '/profile'
       fullPath: '/users/$userId/profile'
-      preLoaderRoute: typeof MainLayoutUsersUserIdProfileRouteRouteImport
-      parentRoute: typeof MainLayoutRouteRoute
+      preLoaderRoute: typeof MainLayoutUsersUserIdUserLayoutProfileRouteRouteImport
+      parentRoute: typeof MainLayoutUsersUserIdUserLayoutRouteRoute
+    }
+    '/_mainLayout/users/$userId/_userLayout/languages': {
+      id: '/_mainLayout/users/$userId/_userLayout/languages'
+      path: '/languages'
+      fullPath: '/users/$userId/languages'
+      preLoaderRoute: typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRouteImport
+      parentRoute: typeof MainLayoutUsersUserIdUserLayoutRouteRoute
     }
   }
 }
+
+interface MainLayoutUsersUserIdUserLayoutRouteRouteChildren {
+  MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute: typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute
+  MainLayoutUsersUserIdUserLayoutProfileRouteRoute: typeof MainLayoutUsersUserIdUserLayoutProfileRouteRoute
+  MainLayoutUsersUserIdUserLayoutSkillsRouteRoute: typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRoute
+}
+
+const MainLayoutUsersUserIdUserLayoutRouteRouteChildren: MainLayoutUsersUserIdUserLayoutRouteRouteChildren =
+  {
+    MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute:
+      MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute,
+    MainLayoutUsersUserIdUserLayoutProfileRouteRoute:
+      MainLayoutUsersUserIdUserLayoutProfileRouteRoute,
+    MainLayoutUsersUserIdUserLayoutSkillsRouteRoute:
+      MainLayoutUsersUserIdUserLayoutSkillsRouteRoute,
+  }
+
+const MainLayoutUsersUserIdUserLayoutRouteRouteWithChildren =
+  MainLayoutUsersUserIdUserLayoutRouteRoute._addFileChildren(
+    MainLayoutUsersUserIdUserLayoutRouteRouteChildren,
+  )
+
+interface MainLayoutUsersUserIdRouteChildren {
+  MainLayoutUsersUserIdUserLayoutRouteRoute: typeof MainLayoutUsersUserIdUserLayoutRouteRouteWithChildren
+}
+
+const MainLayoutUsersUserIdRouteChildren: MainLayoutUsersUserIdRouteChildren = {
+  MainLayoutUsersUserIdUserLayoutRouteRoute:
+    MainLayoutUsersUserIdUserLayoutRouteRouteWithChildren,
+}
+
+const MainLayoutUsersUserIdRouteWithChildren =
+  MainLayoutUsersUserIdRoute._addFileChildren(
+    MainLayoutUsersUserIdRouteChildren,
+  )
 
 interface MainLayoutRouteRouteChildren {
   MainLayoutCvsRouteRoute: typeof MainLayoutCvsRouteRoute
   MainLayoutLanguagesRouteRoute: typeof MainLayoutLanguagesRouteRoute
   MainLayoutSkillsRouteRoute: typeof MainLayoutSkillsRouteRoute
   MainLayoutUsersIndexRouteRoute: typeof MainLayoutUsersIndexRouteRoute
-  MainLayoutUsersUserIdProfileRouteRoute: typeof MainLayoutUsersUserIdProfileRouteRoute
+  MainLayoutUsersUserIdRoute: typeof MainLayoutUsersUserIdRouteWithChildren
 }
 
 const MainLayoutRouteRouteChildren: MainLayoutRouteRouteChildren = {
@@ -317,8 +428,7 @@ const MainLayoutRouteRouteChildren: MainLayoutRouteRouteChildren = {
   MainLayoutLanguagesRouteRoute: MainLayoutLanguagesRouteRoute,
   MainLayoutSkillsRouteRoute: MainLayoutSkillsRouteRoute,
   MainLayoutUsersIndexRouteRoute: MainLayoutUsersIndexRouteRoute,
-  MainLayoutUsersUserIdProfileRouteRoute:
-    MainLayoutUsersUserIdProfileRouteRoute,
+  MainLayoutUsersUserIdRoute: MainLayoutUsersUserIdRouteWithChildren,
 }
 
 const MainLayoutRouteRouteWithChildren = MainLayoutRouteRoute._addFileChildren(
