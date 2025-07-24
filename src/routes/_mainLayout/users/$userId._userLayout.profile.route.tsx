@@ -11,7 +11,7 @@ export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/pro
     if (user) {
       return {
         breadcrumb: {
-          title: user.profile.full_name,
+          title: user.profile.fullName,
           pathname: `/users/${params.userId}/profile`,
           icon: <PersonOutline />,
         },

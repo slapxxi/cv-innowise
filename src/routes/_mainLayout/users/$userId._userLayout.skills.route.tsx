@@ -7,13 +7,14 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { useAuth } from '~/app';
+import i18n from '~/app/i18n';
 import { AddSkillForm, skillsOptions, UpdateSkillForm, useDeleteProfileSkills, useUser } from '~/features';
 import { Button, Count, Modal, SkillBar, Text, type SkillMastery } from '~/shared';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/skills')({
   component: RouteComponent,
   beforeLoad: ({ params }) => {
-    return { breadcrumb: { title: 'Skills', pathname: `/users/${params.userId}/skills` } };
+    return { breadcrumb: { title: i18n.t('Skills'), pathname: `/users/${params.userId}/skills` } };
   },
   loader: ({ context }) => {
     const { auth, queryClient } = context;
@@ -103,7 +104,7 @@ function RouteComponent() {
         <h2>{t('Skills')}</h2>
       </Text>
 
-      <Modal open={state.status === 'adding'} title="Add Skill" onClose={handleCancel}>
+      <Modal open={state.status === 'adding'} title={t('Add Skill')} onClose={handleCancel}>
         <AddSkillForm
           onSuccess={() => {
             handleCancel();
@@ -113,7 +114,7 @@ function RouteComponent() {
         />
       </Modal>
 
-      <Modal open={state.status === 'updating'} title="Update Skill" onClose={handleCancel}>
+      <Modal open={state.status === 'updating'} title={t('Update Skill')} onClose={handleCancel}>
         {state.status === 'updating' && (
           <UpdateSkillForm
             skill={state.context!.skill}
@@ -132,7 +133,7 @@ function RouteComponent() {
             .sort()
             .map(([categoryName, skills]) => (
               <section key={categoryName} className="my-8">
-                <h2 className="mb-4">{categoryName}</h2>
+                <h2 className="mb-4">{t(categoryName)}</h2>
 
                 <div className="grid auto-rows-[minmax(50px,auto)] grid-cols-2 gap-4 xl:grid-cols-3">
                   {skills.map((s, i) => (
@@ -170,11 +171,11 @@ function RouteComponent() {
           <div className="z-20 flex justify-end bg-bg xl:mt-20 xl:gap-15 dark:bg-bg-dark sticky bottom-16 xl:bottom-4 w-max ml-auto">
             {state.status === 'deleting' ? (
               <Button variant="outlined" onClick={handleCancel} key="cancel">
-                Cancel
+                {t('Cancel')}
               </Button>
             ) : (
               <Button variant="text" startIcon={<Add />} onClick={() => send({ type: 'add' })} key="add-skill">
-                Add Skill
+                {t('Add Skill')}
               </Button>
             )}
 
@@ -185,7 +186,7 @@ function RouteComponent() {
                 key="remove-multiple"
                 endIcon={<Count value={selectedSkills?.length ?? 0} className="xl:ml-5" />}
               >
-                Delete
+                {t('Delete')}
               </Button>
             ) : (
               <Button
@@ -195,7 +196,7 @@ function RouteComponent() {
                 onClick={() => send({ type: 'delete' })}
                 dangerous
               >
-                Remove Skills
+                {t('Remove Skills')}
               </Button>
             )}
           </div>

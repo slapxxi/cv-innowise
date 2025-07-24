@@ -1,4 +1,4 @@
-import type { HttpError, HttpResult, MasteryLevel, Profile } from '~/shared';
+import type { HttpError, HttpResult, Mastery, Profile } from '~/shared';
 import { API_URL } from './const';
 import { ClientError, gql, request } from './graphql.http';
 import { Queries } from './queries';
@@ -22,7 +22,7 @@ export type CreateProfileSkillParams = {
   skill: {
     userId: string;
     name: string;
-    mastery: MasteryLevel;
+    mastery: Mastery;
     categoryId?: string;
   };
   accessToken: string;

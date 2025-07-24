@@ -1,8 +1,8 @@
 import { gql } from './graphql.http';
 
 const REFRESH_TOKEN = gql`
-  access_token
-  refresh_token
+  accessToken: access_token
+  refreshToken: refresh_token
 `;
 
 const SKILL_CATEGORY_QUERY = gql`
@@ -25,10 +25,10 @@ const SKILL_MASTERY_QUERY = gql`
 
 const SKILL_QUERY = gql`
   id
-  created_at
+  createdAt: created_at
   name
-  category_name
-  category_parent_name
+  categoryName: category_name
+  categoryParentName: category_parent_name
   category {
     id
     name
@@ -41,12 +41,12 @@ const SKILL_QUERY = gql`
 
 const PROJECT_QUERY = gql`
   id
-  created_at
+  createdAt: created_at
   name
-  internal_name
+  internalName: internal_name
   domain
-  start_date
-  end_date
+  startDate: start_date
+  endDate: end_date
   description
   environment
 `;
@@ -57,11 +57,11 @@ const CVPROJECT_QUERY = gql`
     id
   }
   name
-  internal_name
+  internalName: internal_name
   description
   domain
-  start_date
-  end_date
+  startDate: start_date
+  endDate: end_date
   environment
   roles
   responsibilities
@@ -69,7 +69,7 @@ const CVPROJECT_QUERY = gql`
 
 const POSITION_QUERY = gql`
   id
-  created_at
+  createdAt: created_at
   name
 `;
 
@@ -80,10 +80,10 @@ const LANGUAGE_QUERY = gql`
 
 const PROFILE_QUERY = gql`
   id
-  created_at
-  first_name
-  last_name
-  full_name
+  createdAt: created_at
+  firstName: first_name
+  lastName: last_name
+  fullName: full_name
   avatar
   skills {
     ${SKILL_MASTERY_QUERY}
@@ -95,7 +95,7 @@ const PROFILE_QUERY = gql`
 
 const CV_QUERY = gql`
   id
-  created_at
+  createdAt: created_at
   name
   education
   description
@@ -116,10 +116,10 @@ const DEPARTMENT_QUERY = gql`
 const USER_QUERY = gql`
   id
   email
-  created_at
-  is_verified
-  department_name
-  position_name
+  createdAt: created_at
+  isVerified: is_verified
+  departmentName: department_name
+  positionName: position_name
   profile {
     ${PROFILE_QUERY}
   }
@@ -129,11 +129,9 @@ const USER_QUERY = gql`
   department {
     ${DEPARTMENT_QUERY}
   }
-  department_name
   position {
     ${POSITION_QUERY}
   }
-  position_name
   role
 `;
 

@@ -1,44 +1,42 @@
-import React from 'react';
-import type { User } from 'cv-graphql';
+import ArrowForwardIosRounded from '@mui/icons-material/ArrowForwardIosRounded';
+import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import Avatar from '@mui/material/Avatar';
-import ArrowForwardIosRounded from '@mui/icons-material/ArrowForwardIosRounded';
-import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
-import { useNavigate } from '@tanstack/react-router';
-import { ActionsMenu } from '~/shared/ui/ActionsMenu.tsx';
+import React from 'react';
+import { ActionsMenu, IconButtonLink, MenuItemLink, UserAvatar, type User } from '~/shared';
 
 type PropsType = {
-  userData: User;
+  user: User;
   hiddenCell?: string;
   isProfile?: boolean;
 };
 
-export const UserRow = React.memo(({ userData, hiddenCell, isProfile }: PropsType) => {
-  const { profile, email, department_name, position_name } = { ...userData };
-  const navigate = useNavigate();
+export const UserRow = React.memo(({ user, hiddenCell, isProfile }: PropsType) => {
+  const { profile, email, departmentName, positionName } = user;
 
   const handleUpdate = () => {};
   const handleDelete = () => {};
+
   return (
     <TableRow className={'w-full'}>
       <TableCell>
-        <Avatar src={profile.avatar ?? undefined}>{profile.full_name?.[0] || email[0]}</Avatar>
+        <UserAvatar src={profile.avatar ?? undefined}>{profile.fullName?.[0] || email[0]}</UserAvatar>
       </TableCell>
-      <TableCell>{profile.first_name}</TableCell>
-      <TableCell className={hiddenCell}>{profile.last_name}</TableCell>
+      <TableCell>{profile.firstName}</TableCell>
+      <TableCell className={hiddenCell}>{profile.lastName}</TableCell>
       <TableCell className={hiddenCell}>{email}</TableCell>
-      <TableCell>{department_name}</TableCell>
-      <TableCell>{position_name}</TableCell>
+      <TableCell>{departmentName}</TableCell>
+      <TableCell>{positionName}</TableCell>
       <TableCell>
         {!isProfile ? (
-          <IconButton>
-            <ArrowForwardIosRounded onClick={() => navigate({ to: `/users/${profile.id}/profile` })} />
-          </IconButton>
+          <IconButtonLink to="/users/$userId/profile" params={{ userId: user.id }}>
+            <ArrowForwardIosRounded />
+          </IconButtonLink>
         ) : (
           <ActionsMenu>
-            <MenuItem onClick={() => navigate({ to: `/users/${profile.id}/profile` })}>Profile</MenuItem>
+            <MenuItemLink to="/users/$userId/profile" params={{ userId: user.id }}>
+              Profile
+            </MenuItemLink>
             <MenuItem onClick={handleUpdate}>Update user </MenuItem>
             <MenuItem onClick={handleDelete}>Delete user</MenuItem>
           </ActionsMenu>

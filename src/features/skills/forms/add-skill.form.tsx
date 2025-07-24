@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getRouteApi } from '@tanstack/react-router';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { masteryLevels } from '~/app';
 import { useCreateProfileSkill, useSkills, useUser } from '~/features';
@@ -19,6 +20,7 @@ type AddSkillFormProps = { onSuccess: () => void; onCancel: () => void };
 
 export const AddSkillForm: React.FC<AddSkillFormProps> = (props) => {
   const { onSuccess, onCancel } = props;
+  const { t } = useTranslation();
   const params = routeApi.useParams();
   const { skills } = useSkills();
   const { user } = useUser({ id: params.userId });
@@ -50,7 +52,7 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = (props) => {
           name="skillId"
           control={form.control}
           render={({ field }) => (
-            <Select label="Category" className="w-full" labelProps={labelProps} {...field}>
+            <Select label={t('Category')} className="w-full" labelProps={labelProps} {...field}>
               {filteredSkills.map((s) => (
                 <SelectItem key={s.id} value={s.id}>
                   {s.name}
@@ -64,10 +66,10 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = (props) => {
           name="masteryLevel"
           control={form.control}
           render={({ field }) => (
-            <Select label="Mastery Level" className="w-full" labelProps={labelProps} {...field}>
+            <Select label={t('Mastery Level')} className="w-full" labelProps={labelProps} {...field}>
               {masteryLevels.map((ml) => (
                 <SelectItem key={ml} value={ml}>
-                  {ml}
+                  {t(ml)}
                 </SelectItem>
               ))}
             </Select>
@@ -77,9 +79,9 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = (props) => {
 
       <div className="flex gap-2 justify-end">
         <Button variant="outlined" onClick={() => onCancel()}>
-          Cancel
+          {t('Cancel')}
         </Button>
-        <Button type="submit">Confirm</Button>
+        <Button type="submit">{t('Confirm')}</Button>
       </div>
     </form>
   );

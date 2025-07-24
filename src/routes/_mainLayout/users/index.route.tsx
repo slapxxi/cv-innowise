@@ -2,26 +2,21 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import i18n from '~/app/i18n.ts';
 import { UsersTable } from '~/entities';
-import { SearchField, Text, getUsers } from '~/shared';
+import { usersOptions, useUsers } from '~/features';
+import { SearchField, Text } from '~/shared';
 
 export const Route = createFileRoute('/_mainLayout/users/')({
   component: RouteComponent,
   head: () => ({ meta: [{ title: i18n.t('Employees') }] }),
-  loader: async ({ context }) => {
-    const getUsersResult = await getUsers({ accessToken: context.auth!.accessToken });
-
-    if (getUsersResult.ok) {
-      const { users } = getUsersResult.data;
-      return { users };
-    }
-
-    throw new Error('Handle this error!');
+  loader: ({ context }) => {
+    const { queryClient } = context;
+    queryClient.prefetchQuery(usersOptions({ accessToken: context.auth!.accessToken }));
   },
 });
 
 function RouteComponent() {
   const { t } = useTranslation();
-  const { users } = Route.useLoaderData();
+  const { users } = useUsers();
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

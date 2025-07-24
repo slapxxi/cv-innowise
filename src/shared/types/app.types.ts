@@ -1,34 +1,127 @@
-import type {
-  Mastery as BaseMastery,
-  Skill as CVSkill,
-  SkillCategory as CVSkillCategory,
-  SkillMastery as CVSkillMastery,
-  User as CVUser,
-  Profile as CVProfile,
-} from 'cv-graphql';
-import type { Prettify } from '~/shared';
+import type { Nullable } from './utility.types';
 
-export type Profile = Prettify<CVProfile>;
-
-export type User = Prettify<CVUser>;
-
-export type Skill = Prettify<CVSkill>;
-
-export type SkillMastery = Prettify<CVSkillMastery>;
-
-export type UserWithSkillsByCategories = Prettify<
-  User & {
-    skillsByCategories: Record<SkillCategory['name'], SkillMastery[]> | null;
-  }
->;
-
-export type SkillCategory = Prettify<CVSkillCategory>;
-
-export type Auth = {
-  user: User;
+export type Auth = Nullable<{
   accessToken: string;
-} | null;
+  user: User;
+}>;
 
-export type Mastery = Prettify<BaseMastery>;
+export type Proficiency = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2' | 'Native';
 
-export type MasteryLevel = `${Mastery}`;
+export type Mastery = 'Novice' | 'Advanced' | 'Competent' | 'Proficient' | 'Expert';
+
+export type User = {
+  id: string;
+  createdAt: string;
+  email: string;
+  isVerified: boolean;
+  profile: Profile;
+  cvs?: Nullable<Cv[]>;
+  department?: Nullable<Department>;
+  departmentName?: Nullable<string>;
+  position?: Nullable<Position>;
+  positionName?: Nullable<string>;
+  role: UserRole;
+};
+
+export type UserWithSkillsByCategories = User & {
+  skillsByCategories: Record<SkillCategory['name'], SkillMastery[]> | null;
+};
+
+export type UserRole = 'Employee' | 'Admin';
+
+export type Profile = {
+  id: string;
+  createdAt: string;
+  firstName?: Nullable<string>;
+  lastName?: Nullable<string>;
+  fullName?: Nullable<string>;
+  avatar?: Nullable<string>;
+  skills: SkillMastery[];
+  languages: LanguageProficiency[];
+};
+
+export type Cv = {
+  id: string;
+  createdAt: string;
+  name: string;
+  education?: Nullable<string>;
+  description: string;
+  user?: Nullable<User>;
+  projects?: Nullable<CvProject[]>;
+  skills: SkillMastery[];
+  languages: LanguageProficiency[];
+};
+
+export type Department = {
+  id: string;
+  createdAt: string;
+  name: string;
+};
+
+export type Language = {
+  id: string;
+  createdAt: string;
+  iso2: string;
+  name: string;
+  nativeName?: Nullable<string>;
+};
+
+export type Position = {
+  id: string;
+  createdAt: string;
+  name: string;
+};
+
+export type CvProject = {
+  id: string;
+  project: Project;
+  name: string;
+  internalName: string;
+  description: string;
+  domain: string;
+  startDate: string;
+  endDate?: Nullable<string>;
+  environment: string[];
+  roles: string[];
+  responsibilities: string[];
+};
+
+export interface SkillMastery {
+  name: string;
+  mastery: Mastery;
+  categoryId?: Nullable<string>;
+}
+
+export type LanguageProficiency = {
+  name: string;
+  proficiency: Proficiency;
+};
+
+export interface Project {
+  id: string;
+  createdAt: string;
+  name: string;
+  internalName: string;
+  domain: string;
+  startDate: string;
+  endDate?: Nullable<string>;
+  description: string;
+  environment: string[];
+}
+
+export interface Skill {
+  id: string;
+  createdAt: string;
+  name: string;
+  category?: Nullable<SkillCategory>;
+  categoryName?: Nullable<string>;
+  categoryParentName?: Nullable<string>;
+}
+
+export interface SkillCategory {
+  id: string;
+  name: string;
+  order: number;
+  parent?: Nullable<SkillCategory>;
+  children: SkillCategory[];
+}

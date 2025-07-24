@@ -1,5 +1,4 @@
-import type { AuthResult, UpdateTokenResult, User } from 'cv-graphql';
-import type { Prettify, Result } from '~/shared';
+import type { Result, User } from '~/shared';
 
 export type HttpError = {
   message: string;
@@ -9,8 +8,15 @@ export type HttpError = {
 
 export type HttpResult<TData, TError> = Result<TData, TError>;
 
-export type AuthResponse = Prettify<AuthResult>;
+export type UpdateTokenResponse = {
+  accessToken: string;
+  refreshToken: string;
+};
 
-export type UpdateTokenResponse = Prettify<UpdateTokenResult>;
+export type AuthResponse = {
+  accessToken: string;
+  refreshToken: string;
+  user: User;
+};
 
-export type GetUsersResponse = Prettify<{ users: User[] }>;
+export type GetUsersResponse = { users: User[] };

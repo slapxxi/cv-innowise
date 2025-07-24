@@ -5,11 +5,11 @@ type Direction = 'asc' | 'desc';
 type SortableKeys = 'first_name' | 'last_name' | 'email' | 'department_name' | 'position_name';
 
 const accessorMap = {
-  first_name: (u: User) => u.profile?.first_name,
-  last_name: (u: User) => u.profile?.last_name,
+  first_name: (u: User) => u.profile?.firstName,
+  last_name: (u: User) => u.profile?.lastName,
   email: (u: User) => u.email,
-  department_name: (u: User) => u.department_name,
-  position_name: (u: User) => u.position_name,
+  department_name: (u: User) => u.departmentName,
+  position_name: (u: User) => u.positionName,
 };
 
 export function useSortedUsers(users: User[], orderBy: string, direction: Direction) {

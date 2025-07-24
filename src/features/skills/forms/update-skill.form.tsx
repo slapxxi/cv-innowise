@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getRouteApi } from '@tanstack/react-router';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { masteryLevels } from '~/app';
 import { useUpdateProfileSkill } from '~/features/auth';
@@ -18,6 +19,7 @@ type AddSkillFormProps = { skill: SkillMastery; onSuccess: () => void; onCancel:
 
 export const UpdateSkillForm: React.FC<AddSkillFormProps> = (props) => {
   const { skill, onSuccess, onCancel } = props;
+  const { t } = useTranslation();
   const params = routeApi.useParams();
   const form = useForm<UpdateSkillForm>({
     resolver: zodResolver(updateSkillSchema),
@@ -42,7 +44,7 @@ export const UpdateSkillForm: React.FC<AddSkillFormProps> = (props) => {
   return (
     <form className="flex flex-col gap-8 mt-4" onSubmit={form.handleSubmit(handleSubmit)}>
       <div className="flex flex-col gap-4">
-        <Select label="Category" className="w-full" labelProps={labelProps} value={skill.name} disabled>
+        <Select label={t('Category')} className="w-full" labelProps={labelProps} value={skill.name} disabled>
           <SelectItem value={skill.name}>{skill.name}</SelectItem>
         </Select>
 
@@ -50,10 +52,10 @@ export const UpdateSkillForm: React.FC<AddSkillFormProps> = (props) => {
           name="masteryLevel"
           control={form.control}
           render={({ field }) => (
-            <Select label="Mastery Level" className="w-full" labelProps={labelProps} {...field}>
+            <Select label={t('Mastery Level')} className="w-full" labelProps={labelProps} {...field}>
               {masteryLevels.map((ml) => (
                 <SelectItem key={ml} value={ml}>
-                  {ml}
+                  {t(ml)}
                 </SelectItem>
               ))}
             </Select>
@@ -63,9 +65,9 @@ export const UpdateSkillForm: React.FC<AddSkillFormProps> = (props) => {
 
       <div className="flex gap-2 justify-end">
         <Button variant="outlined" onClick={() => onCancel()}>
-          Cancel
+          {t('Cancel')}
         </Button>
-        <Button type="submit">Confirm</Button>
+        <Button type="submit">{t('Confirm')}</Button>
       </div>
     </form>
   );

@@ -1,12 +1,16 @@
-import { Outlet, useMatches } from '@tanstack/react-router';
-import { Breadcrumbs, TabLink, Tabs } from '~/shared';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Outlet, useMatches } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
+import i18n from '~/app/i18n';
 import { getUserQueryOptions } from '~/features';
+import { Breadcrumbs, TabLink, Tabs } from '~/shared';
+
+// todo: delete this little shit :-)
+i18n.changeLanguage('ru');
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout')({
   component: RouteComponent,
   beforeLoad: () => {
-    return { breadcrumb: { title: 'Employees', pathname: '/users' } };
+    return { breadcrumb: { title: i18n.t('Employees'), pathname: '/users' } };
   },
   loader: ({ params, context }) => {
     const { auth, queryClient } = context;
@@ -15,6 +19,7 @@ export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout')({
 });
 
 function RouteComponent() {
+  const { t } = useTranslation();
   const params = Route.useParams();
   const matches = useMatches();
 
@@ -28,19 +33,19 @@ function RouteComponent() {
             to="/users/$userId/profile"
             params={{ userId: params.userId }}
             value="/users/$userId/profile"
-            label="Profile"
+            label={t('Profile')}
           />
           <TabLink
             to="/users/$userId/skills"
             params={{ userId: params.userId }}
             value="/users/$userId/skills"
-            label="Skills"
+            label={t('Skills')}
           />
           <TabLink
             to="/users/$userId/languages"
             params={{ userId: params.userId }}
             value="/users/$userId/languages"
-            label="Languages"
+            label={t('Languages')}
           />
         </Tabs>
       </header>

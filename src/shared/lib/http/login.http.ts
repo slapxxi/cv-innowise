@@ -7,8 +7,8 @@ import { API_URL } from './const';
 const LOGIN_QUERY = gql`
   query Login($auth: AuthInput!) {
     login(auth: $auth) {
-      access_token 
-      refresh_token
+      accessToken: access_token 
+      refreshToken: refresh_token
       user {
         ${Queries.USER_QUERY}
       }
@@ -42,8 +42,8 @@ export async function login(params: LoginParams): Promise<LoginResult> {
       document: LOGIN_QUERY,
       variables: { auth: params },
     });
-    const { access_token, refresh_token, user } = response.login;
-    return { ok: true, data: { accessToken: access_token, refreshToken: refresh_token, user } };
+    const { accessToken, refreshToken, user } = response.login;
+    return { ok: true, data: { accessToken, refreshToken, user } };
   } catch (e) {
     if (e instanceof ClientError) {
       const parseResult = errorsSchema.safeParse(e.response);

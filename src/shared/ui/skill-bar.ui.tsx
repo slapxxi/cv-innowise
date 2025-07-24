@@ -1,7 +1,7 @@
-import { cn, type Mastery, type MasteryLevel } from '~/shared';
+import { cn, type Mastery } from '~/shared';
 
 type MasteryMap<T> = {
-  [key in Lowercase<MasteryLevel>]: T;
+  [key in Lowercase<Mastery>]: T;
 };
 
 type Color = {
@@ -44,7 +44,7 @@ type UserSkillProps = { mastery: Mastery; color?: Color; className?: string };
 
 export const SkillBar: React.FC<UserSkillProps> = (props) => {
   const { mastery, color, className } = props;
-  const nMastery = mastery.toLowerCase() as Lowercase<MasteryLevel>;
+  const nMastery = mastery.toLowerCase() as Lowercase<Mastery>;
   const t = skillMap[nMastery] ?? 0;
   const finalColor = color || (colorMap[nMastery] ?? colorMap.novice);
 

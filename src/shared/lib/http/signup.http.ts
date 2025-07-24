@@ -7,8 +7,8 @@ import { API_URL } from './const';
 const SIGNUP_QUERY = gql`
   mutation Signup($auth: AuthInput!) {
     signup(auth: $auth) {
-      access_token
-      refresh_token
+      accessToken: access_token
+      refreshToken: refresh_token
       user {
         ${Queries.USER_QUERY}
       }
@@ -40,8 +40,8 @@ export async function signup(params: SignupParams): Promise<SignupResult> {
       document: SIGNUP_QUERY,
       variables: { auth: params },
     });
-    const { access_token, refresh_token, user } = response.signup;
-    return { ok: true, data: { accessToken: access_token, refreshToken: refresh_token, user } };
+    const { accessToken, refreshToken, user } = response.signup;
+    return { ok: true, data: { accessToken, refreshToken, user } };
   } catch (e) {
     if (e instanceof ClientError) {
       const parseResult = errorsSchema.safeParse(e.response);
