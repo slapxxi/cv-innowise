@@ -14,11 +14,11 @@ const createLanguageSchema = z.object({
   proficiency: z.enum(proficiencyLevels),
 });
 
-type CreateSkillForm = z.infer<typeof createLanguageSchema>;
+type AddLanguageForm = z.infer<typeof createLanguageSchema>;
 
-type AddSkillFormProps = { onSuccess: () => void; onCancel: () => void };
+type AddLanguageFormProps = { onSuccess: () => void; onCancel: () => void };
 
-export const AddLanguageForm: React.FC<AddSkillFormProps> = (props) => {
+export const AddLanguageForm: React.FC<AddLanguageFormProps> = (props) => {
   const { onSuccess, onCancel } = props;
   const { t } = useTranslation();
   const params = routeApi.useParams();
@@ -29,7 +29,7 @@ export const AddLanguageForm: React.FC<AddSkillFormProps> = (props) => {
   });
 
   const filteredLanguages = languages.filter((s) => !user.profile.languages.find((sm) => sm.name === s.name));
-  const form = useForm<CreateSkillForm>({
+  const form = useForm<AddLanguageForm>({
     resolver: zodResolver(createLanguageSchema),
     defaultValues: {
       languageId: filteredLanguages[0]?.id,
@@ -41,7 +41,7 @@ export const AddLanguageForm: React.FC<AddSkillFormProps> = (props) => {
     className: 'bg-bg dark:bg-neutral-600',
   };
 
-  const handleSubmit: SubmitHandler<CreateSkillForm> = async (data) => {
+  const handleSubmit: SubmitHandler<AddLanguageForm> = async (data) => {
     const language = languages.find((s) => s.id === data.languageId)!;
     createProfileLanguage({
       userId: params.userId,
