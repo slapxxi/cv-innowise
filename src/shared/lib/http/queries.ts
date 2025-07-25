@@ -74,6 +74,14 @@ const POSITION_QUERY = gql`
 `;
 
 const LANGUAGE_QUERY = gql`
+  id
+  createdAt: created_at
+  name
+  nativeName: native_name
+  iso2
+`;
+
+const LANGUAGE_PROFICIENCY_QUERY = gql`
   name
   proficiency
 `;
@@ -89,7 +97,7 @@ const PROFILE_QUERY = gql`
     ${SKILL_MASTERY_QUERY}
   }
   languages {
-    ${LANGUAGE_QUERY}
+    ${LANGUAGE_PROFICIENCY_QUERY}
   }
 `;
 
