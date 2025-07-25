@@ -1,9 +1,12 @@
-import ArrowForwardIosRounded from '@mui/icons-material/ArrowForwardIosRounded';
-import MenuItem from '@mui/material/MenuItem';
+import React, { useState } from 'react';
+import { type User } from '~/shared';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import React from 'react';
-import { ActionsMenu, IconButtonLink, MenuItemLink, UserAvatar, type User } from '~/shared';
+import Avatar from '@mui/material/Avatar';
+import ArrowForwardIosRounded from '@mui/icons-material/ArrowForwardIosRounded';
+import MenuItem from '@mui/material/MenuItem';
+import { UpdateUserDialog } from '~/entities';
+import { ActionsMenu, IconButtonLink, MenuItemLink } from '~/shared';
 
 type PropsType = {
   user: User;
@@ -13,14 +16,21 @@ type PropsType = {
 
 export const UserRow = React.memo(({ user, hiddenCell, isProfile }: PropsType) => {
   const { profile, email, departmentName, positionName } = user;
+  const [openDialog, setOpenDialog] = useState(false);
 
-  const handleUpdate = () => {};
+  const handleUpdate = () => {
+    setOpenDialog(true);
+  };
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
   const handleDelete = () => {};
-
+  if (isProfile && openDialog)
+    return <UpdateUserDialog dialogIsOpen={openDialog} onClose={handleCloseDialog} user={user} />;
   return (
     <TableRow className={'w-full'}>
       <TableCell>
-        <UserAvatar src={profile.avatar ?? undefined}>{profile.fullName?.[0] || email[0]}</UserAvatar>
+        <Avatar src={profile.avatar ?? undefined}>{profile.fullName?.[0] || email[0]}</Avatar>
       </TableCell>
       <TableCell>{profile.firstName}</TableCell>
       <TableCell className={hiddenCell}>{profile.lastName}</TableCell>
