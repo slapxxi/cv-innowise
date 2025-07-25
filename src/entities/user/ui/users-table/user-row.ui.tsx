@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ActionsMenu, IconButtonLink, MenuItemLink, type User } from '~/shared';
+import React, { useState, useRef } from 'react';
+import { ActionsMenu, IconButtonLink, MenuItemLink, type User, type ActionsMenuRef } from '~/shared';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Avatar from '@mui/material/Avatar';
@@ -17,12 +17,14 @@ type PropsType = {
 export const UserRow = React.memo(({ user, hiddenCell, isProfile }: PropsType) => {
   const { profile, email, departmentName, positionName } = user;
   const [openDialog, setOpenDialog] = useState(false);
+  const actionsMenuRef = useRef<ActionsMenuRef>(null);
 
   const handleUpdate = () => {
     setOpenDialog(true);
   };
   const handleCloseDialog = () => {
     setOpenDialog(false);
+    actionsMenuRef.current?.close();
   };
   const handleDelete = () => {};
   return (
@@ -45,7 +47,7 @@ export const UserRow = React.memo(({ user, hiddenCell, isProfile }: PropsType) =
               <ArrowForwardIosRounded />
             </IconButtonLink>
           ) : (
-            <ActionsMenu>
+            <ActionsMenu ref={actionsMenuRef}>
               <MenuItemLink to="/users/$userId/profile" params={{ userId: user.id }}>
                 Profile
               </MenuItemLink>
