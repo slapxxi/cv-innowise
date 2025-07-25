@@ -64,7 +64,7 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
           setOrderDirection={setOrderDirection}
         />
         <TableBody>
-          {currentUser && <UserRow isProfile={true} user={currentUser} />}
+          {currentUser && <UserRow hiddenCell={cellHidden} isProfile={true} user={currentUser} />}
           {sortedUsers.map((user) => (
             <UserRow hiddenCell={cellHidden} key={user.id} user={user} />
           ))}
