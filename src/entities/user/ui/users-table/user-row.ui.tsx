@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { type User } from '~/shared';
+import { ActionsMenu, IconButtonLink, MenuItemLink, type User } from '~/shared';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Avatar from '@mui/material/Avatar';
 import ArrowForwardIosRounded from '@mui/icons-material/ArrowForwardIosRounded';
 import MenuItem from '@mui/material/MenuItem';
 import { UpdateUserDialog } from '~/entities';
-import { ActionsMenu, IconButtonLink, MenuItemLink } from '~/shared';
+import { cn } from '~/shared';
 
 type PropsType = {
   user: User;
@@ -25,33 +25,36 @@ export const UserRow = React.memo(({ user, hiddenCell, isProfile }: PropsType) =
     setOpenDialog(false);
   };
   const handleDelete = () => {};
-  if (isProfile && openDialog)
-    return <UpdateUserDialog dialogIsOpen={openDialog} onClose={handleCloseDialog} user={user} />;
   return (
-    <TableRow className={'w-full'}>
-      <TableCell>
-        <Avatar src={profile.avatar ?? undefined}>{profile.fullName?.[0] || email[0]}</Avatar>
-      </TableCell>
-      <TableCell>{profile.firstName}</TableCell>
-      <TableCell className={hiddenCell}>{profile.lastName}</TableCell>
-      <TableCell className={hiddenCell}>{email}</TableCell>
-      <TableCell>{departmentName}</TableCell>
-      <TableCell>{positionName}</TableCell>
-      <TableCell>
-        {!isProfile ? (
-          <IconButtonLink to="/users/$userId/profile" params={{ userId: user.id }}>
-            <ArrowForwardIosRounded />
-          </IconButtonLink>
-        ) : (
-          <ActionsMenu>
-            <MenuItemLink to="/users/$userId/profile" params={{ userId: user.id }}>
-              Profile
-            </MenuItemLink>
-            <MenuItem onClick={handleUpdate}>Update user </MenuItem>
-            <MenuItem onClick={handleDelete}>Delete user</MenuItem>
-          </ActionsMenu>
-        )}
-      </TableCell>
-    </TableRow>
+    <>
+      {user && isProfile && openDialog && (
+        <UpdateUserDialog dialogIsOpen={openDialog} onClose={handleCloseDialog} user={user} />
+      )}
+      <TableRow className={'w-full'}>
+        <TableCell>
+          <Avatar src={profile.avatar ?? undefined}>{profile.fullName?.[0] || email[0]}</Avatar>
+        </TableCell>
+        <TableCell>{profile.firstName}</TableCell>
+        <TableCell className={hiddenCell}>{profile.lastName}</TableCell>
+        <TableCell className={cn(hiddenCell, 'break-words')}>{email}</TableCell>
+        <TableCell>{departmentName}</TableCell>
+        <TableCell>{positionName}</TableCell>
+        <TableCell>
+          {!isProfile ? (
+            <IconButtonLink to="/users/$userId/profile" params={{ userId: user.id }}>
+              <ArrowForwardIosRounded />
+            </IconButtonLink>
+          ) : (
+            <ActionsMenu>
+              <MenuItemLink to="/users/$userId/profile" params={{ userId: user.id }}>
+                Profile
+              </MenuItemLink>
+              <MenuItem onClick={handleUpdate}>Update user </MenuItem>
+              <MenuItem onClick={handleDelete}>Delete user</MenuItem>
+            </ActionsMenu>
+          )}
+        </TableCell>
+      </TableRow>
+    </>
   );
 });
