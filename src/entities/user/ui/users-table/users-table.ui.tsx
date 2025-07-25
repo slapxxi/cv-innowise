@@ -19,18 +19,16 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
   const [orderBy, setOrderBy] = useState<string>('');
   const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc');
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
 
   const currentUser = users.find((u) => u.id == currentProfileId);
   const otherUsers = users.filter((u) => u.id !== currentProfileId);
-
+  const sortedUsers = useSortedUsers(otherUsers, orderBy, orderDirection);
   const paginatedUsers = useMemo(() => {
     const start = currentPage * rowsPerPage;
-    return otherUsers.slice(start, start + rowsPerPage);
+    return sortedUsers.slice(start, start + rowsPerPage);
   }, [otherUsers, currentPage, rowsPerPage]);
-
-  const sortedUsers = useSortedUsers(paginatedUsers, orderBy, orderDirection);
 
   const cellHidden = 'hidden md:table-cell';
   const itemsCount = users.length;
@@ -55,7 +53,7 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
         onRowsPerPageChange={handleChangeRowsPerPage}
         component={'div'}
       />
-      <Table className="mt-2">
+      <Table className="mt-2 table-fixed w-full">
         <UsersTableHead
           cellHidden={cellHidden}
           orderBy={orderBy}
@@ -64,8 +62,8 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
           setOrderDirection={setOrderDirection}
         />
         <TableBody>
-          {currentUser && <UserRow isProfile={true} user={currentUser} />}
-          {sortedUsers.map((user) => (
+          {currentUser && <UserRow hiddenCell={cellHidden} isProfile={true} user={currentUser} />}
+          {paginatedUsers.map((user) => (
             <UserRow hiddenCell={cellHidden} key={user.id} user={user} />
           ))}
         </TableBody>

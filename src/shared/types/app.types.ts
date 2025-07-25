@@ -1,4 +1,4 @@
-import type { Nullable } from './utility.types';
+import type { Nullable } from '~/shared';
 
 export type Auth = Nullable<{
   accessToken: string;

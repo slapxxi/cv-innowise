@@ -16,13 +16,13 @@ type PropsType = {
 export const UsersTableHead = ({ cellHidden, orderBy, setOrderBy, orderDirection, setOrderDirection }: PropsType) => {
   const { t } = useTranslation();
   const tableHeadData = [
-    { key: '', title: '', sortable: false },
+    { key: 'avatar', title: '', sortable: false },
     { key: 'first_name', title: t('First Name'), sortable: true },
     { key: 'last_name', title: t('Last Name'), sortable: true },
     { key: 'email', title: t('Email'), sortable: true },
     { key: 'department_name', title: t('Department'), sortable: true },
     { key: 'position_name', title: t('Position'), sortable: true },
-    { key: '', title: '', sortable: false },
+    { key: 'option', title: '', sortable: false },
   ];
 
   const handleSortClick = (key: string) => {
