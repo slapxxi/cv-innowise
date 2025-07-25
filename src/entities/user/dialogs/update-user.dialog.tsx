@@ -12,7 +12,7 @@ import { useAuth } from '~/app';
 import { CircularProgress, Box } from '@mui/material';
 import { type User } from '~/shared';
 
-type PropsType = {
+type UpdateUserDialogPropsType = {
   dialogIsOpen: boolean;
   onClose: () => void;
   user: User;
@@ -30,7 +30,7 @@ type FormType = {
   role?: string;
 };
 
-const DialogForm = ({ user, onClose }: { user: User; onClose: () => void }) => {
+const DialogFormSuspenced = ({ user, onClose }: { user: User; onClose: () => void }) => {
   const auth = useAuth();
   const updateUserMutation = useUpdateUser();
   const updateProfileMutation = useUpdateProfile();
@@ -157,7 +157,7 @@ const DialogForm = ({ user, onClose }: { user: User; onClose: () => void }) => {
   );
 };
 
-export const UpdateUserDialog = ({ dialogIsOpen, onClose, user }: PropsType) => {
+export const UpdateUserDialog = ({ dialogIsOpen, onClose, user }: UpdateUserDialogPropsType) => {
   return (
     <Dialog open={dialogIsOpen} onClose={onClose} fullWidth maxWidth="sm">
       <Suspense
@@ -167,7 +167,7 @@ export const UpdateUserDialog = ({ dialogIsOpen, onClose, user }: PropsType) => 
           </Box>
         }
       >
-        <DialogForm user={user} onClose={onClose} />
+        <DialogFormSuspenced user={user} onClose={onClose} />
       </Suspense>
     </Dialog>
   );
