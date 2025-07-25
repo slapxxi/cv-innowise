@@ -31,7 +31,7 @@ function RouteComponent() {
   const { t } = useTranslation();
   const auth = useAuth();
   const { user, invalidateUser } = useUser({ id: params.userId });
-  const multipleForm = useForm({
+  const deleteMultipleForm = useForm({
     resolver: zodResolver(deleteSkillsSchema),
   });
   const { state, update, del, add, cancel } = useEditingState<{ skill: SkillMastery }>();
@@ -41,9 +41,9 @@ function RouteComponent() {
       invalidateUser();
     },
   });
-  const isOwner = user.id === auth!.user.id;
 
-  const selectedSkills = multipleForm.watch('skills');
+  const isOwner = user.id === auth!.user.id;
+  const selectedSkills = deleteMultipleForm.watch('skills');
 
   function handleUpdate(skill: SkillMastery) {
     update({ skill });
@@ -94,7 +94,7 @@ function RouteComponent() {
         )}
       </Modal>
 
-      <form className="relative mx-auto xl:max-w-4xl" onSubmit={multipleForm.handleSubmit(handleMultipleDelete)}>
+      <form className="relative mx-auto xl:max-w-4xl" onSubmit={deleteMultipleForm.handleSubmit(handleMultipleDelete)}>
         {user.skillsByCategories &&
           Object.entries(user.skillsByCategories)
             .sort()
@@ -116,7 +116,7 @@ function RouteComponent() {
                         </label>
 
                         {state.status === 'deleting' ? (
-                          <Checkbox id={`skill-${s.name}`} value={s.name} {...multipleForm.register('skills')} />
+                          <Checkbox id={`skill-${s.name}`} value={s.name} {...deleteMultipleForm.register('skills')} />
                         ) : (
                           isOwner && (
                             <IconButton

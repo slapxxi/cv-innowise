@@ -3,52 +3,56 @@ import { getRouteApi } from '@tanstack/react-router';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { masteryLevels } from '~/app';
-import { useCreateProfileSkill, useSkills, useUser } from '~/features';
+import { proficiencyLevels } from '~/app';
+import { useCreateProfileLanguage, useLanguages, useUser } from '~/features';
 import { Button, Select, SelectItem } from '~/shared';
 
-const routeApi = getRouteApi('/_mainLayout/users/$userId/_userLayout/skills');
+const routeApi = getRouteApi('/_mainLayout/users/$userId/_userLayout/languages');
 
-const createSkillSchema = z.object({
-  skillId: z.string().trim().nonempty(),
-  masteryLevel: z.enum(masteryLevels),
+const createLanguageSchema = z.object({
+  languageId: z.string().trim().nonempty(),
+  proficiency: z.enum(proficiencyLevels),
 });
 
-type CreateSkillForm = z.infer<typeof createSkillSchema>;
+type CreateSkillForm = z.infer<typeof createLanguageSchema>;
 
 type AddSkillFormProps = { onSuccess: () => void; onCancel: () => void };
 
-export const AddSkillForm: React.FC<AddSkillFormProps> = (props) => {
+export const AddLanguageForm: React.FC<AddSkillFormProps> = (props) => {
   const { onSuccess, onCancel } = props;
   const { t } = useTranslation();
   const params = routeApi.useParams();
-  const { skills } = useSkills();
+  const { languages } = useLanguages();
   const { user } = useUser({ id: params.userId });
-  const { createProfileSkill } = useCreateProfileSkill({
+  const { createProfileLanguage } = useCreateProfileLanguage({
     onSuccess,
   });
-  const filteredSkills = skills.filter((s) => !user.profile.skills.find((sm) => sm.name === s.name));
+
+  const filteredLanguages = languages.filter((s) => !user.profile.languages.find((sm) => sm.name === s.name));
   const form = useForm<CreateSkillForm>({
-    resolver: zodResolver(createSkillSchema),
+    resolver: zodResolver(createLanguageSchema),
     defaultValues: {
-      skillId: filteredSkills[0]?.id,
-      masteryLevel: masteryLevels[0],
+      languageId: filteredLanguages[0]?.id,
+      proficiency: proficiencyLevels[0],
     },
   });
+
   const labelProps = {
     className: 'bg-bg dark:bg-neutral-600',
   };
 
   const handleSubmit: SubmitHandler<CreateSkillForm> = async (data) => {
-    const skill = skills.find((s) => s.id === data.skillId)!;
-    const categoryId = skill?.category?.id;
-    createProfileSkill({ skill: { userId: params.userId, name: skill.name, categoryId, mastery: data.masteryLevel } });
+    const language = languages.find((s) => s.id === data.languageId)!;
+    createProfileLanguage({
+      userId: params.userId,
+      language: { name: language.name, proficiency: data.proficiency },
+    });
   };
 
-  if (filteredSkills.length === 0) {
+  if (filteredLanguages.length === 0) {
     return (
       <div className="flex flex-col gap-4 mt-4">
-        <p>{t('You have already added all skills')}</p>
+        <p>{t('You have already added all languages')}</p>
         <Button onClick={onCancel}>{t('Cancel')}</Button>
       </div>
     );
@@ -58,13 +62,13 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = (props) => {
     <form className="flex flex-col gap-8 mt-4" onSubmit={form.handleSubmit(handleSubmit)}>
       <div className="flex flex-col gap-4">
         <Controller
-          name="skillId"
+          name="languageId"
           control={form.control}
           render={({ field }) => (
-            <Select label={t('Category')} className="w-full" labelProps={labelProps} {...field}>
-              {filteredSkills.map((s) => (
+            <Select label={t('Language')} className="w-full" labelProps={labelProps} {...field}>
+              {filteredLanguages.map((s) => (
                 <SelectItem key={s.id} value={s.id}>
-                  {s.name}
+                  {t(s.name)}
                 </SelectItem>
               ))}
             </Select>
@@ -72,13 +76,13 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = (props) => {
         />
 
         <Controller
-          name="masteryLevel"
+          name="proficiency"
           control={form.control}
           render={({ field }) => (
-            <Select label={t('Mastery Level')} className="w-full" labelProps={labelProps} {...field}>
-              {masteryLevels.map((ml) => (
-                <SelectItem key={ml} value={ml}>
-                  {t(ml)}
+            <Select label={t('Language proficiency')} className="w-full" labelProps={labelProps} {...field}>
+              {proficiencyLevels.map((pl) => (
+                <SelectItem key={pl} value={pl}>
+                  {t(pl)}
                 </SelectItem>
               ))}
             </Select>
