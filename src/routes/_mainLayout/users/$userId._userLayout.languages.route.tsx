@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { useAuth } from '~/app';
 import i18n from '~/app/i18n';
-import { languagesOptions, useUser, AddLanguageForm } from '~/features';
+import { languagesOptions, useUser, AddLanguageForm, useDeleteProfileLanguages } from '~/features';
 import { UpdateLanguageForm } from '~/features/languages/forms/update-language.form';
 import {
   Button,
@@ -19,9 +19,6 @@ import {
   UserLanguageProficiency,
   type LanguageProficiency,
 } from '~/shared';
-
-// todo: delete this
-i18n.changeLanguage('ru');
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/languages')({
   component: RouteComponent,
@@ -47,6 +44,12 @@ function RouteComponent() {
   const deleteMultipleForm = useForm({
     resolver: zodResolver(deleteLanguagesSchema),
   });
+  const { deleteProfileLanguages } = useDeleteProfileLanguages({
+    onSuccess: () => {
+      handleCancel();
+      invalidateUser();
+    },
+  });
 
   const isOwner = user.id === auth!.user.id;
   const selectedLanguages = deleteMultipleForm.watch('languages');
@@ -55,13 +58,18 @@ function RouteComponent() {
     update({ language: lp });
   }
 
-  function handleDelete(_lp: LanguageProficiency) {
-    // todo: delete
+  function handleDelete(lp: LanguageProficiency) {
+    deleteProfileLanguages({
+      userId: params.userId,
+      languageNames: [lp.name],
+    });
   }
 
   const handleDeleteMultiple: SubmitHandler<z.infer<typeof deleteLanguagesSchema>> = (data) => {
-    // todo: delete mult
-    console.log(data);
+    deleteProfileLanguages({
+      userId: params.userId,
+      languageNames: data.languages,
+    });
   };
 
   function handleCancel() {

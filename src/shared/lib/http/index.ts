@@ -13,5 +13,6 @@ export * from './update-token.http';
 export * from './get-languages.http';
 export * from './create-profile-language.http';
 export * from './update-profile-language.http';
+export * from './delete-profile-languages.http';
 
 export * from './graphql.http';
