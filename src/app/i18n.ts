@@ -46,6 +46,7 @@ const resources = {
       'Add languages': 'Add Languages',
       'Remove languages': 'Remove Languages',
       'Not specified': 'Not Specified',
+      'No category': 'No Category',
     },
   },
   ru: {
@@ -110,6 +111,7 @@ const resources = {
       'Add language': 'Добавить язык',
       'Remove languages': 'Удалить языки',
       'Not specified': 'Не указано',
+      'No category': 'Нет категории',
       // etc...
     },
   },

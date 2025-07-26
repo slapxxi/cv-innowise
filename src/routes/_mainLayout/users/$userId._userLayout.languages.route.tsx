@@ -77,7 +77,7 @@ function RouteComponent() {
   }
 
   return (
-    <div>
+    <div className="px-6 py-4">
       <PageTitle>Languages</PageTitle>
 
       <Modal open={state.status === 'adding'} title={t('Add Skill')} onClose={handleCancel}>
