@@ -8,6 +8,7 @@ import {
   TableRow,
   TableSortLabel,
 } from '@mui/material';
+import { cn } from '../utils';
 
 export { TableCell } from '@mui/material';
 
@@ -28,7 +29,8 @@ type TableProps<T extends { id: string }> = {
   onChangeSort: (field: TableField) => void;
   onChangePage: (page: number) => void;
   onChangeRowsPerPage: (limit: number) => void;
-};
+  fixedHeight?: boolean;
+} & Omit<React.ComponentProps<typeof BaseTable>, 'children'>;
 
 export const Table = <T extends { id: string }>(props: TableProps<T>) => {
   const {
@@ -43,6 +45,8 @@ export const Table = <T extends { id: string }>(props: TableProps<T>) => {
     onChangePage,
     onChangeRowsPerPage,
     children,
+    fixedHeight = false,
+    ...rest
   } = props;
 
   function handleChangeSort(item: TableField) {
@@ -63,8 +67,8 @@ export const Table = <T extends { id: string }>(props: TableProps<T>) => {
 
   return (
     <>
-      <TableContainer>
-        <BaseTable>
+      <TableContainer className={cn(fixedHeight && 'max-h-[calc(100vh-180px)]')}>
+        <BaseTable stickyHeader {...rest}>
           <TableHead>
             <TableRow>
               {headFields.map((field) => (

@@ -55,6 +55,9 @@ function createCompareFn(sort: (typeof usersSortingFields)[number], order: 'asc'
     const valB = getValue(b);
 
     if (typeof valA === 'string' && typeof valB === 'string') {
+      if (valA === '') return isAsc ? 1 : -1;
+      if (valB === '') return isAsc ? -1 : 1;
+
       const comparison = valA.localeCompare(valB);
       return isAsc ? comparison : -comparison;
     }
@@ -72,7 +75,7 @@ type UsersTableProps = { q: string; sort: (typeof usersSortingFields)[number] } 
 >;
 
 export const UsersTable: React.FC<UsersTableProps> = (props) => {
-  const { sort, page, limit, order, q, onChangeSort, onChangePage, onChangeRowsPerPage } = props;
+  const { sort, page, limit, order, q, onChangeSort, onChangePage, onChangeRowsPerPage, ...rest } = props;
   const { t } = useTranslation();
   const { users } = useUsers();
   const auth = useAuth();
@@ -80,9 +83,9 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const searchResults = fuzzysort.go(q, users, {
+    all: true,
     threshold: 0,
     keys: ['email', 'profile.firstName', 'profile.lastName', 'departmentName', 'positionName'],
-    all: true,
   });
 
   const searchedUsers = searchResults.map((result) => {
@@ -134,6 +137,7 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
       onChangePage={onChangePage}
       onChangeSort={onChangeSort}
       onChangeRowsPerPage={onChangeRowsPerPage}
+      {...rest}
     >
       {(user) => (
         <>

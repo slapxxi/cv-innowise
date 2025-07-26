@@ -64,7 +64,7 @@ function RouteComponent() {
 
   return (
     <section className="flex flex-col p-6 py-4">
-      <header className="flex flex-col gap-2">
+      <header className="flex flex-col gap-2 bg-bg sticky top-4 z-10">
         <PageTitle>{t('Employees')}</PageTitle>
 
         <form onSubmit={handleSearch} key={search.q}>
@@ -73,6 +73,7 @@ function RouteComponent() {
       </header>
 
       <UsersTable
+        fixedHeight
         onChangeSort={handleChangeSort}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
