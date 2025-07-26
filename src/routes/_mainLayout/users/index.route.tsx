@@ -12,7 +12,7 @@ const searchSchema = z.object({
   page: z.number().min(1).catch(1),
   limit: z.number().min(1).max(100).catch(10),
   sort: z.enum(usersSortingFields).catch('firstName'),
-  order: z.enum(['asc', 'desc']).catch('desc'),
+  order: z.enum(['asc', 'desc']).catch('asc'),
   q: z.string().trim().catch(''),
 });
 
@@ -64,7 +64,7 @@ function RouteComponent() {
 
   return (
     <section className="flex flex-col p-6 py-4">
-      <header className="flex flex-col gap-2 bg-bg sticky top-4 z-10">
+      <header className="flex flex-col gap-2 bg-bg sticky top-4 z-10 dark:bg-bg-dark">
         <PageTitle>{t('Employees')}</PageTitle>
 
         <form onSubmit={handleSearch} key={search.q}>

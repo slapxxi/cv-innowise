@@ -72,7 +72,13 @@ export const Table = <T extends { id: string }>(props: TableProps<T>) => {
           <TableHead>
             <TableRow>
               {headFields.map((field) => (
-                <TableCell key={field.id} align="left" sortDirection={order} onClick={() => handleChangeSort(field)}>
+                <TableCell
+                  key={field.id}
+                  align="left"
+                  sortDirection={order}
+                  onClick={() => handleChangeSort(field)}
+                  className="bg-transparent backdrop-blur bg-gradient-to-b from-bg to-bg/50 dark:from-bg-dark dark:to-bg-dark/70"
+                >
                   {field.title !== '' ? (
                     <TableSortLabel active={field.id === sort} direction={order}>
                       {field.title}
