@@ -20,3 +20,6 @@ export type SnakeToCamelCaseNested<T> = T extends object
       [K in keyof T as SnakeToCamelCase<K & string>]: SnakeToCamelCaseNested<T[K]>;
     }
   : T;
+
+// remove undefined type from union
+export type NonUndefined<T> = T extends undefined ? never : T;

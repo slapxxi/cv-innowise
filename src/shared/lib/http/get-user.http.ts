@@ -53,7 +53,7 @@ const groupByCategoriesSchema = z
       name: s.name,
       mastery: s.mastery as Mastery,
       categoryId: s.categoryId,
-      categoryName: data.skillCategories.find((c) => c.id === s.categoryId)?.name,
+      categoryName: data.skillCategories.find((c) => c.id === s.categoryId)?.name ?? 'No category',
     }));
     return groupBy(mapped, 'categoryName');
   });

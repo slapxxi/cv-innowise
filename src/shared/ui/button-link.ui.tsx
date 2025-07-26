@@ -1,5 +1,5 @@
 import { createLink, type LinkComponent } from '@tanstack/react-router';
-import { Button } from '~/shared';
+import { Button } from './button.ui';
 
 const CustomLink = createLink(Button);
 

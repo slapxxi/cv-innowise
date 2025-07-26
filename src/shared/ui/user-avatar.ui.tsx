@@ -5,6 +5,7 @@ type UserAvatarProps = { user?: User | null } & React.ComponentProps<typeof Avat
 
 export const UserAvatar: React.FC<UserAvatarProps> = (props) => {
   const { user, ...rest } = props;
+
   return (
     <Avatar src={user?.profile.avatar ?? undefined} {...rest}>
       {user?.email[0].toUpperCase() || 'U'}
