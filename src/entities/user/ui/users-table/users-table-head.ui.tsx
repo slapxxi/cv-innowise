@@ -13,6 +13,7 @@ type PropsType = {
   setOrderDirection: Dispatch<SetStateAction<'asc' | 'desc'>>;
   cellHidden?: string;
 };
+
 export const UsersTableHead = ({ cellHidden, orderBy, setOrderBy, orderDirection, setOrderDirection }: PropsType) => {
   const { t } = useTranslation();
   const tableHeadData = [

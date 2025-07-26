@@ -26,8 +26,6 @@ export const Modal: React.FC<ModalProps> = (props) => {
         </header>
 
         {children}
-
-        <footer></footer>
       </div>
     </BaseModal>
   );

@@ -1,0 +1,95 @@
+import {
+  Table as BaseTable,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TableSortLabel,
+} from '@mui/material';
+
+export { TableCell } from '@mui/material';
+
+export type TableField = {
+  id: string;
+  title: string;
+};
+
+type TableProps<T extends { id: string }> = {
+  data: T[];
+  headFields: TableField[];
+  sort: string;
+  order: 'asc' | 'desc';
+  page: number;
+  count: number;
+  limit: number;
+  children: (item: T) => React.ReactNode;
+  onChangeSort: (field: TableField) => void;
+  onChangePage: (page: number) => void;
+  onChangeRowsPerPage: (limit: number) => void;
+};
+
+export const Table = <T extends { id: string }>(props: TableProps<T>) => {
+  const {
+    data,
+    headFields,
+    order,
+    sort,
+    page,
+    limit,
+    count,
+    onChangeSort,
+    onChangePage,
+    onChangeRowsPerPage,
+    children,
+  } = props;
+
+  function handleChangeSort(item: TableField) {
+    onChangeSort(item);
+  }
+
+  function handleChangePage(_e: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, page: number) {
+    onChangePage(page);
+  }
+
+  function handleChangeRowsPerPage(event: React.ChangeEvent<HTMLInputElement>) {
+    const value = parseInt(event.target.value, 10);
+    onChangeRowsPerPage(value);
+  }
+
+  return (
+    <>
+      <TableContainer>
+        <BaseTable>
+          <TableHead>
+            <TableRow>
+              {headFields.map((field) => (
+                <TableCell key={field.id} align="left" sortDirection={order} onClick={() => handleChangeSort(field)}>
+                  <TableSortLabel active={field.id === sort} direction={order}>
+                    {field.title}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {data.map((item) => (
+              <TableRow key={item.id}>{children(item)}</TableRow>
+            ))}
+          </TableBody>
+        </BaseTable>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25, 50, 75, 100]}
+        component="div"
+        count={count}
+        rowsPerPage={limit}
+        page={page - 1}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </>
+  );
+};

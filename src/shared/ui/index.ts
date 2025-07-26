@@ -17,6 +17,7 @@ export * from './tab-link.ui';
 export * from './menu-item-link.ui';
 export * from './actions-menu';
 export * from './icon-button-link.ui';
+export * from './table.ui';
 
 export * from './page-title.ui';
 
