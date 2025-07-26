@@ -75,13 +75,14 @@ type UsersTableProps = { q: string; sort: (typeof usersSortingFields)[number] } 
 >;
 
 export const UsersTable: React.FC<UsersTableProps> = (props) => {
-  const { sort, page, limit, order, q, onChangeSort, onChangePage, onChangeRowsPerPage, ...rest } = props;
+  const { sort, page, limit, order, q, ...rest } = props;
   const { t } = useTranslation();
   const { users } = useUsers();
   const auth = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
+  // todo: memo
   const searchResults = fuzzysort.go(q, users, {
     all: true,
     threshold: 0,
@@ -130,13 +131,10 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
         { id: 'action', title: '' },
       ]}
       count={filteredUsers.length}
-      order={order}
-      sort={sort}
       page={page}
       limit={limit}
-      onChangePage={onChangePage}
-      onChangeSort={onChangeSort}
-      onChangeRowsPerPage={onChangeRowsPerPage}
+      sort={sort}
+      order={order}
       {...rest}
     >
       {(user) => (
