@@ -1,6 +1,7 @@
 import { ChevronRight as ChevronRightIcon, MoreVert as DotsIcon } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import { createFileRoute, Link } from '@tanstack/react-router';
+import fuzzysort from 'fuzzysort';
 import { throttle } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
@@ -8,6 +9,7 @@ import { useAuth } from '~/app';
 import i18n from '~/app/i18n.ts';
 import { usersOptions, useUsers } from '~/features';
 import {
+  IconButtonLink,
   PageTitle,
   SearchField,
   sliceCollection,
@@ -66,8 +68,8 @@ export const Route = createFileRoute('/_mainLayout/users/')({
   },
 });
 
-const process = throttle((nav, search, q) => {
-  nav({ search: { ...search, q } });
+const commitSearch = throttle((nav: ReturnType<typeof Route.useNavigate>, q: string) => {
+  nav({ search: (prev) => ({ ...prev, q, page: 1 }) });
 }, 500);
 
 function switchOrder(order: 'asc' | 'desc') {
@@ -81,6 +83,11 @@ function createCompareFn(sort: (typeof sortingFields)[number], order: 'asc' | 'd
   return (a: User, b: User) => {
     const valA = getValue(a);
     const valB = getValue(b);
+
+    if (typeof valA === 'string' && typeof valB === 'string') {
+      const comparison = valA.localeCompare(valB);
+      return isAsc ? comparison : -comparison;
+    }
 
     if (valA < valB) return isAsc ? -1 : 1;
     if (valA > valB) return isAsc ? 1 : -1;
@@ -96,11 +103,37 @@ function RouteComponent() {
   const nav = Route.useNavigate();
   const auth = useAuth();
 
-  const sortedUsers = [...users].sort(createCompareFn(search.sort, search.order));
+  const searchResults = fuzzysort.go(search.q, users, {
+    threshold: 0,
+    keys: ['email', 'profile.firstName', 'profile.lastName', 'departmentName', 'positionName'],
+    all: true,
+  });
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const s = e.currentTarget;
-    process(nav, search, s.value);
+  const searchedUsers = searchResults.map((result) => {
+    const [email, firstName, lastName, department, position] = result;
+
+    return {
+      ...result.obj,
+      highlights: {
+        email: email.highlight(),
+        firstName: firstName.highlight(),
+        lastName: lastName.highlight(),
+        departmentName: department.highlight(),
+        positionName: position.highlight(),
+      },
+    };
+  });
+
+  const sortedUsers = [...searchedUsers].sort(createCompareFn(search.sort, search.order));
+
+  const filteredUsers = sortedUsers;
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const q = fd.get('query');
+    commitSearch(nav, q as string);
+    e.preventDefault();
   };
 
   function handleChangeSort(item: TableField) {
@@ -127,12 +160,13 @@ function RouteComponent() {
       <header className="flex flex-col gap-2">
         <PageTitle>{t('Employees')}</PageTitle>
 
-        <form>
-          <SearchField placeholder={t('Search')} name="q" onChange={handleSearch} />
+        <form onSubmit={handleSearch} key={search.q}>
+          <SearchField placeholder={t('Search')} defaultValue={search.q} name="query" />
         </form>
       </header>
 
       <Table
+        data={sliceCollection(filteredUsers, { page: search.page, limit: search.limit })}
         headFields={[
           { id: 'avatar', title: '' },
           { id: 'firstName', title: t('First Name') },
@@ -142,8 +176,7 @@ function RouteComponent() {
           { id: 'position', title: t('Position') },
           { id: 'action', title: '' },
         ]}
-        data={sliceCollection(sortedUsers, { page: search.page, limit: search.limit })}
-        count={users.length}
+        count={filteredUsers.length}
         order={search.order}
         sort={search.sort}
         page={search.page}
@@ -156,26 +189,44 @@ function RouteComponent() {
           <>
             <TableCell>
               <Link to="/users/$userId/profile" params={{ userId: user.id }}>
-                <UserAvatar user={user} />
+                <UserAvatar user={user} className="hover:opacity-55" />
               </Link>
             </TableCell>
             <TableCell>
-              <OptionalLabel>{user.profile.firstName}</OptionalLabel>
+              <Highlight value={user.highlights.firstName}>
+                <OptionalLabel>{user.profile.firstName}</OptionalLabel>
+              </Highlight>
             </TableCell>
             <TableCell>
-              <OptionalLabel>{user.profile.lastName}</OptionalLabel>
+              <Highlight value={user.highlights.lastName}>
+                <OptionalLabel>{user.profile.lastName}</OptionalLabel>
+              </Highlight>
             </TableCell>
             <TableCell>
-              <OptionalLabel>{user.email}</OptionalLabel>
+              <Highlight value={user.highlights.email}>
+                <OptionalLabel>{user.email}</OptionalLabel>
+              </Highlight>
             </TableCell>
             <TableCell>
-              <OptionalLabel>{user.departmentName}</OptionalLabel>
+              <Highlight value={user.highlights.departmentName}>
+                <OptionalLabel>{user.departmentName}</OptionalLabel>
+              </Highlight>
             </TableCell>
             <TableCell>
-              <OptionalLabel>{user.positionName}</OptionalLabel>
+              <Highlight value={user.highlights.positionName}>
+                <OptionalLabel>{user.positionName}</OptionalLabel>
+              </Highlight>
             </TableCell>
             <TableCell>
-              <IconButton>{auth!.user.id === user.id ? <DotsIcon /> : <ChevronRightIcon />}</IconButton>
+              {auth!.user.id === user.id ? (
+                <IconButton className="hover:opacity-55">
+                  {auth!.user.id === user.id ? <DotsIcon /> : <ChevronRightIcon />}
+                </IconButton>
+              ) : (
+                <IconButtonLink to="/users/$userId/profile" params={{ userId: user.id }} className="hover:opacity-55">
+                  <ChevronRightIcon />
+                </IconButtonLink>
+              )}
             </TableCell>
           </>
         )}
@@ -184,13 +235,27 @@ function RouteComponent() {
   );
 }
 
+type HighlightProps = { value?: string | null; children?: React.ReactNode };
+
+export const Highlight: React.FC<HighlightProps> = (props) => {
+  const { value, children } = props;
+
+  if (value) {
+    return (
+      <span dangerouslySetInnerHTML={{ __html: value }} className="[&_b]:bg-yellow-400 [&_b]:p-0.5 [&_b]:rounded-xs" />
+    );
+  }
+
+  return children;
+};
+
 type OptionalFieldProps = { children?: React.ReactNode };
 
 export const OptionalLabel: React.FC<OptionalFieldProps> = (props) => {
   const { children } = props;
 
   if (children) {
-    return <>{children}</>;
+    return children;
   }
 
   return <div className="italic text-neutral-400 text-sm">Not Specified</div>;
