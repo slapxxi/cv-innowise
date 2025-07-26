@@ -46,6 +46,9 @@ export const Table = <T extends { id: string }>(props: TableProps<T>) => {
   } = props;
 
   function handleChangeSort(item: TableField) {
+    if (item.title === '') {
+      return;
+    }
     onChangeSort(item);
   }
 
@@ -66,9 +69,13 @@ export const Table = <T extends { id: string }>(props: TableProps<T>) => {
             <TableRow>
               {headFields.map((field) => (
                 <TableCell key={field.id} align="left" sortDirection={order} onClick={() => handleChangeSort(field)}>
-                  <TableSortLabel active={field.id === sort} direction={order}>
-                    {field.title}
-                  </TableSortLabel>
+                  {field.title !== '' ? (
+                    <TableSortLabel active={field.id === sort} direction={order}>
+                      {field.title}
+                    </TableSortLabel>
+                  ) : (
+                    field.title
+                  )}
                 </TableCell>
               ))}
             </TableRow>

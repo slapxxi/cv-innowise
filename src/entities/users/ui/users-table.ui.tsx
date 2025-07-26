@@ -18,7 +18,7 @@ import {
   type User,
 } from '~/shared';
 
-export const usersSortingFields = ['firstName', 'lastName', 'email', 'postion', 'department'] as const;
+export const usersSortingFields = ['firstName', 'lastName', 'email', 'positionName', 'departmentName'] as const;
 
 function mapSortToProperty(sort: (typeof usersSortingFields)[number]) {
   return (user: User) => {
@@ -34,10 +34,10 @@ function mapSortToProperty(sort: (typeof usersSortingFields)[number]) {
       case 'email':
         result = user.email;
         break;
-      case 'postion':
+      case 'positionName':
         result = user.positionName;
         break;
-      case 'department':
+      case 'departmentName':
         result = user.departmentName;
         break;
     }
@@ -122,8 +122,8 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
         { id: 'firstName', title: t('First Name') },
         { id: 'lastName', title: t('Last Name') },
         { id: 'email', title: t('Email') },
-        { id: 'department', title: t('Department') },
-        { id: 'position', title: t('Position') },
+        { id: 'departmentName', title: t('Department') },
+        { id: 'positionName', title: t('Position') },
         { id: 'action', title: '' },
       ]}
       count={filteredUsers.length}
