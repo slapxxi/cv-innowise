@@ -2,8 +2,8 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import i18n from '~/app/i18n.ts';
-import { usersSortingFields, UsersTable } from '~/entities';
-import { usersOptions } from '~/features';
+import { UsersTable } from '~/entities';
+import { usersOptions, usersSortingFields } from '~/features';
 import { PageTitle, SearchField, type TableField } from '~/shared';
 
 i18n.changeLanguage('ru');

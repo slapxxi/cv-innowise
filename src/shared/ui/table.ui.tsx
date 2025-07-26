@@ -67,7 +67,7 @@ export const Table = <T extends { id: string }>(props: TableProps<T>) => {
 
   return (
     <>
-      <TableContainer className={cn(fixedHeight && 'max-h-[calc(100vh-180px)]')}>
+      <TableContainer className={cn(fixedHeight && 'max-h-[calc(100vh-210px)] xl:max-h-[calc(100vh-180px)]')}>
         <BaseTable stickyHeader {...rest}>
           <TableHead>
             <TableRow>

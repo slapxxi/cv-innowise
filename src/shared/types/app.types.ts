@@ -1,5 +1,7 @@
 import type { Nullable } from './utility.types';
 
+export type SortOrder = 'asc' | 'desc';
+
 export type Auth = Nullable<{
   accessToken: string;
   user: User;
