@@ -57,7 +57,7 @@ function RouteComponent() {
   return (
     <section className="flex flex-col gap-4 p-6 py-4">
       <header className="sticky top-4 z-10 flex flex-col gap-2 bg-bg dark:bg-bg-dark">
-        <PageTitle>{t('Skills')}</PageTitle>
+        <PageTitle>{t('Languages')}</PageTitle>
 
         <form onSubmit={handleSearch} key={search.q}>
           <SearchField placeholder={t('Search')} defaultValue={search.q} name="query" autoFocus={search.q !== ''} />
