@@ -5,7 +5,10 @@ export const Highlight: React.FC<HighlightProps> = (props) => {
 
   if (value) {
     return (
-      <span dangerouslySetInnerHTML={{ __html: value }} className="[&_b]:bg-yellow-400 [&_b]:p-0.5 [&_b]:rounded-xs" />
+      <span
+        dangerouslySetInnerHTML={{ __html: value }}
+        className="[&_b]:bg-yellow-400 [&_b]:p-0.5 [&_b]:rounded-xs [&_b]:dark:text-black"
+      />
     );
   }
 

@@ -9,7 +9,7 @@ import { cn, UserAvatar } from '~/shared';
 
 const navItems = [
   { to: '/users', name: 'Employees', icon: <Group />, props: { className: 'xl:mt-12' } },
-  { to: '/skills', name: 'Skills', icon: <TrendingUp />, exact: false },
+  { to: '/skills', name: 'Skills', icon: <TrendingUp /> },
   { to: '/languages', name: 'Languages', icon: <GTranslate /> },
   { to: '/cvs', name: 'CVs', icon: <ContactPageOutlined />, props: { className: 'hidden xl:flex' } },
 ];

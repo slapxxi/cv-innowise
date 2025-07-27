@@ -55,7 +55,9 @@ function RouteComponent() {
   const selectedLanguages = deleteMultipleForm.watch('languages');
 
   function handleUpdate(lp: LanguageProficiency) {
-    update({ language: lp });
+    if (isOwner) {
+      update({ language: lp });
+    }
   }
 
   function handleDelete(lp: LanguageProficiency) {

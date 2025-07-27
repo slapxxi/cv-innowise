@@ -46,7 +46,9 @@ function RouteComponent() {
   const selectedSkills = deleteMultipleForm.watch('skills');
 
   function handleUpdate(skill: SkillMastery) {
-    update({ skill });
+    if (isOwner) {
+      update({ skill });
+    }
   }
 
   function handleDelete(skill: SkillMastery) {

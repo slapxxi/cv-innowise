@@ -2,7 +2,7 @@ import { useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-
 import fuzzysort from 'fuzzysort';
 import { useMemo } from 'react';
 import { useAuth } from '~/app';
-import { queryClient, type Skill } from '~/shared';
+import { createComparator, queryClient } from '~/shared';
 import { getSkills, type GetSkillsData, type GetSkillsError } from '~/shared/lib/http/get-skills.http';
 
 export const skillsSortingFields = ['name', 'categoryName'] as const;
@@ -46,7 +46,7 @@ export function useSkills(params: Params = {}) {
     const searchResults = fuzzysort.go(q, skills, {
       all: true,
       threshold: 0,
-      keys: ['name', 'categoryName'],
+      keys: skillsSortingFields,
     });
 
     const searchedUsers = searchResults.map((result) => {
@@ -65,7 +65,7 @@ export function useSkills(params: Params = {}) {
   }, [q, skills]);
 
   const sortedSkills = useMemo(() => {
-    return [...searchedSkills].sort(createCompareFn(sort, order));
+    return [...searchedSkills].sort(createComparator(sort, order, (skill, key) => skill[key]));
   }, [searchedSkills, sort, order]);
 
   function invalidate() {
@@ -77,29 +77,5 @@ export function useSkills(params: Params = {}) {
     total: sortedSkills.length,
     invalidateUsers: invalidate,
     ...rest,
-  };
-}
-
-// todo: extract to utils
-function createCompareFn(sort: (typeof skillsSortingFields)[number], order: 'asc' | 'desc') {
-  return (a: Skill, b: Skill) => {
-    const isAsc = order === 'asc';
-    const valA = a[sort];
-    const valB = b[sort];
-
-    if (typeof valA === 'string' && typeof valB === 'string') {
-      if (valA === '') return isAsc ? 1 : -1;
-      if (valB === '') return isAsc ? -1 : 1;
-
-      const comparison = valA.localeCompare(valB);
-      return isAsc ? comparison : -comparison;
-    }
-
-    // @ts-expect-error expected
-    if (valA < valB) return isAsc ? -1 : 1;
-    // @ts-expect-error expected
-    if (valA > valB) return isAsc ? 1 : -1;
-
-    return 0;
   };
 }

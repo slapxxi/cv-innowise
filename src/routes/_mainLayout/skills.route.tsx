@@ -60,7 +60,7 @@ function RouteComponent() {
         <PageTitle>{t('Skills')}</PageTitle>
 
         <form onSubmit={handleSearch} key={search.q}>
-          <SearchField placeholder={t('Search')} defaultValue={search.q} name="query" />
+          <SearchField placeholder={t('Search')} defaultValue={search.q} name="query" autoFocus={search.q !== ''} />
         </form>
       </header>
 

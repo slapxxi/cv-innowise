@@ -2,7 +2,15 @@ import { useQueryClient, useSuspenseQuery, type UseSuspenseQueryOptions } from '
 import fuzzysort from 'fuzzysort';
 import { useMemo } from 'react';
 import { useAuth } from '~/app';
-import { getUsers, sliceCollection, type GetUsersData, type GetUsersError, type SortOrder, type User } from '~/shared';
+import {
+  createComparator,
+  getUsers,
+  sliceCollection,
+  type GetUsersData,
+  type GetUsersError,
+  type SortOrder,
+  type User,
+} from '~/shared';
 
 type QueryOptions = UseSuspenseQueryOptions<GetUsersData, GetUsersError>;
 
@@ -68,7 +76,7 @@ export function useUsers(params: UseUsersParams) {
   }, [q, users]);
 
   const sortedUsers = useMemo(() => {
-    return [...searchedUsers].sort(createCompareFn(sort, order));
+    return [...searchedUsers].sort(createComparator(sort, order, (user, key) => mapSortToProperty(user, key)));
   }, [searchedUsers, sort, order]);
 
   function invalidate() {
@@ -83,51 +91,26 @@ export function useUsers(params: UseUsersParams) {
   };
 }
 
-function createCompareFn(sort: (typeof usersSortingFields)[number], order: 'asc' | 'desc') {
-  const getValue = mapSortToProperty(sort);
-  const isAsc = order === 'asc';
+function mapSortToProperty(user: User, sort: (typeof usersSortingFields)[number]) {
+  let result;
 
-  return (a: User, b: User) => {
-    const valA = getValue(a);
-    const valB = getValue(b);
+  switch (sort) {
+    case 'firstName':
+      result = user.profile.firstName;
+      break;
+    case 'lastName':
+      result = user.profile.lastName;
+      break;
+    case 'email':
+      result = user.email;
+      break;
+    case 'positionName':
+      result = user.positionName;
+      break;
+    case 'departmentName':
+      result = user.departmentName;
+      break;
+  }
 
-    if (typeof valA === 'string' && typeof valB === 'string') {
-      if (valA === '') return isAsc ? 1 : -1;
-      if (valB === '') return isAsc ? -1 : 1;
-
-      const comparison = valA.localeCompare(valB);
-      return isAsc ? comparison : -comparison;
-    }
-
-    if (valA < valB) return isAsc ? -1 : 1;
-    if (valA > valB) return isAsc ? 1 : -1;
-
-    return 0;
-  };
-}
-
-function mapSortToProperty(sort: (typeof usersSortingFields)[number]) {
-  return (user: User) => {
-    let result;
-
-    switch (sort) {
-      case 'firstName':
-        result = user.profile.firstName;
-        break;
-      case 'lastName':
-        result = user.profile.lastName;
-        break;
-      case 'email':
-        result = user.email;
-        break;
-      case 'positionName':
-        result = user.positionName;
-        break;
-      case 'departmentName':
-        result = user.departmentName;
-        break;
-    }
-
-    return result?.toLowerCase() ?? '';
-  };
+  return result ?? '';
 }
