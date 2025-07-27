@@ -2,7 +2,7 @@ import { MenuItem } from '@mui/material';
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { skillsOptions, skillsSortingFields, useSkills } from '~/features';
+import { positionsOptions, positionsSortingFields, usePositions } from '~/features';
 import {
   ActionMenu,
   Highlight,
@@ -15,26 +15,26 @@ import {
   switchOrder,
 } from '~/shared';
 
-const skillsSearchSchema = z.object({
-  sort: z.enum(skillsSortingFields).catch('name'),
+const positionsSearchSchema = z.object({
+  sort: z.enum(positionsSortingFields).catch('name'),
   order: z.enum(['asc', 'desc']).catch('asc'),
   q: z.string().trim().catch(''),
 });
 
-export const Route = createFileRoute('/_mainLayout/skills')({
+export const Route = createFileRoute('/_mainLayout/positions')({
   component: RouteComponent,
   loader: ({ context }) => {
     const { queryClient } = context;
-    queryClient.prefetchQuery(skillsOptions({ accessToken: context.auth!.accessToken }));
+    queryClient.prefetchQuery(positionsOptions({ accessToken: context.auth!.accessToken }));
   },
-  validateSearch: skillsSearchSchema,
+  validateSearch: positionsSearchSchema,
 });
 
 function RouteComponent() {
   const { t } = useTranslation();
   const search = Route.useSearch();
   const nav = Route.useNavigate();
-  const { skills } = useSkills({ ...search });
+  const { positions } = usePositions({ ...search });
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     const form = e.currentTarget;
@@ -65,10 +65,9 @@ function RouteComponent() {
       </header>
 
       <Table
-        data={skills}
+        data={positions}
         headFields={[
-          { id: 'name', title: t('Name') },
-          { id: 'categoryName', title: t('Category') },
+          { id: 'name', title: t('Position name') },
           { id: 'action', title: '' },
         ]}
         order={search.order}
@@ -76,22 +75,17 @@ function RouteComponent() {
         onChangeSort={handleChangeSort}
         fixedHeight
       >
-        {(skill) => (
+        {(position) => (
           <>
             <TableCell>
-              <Highlight value={skill.highlights.name}>
-                <OptionalLabel>{skill.name}</OptionalLabel>
-              </Highlight>
-            </TableCell>
-            <TableCell>
-              <Highlight value={skill.highlights.categoryName}>
-                <OptionalLabel>{skill.categoryName}</OptionalLabel>
+              <Highlight value={position.highlights.name}>
+                <OptionalLabel>{position.name}</OptionalLabel>
               </Highlight>
             </TableCell>
             <TableCell>
               <ActionMenu>
-                <MenuItem>Update skill </MenuItem>
-                <MenuItem>Delete skill</MenuItem>
+                <MenuItem>Update position </MenuItem>
+                <MenuItem>Delete position</MenuItem>
               </ActionMenu>
             </TableCell>
           </>

@@ -47,6 +47,8 @@ const resources = {
       'Remove languages': 'Remove Languages',
       'Not specified': 'Not Specified',
       'No category': 'No Category',
+      'Position name': 'Position Name',
+      iso2: 'ISO2',
     },
   },
   ru: {
@@ -112,6 +114,13 @@ const resources = {
       'Remove languages': 'Удалить языки',
       'Not specified': 'Не указано',
       'No category': 'Нет категории',
+      Positions: 'Должности',
+      Departments: 'Отделы',
+      Name: 'Название',
+      'Language name': 'Название языка',
+      'Native name': 'Нативное название',
+      iso2: 'ISO2',
+      'Position name': 'Название должности',
       // etc...
     },
   },

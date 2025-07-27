@@ -2,7 +2,7 @@ import { MenuItem } from '@mui/material';
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { languagesSortingFields, skillsOptions, useLanguages } from '~/features';
+import { languagesOptions, languagesSortingFields, useLanguages } from '~/features';
 import {
   ActionMenu,
   Highlight,
@@ -25,7 +25,7 @@ export const Route = createFileRoute('/_mainLayout/languages')({
   component: RouteComponent,
   loader: ({ context }) => {
     const { queryClient } = context;
-    queryClient.prefetchQuery(skillsOptions({ accessToken: context.auth!.accessToken }));
+    queryClient.prefetchQuery(languagesOptions({ accessToken: context.auth!.accessToken }));
   },
   validateSearch: languagesSearchSchema,
 });
@@ -67,9 +67,9 @@ function RouteComponent() {
       <Table
         data={languages}
         headFields={[
-          { id: 'name', title: 'Language Name' },
-          { id: 'nativeName', title: 'Native Name' },
-          { id: 'iso2', title: 'ISO2' },
+          { id: 'name', title: t('Language name') },
+          { id: 'nativeName', title: t('Native name') },
+          { id: 'iso2', title: t('iso2') },
           { id: 'action', title: '' },
         ]}
         order={search.order}

@@ -1,4 +1,13 @@
-import { ChevronLeft, ChevronRight, ContactPageOutlined, Group, GTranslate, TrendingUp } from '@mui/icons-material';
+import {
+  ChevronLeft,
+  ChevronRight,
+  ContactPageOutlined,
+  Group,
+  GTranslate,
+  TrendingUp,
+  WorkOutline as WorkIcon,
+  Business as BusinessIcon,
+} from '@mui/icons-material';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +20,8 @@ const navItems = [
   { to: '/users', name: 'Employees', icon: <Group />, props: { className: 'xl:mt-12' } },
   { to: '/skills', name: 'Skills', icon: <TrendingUp /> },
   { to: '/languages', name: 'Languages', icon: <GTranslate /> },
+  { to: '/positions', name: 'Positions', icon: <WorkIcon />, admin: true },
+  { to: '/departments', name: 'Departments', icon: <BusinessIcon />, admin: true },
   { to: '/cvs', name: 'CVs', icon: <ContactPageOutlined />, props: { className: 'hidden xl:flex' } },
 ];
 
