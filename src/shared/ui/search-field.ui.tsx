@@ -1,5 +1,5 @@
 import { Search } from '@mui/icons-material';
-import { InputAdornment } from '@mui/material';
+import { IconButton, InputAdornment } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { useId } from 'react';
 import { cn } from '../utils';
@@ -19,9 +19,9 @@ export const SearchField: React.FC<SearchFieldProps> = (props) => {
           className: 'rounded-full',
           startAdornment: (
             <InputAdornment position="start">
-              <label htmlFor={searchId}>
+              <IconButton type="submit">
                 <Search />
-              </label>
+              </IconButton>
             </InputAdornment>
           ),
         },
