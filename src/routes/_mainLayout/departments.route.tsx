@@ -1,0 +1,96 @@
+import { MenuItem } from '@mui/material';
+import { createFileRoute } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
+import * as z from 'zod/v4';
+import { departmentsOptions, departmentsSortingFields, useDepartments } from '~/features';
+import {
+  ActionMenu,
+  Highlight,
+  OptionalLabel,
+  PageTitle,
+  SearchField,
+  Table,
+  TableCell,
+  type TableField,
+  switchOrder,
+} from '~/shared';
+
+const departmentsSearchSchema = z.object({
+  sort: z.enum(departmentsSortingFields).catch('name'),
+  order: z.enum(['asc', 'desc']).catch('asc'),
+  q: z.string().trim().catch(''),
+});
+
+export const Route = createFileRoute('/_mainLayout/departments')({
+  component: RouteComponent,
+  loader: ({ context }) => {
+    const { queryClient } = context;
+    queryClient.prefetchQuery(departmentsOptions({ accessToken: context.auth!.accessToken }));
+  },
+  validateSearch: departmentsSearchSchema,
+});
+
+function RouteComponent() {
+  const { t } = useTranslation();
+  const search = Route.useSearch();
+  const nav = Route.useNavigate();
+  const { departments } = useDepartments({ ...search });
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const q = fd.get('query');
+    nav({ search: (prev) => ({ ...prev, q }) });
+    e.preventDefault();
+  };
+
+  function handleChangeSort(item: TableField) {
+    nav({
+      search: (prev) => ({
+        ...prev,
+        sort: item.id,
+        order: item.id === prev.sort ? switchOrder(prev.order) : prev.order,
+      }),
+    });
+  }
+
+  return (
+    <section className="flex flex-col gap-4 p-6 py-4">
+      <header className="sticky top-4 z-10 flex flex-col gap-2 bg-bg dark:bg-bg-dark">
+        <PageTitle>{t('Skills')}</PageTitle>
+
+        <form onSubmit={handleSearch} key={search.q}>
+          <SearchField placeholder={t('Search')} defaultValue={search.q} name="query" autoFocus={search.q !== ''} />
+        </form>
+      </header>
+
+      <Table
+        data={departments}
+        headFields={[
+          { id: 'name', title: t('Department name') },
+          { id: 'action', title: '' },
+        ]}
+        order={search.order}
+        sort={search.sort}
+        onChangeSort={handleChangeSort}
+        fixedHeight
+      >
+        {(department) => (
+          <>
+            <TableCell>
+              <Highlight value={department.highlights.name}>
+                <OptionalLabel>{department.name}</OptionalLabel>
+              </Highlight>
+            </TableCell>
+            <TableCell>
+              <ActionMenu>
+                <MenuItem>Update department </MenuItem>
+                <MenuItem>Delete department</MenuItem>
+              </ActionMenu>
+            </TableCell>
+          </>
+        )}
+      </Table>
+    </section>
+  );
+}

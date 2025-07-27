@@ -17,4 +17,6 @@ export * from './delete-profile-languages.http';
 
 export * from './get-positions.http';
 
+export * from './get-departments.http';
+
 export * from './graphql.http';

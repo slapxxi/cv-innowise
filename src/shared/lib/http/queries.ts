@@ -117,8 +117,8 @@ const CV_QUERY = gql`
 
 const DEPARTMENT_QUERY = gql`
   id
-  created_at
   name
+  createdAt: created_at
 `;
 
 const USER_QUERY = gql`
