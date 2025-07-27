@@ -1,4 +1,4 @@
-export * from './actions-menu';
+export * from './action-menu.ui';
 export * from './breadcrumbs.ui';
 export * from './button-link.ui';
 export * from './button.ui';

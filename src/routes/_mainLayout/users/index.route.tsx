@@ -4,7 +4,7 @@ import * as z from 'zod/v4';
 import i18n from '~/app/i18n.ts';
 import { UsersTable } from '~/entities';
 import { usersOptions, usersSortingFields } from '~/features';
-import { PageTitle, SearchField, type TableField } from '~/shared';
+import { PageTitle, SearchField, switchOrder, type TableField } from '~/shared';
 
 i18n.changeLanguage('ru');
 
@@ -25,10 +25,6 @@ export const Route = createFileRoute('/_mainLayout/users/')({
     queryClient.prefetchQuery(usersOptions({ accessToken: context.auth!.accessToken }));
   },
 });
-
-function switchOrder(order: 'asc' | 'desc') {
-  return order === 'asc' ? 'desc' : 'asc';
-}
 
 function RouteComponent() {
   const { t } = useTranslation();
@@ -63,8 +59,8 @@ function RouteComponent() {
   }
 
   return (
-    <section className="flex flex-col p-6 py-4">
-      <header className="flex flex-col gap-2 bg-bg sticky top-4 z-10 dark:bg-bg-dark">
+    <section className="flex flex-col p-6 py-4 gap-4">
+      <header className="sticky top-4 z-10 flex flex-col gap-2 bg-bg dark:bg-bg-dark">
         <PageTitle>{t('Employees')}</PageTitle>
 
         <form onSubmit={handleSearch} key={search.q}>

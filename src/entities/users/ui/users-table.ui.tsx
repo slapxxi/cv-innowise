@@ -1,11 +1,11 @@
-import { ChevronRight as ChevronRightIcon, MoreVert as DotsIcon } from '@mui/icons-material';
-import { IconButton, Menu, MenuItem } from '@mui/material';
+import { ChevronRight as ChevronRightIcon } from '@mui/icons-material';
+import { MenuItem } from '@mui/material';
 import { Link } from '@tanstack/react-router';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '~/app';
 import { useUsers, type UsersSearchParams } from '~/features';
 import {
+  ActionMenu,
   Highlight,
   IconButtonLink,
   MenuItemLink,
@@ -26,18 +26,6 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
   const { t } = useTranslation();
   const auth = useAuth();
   const { users, total } = useUsers({ sort, order, page, limit, q });
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  function handleOpenMenu(e: React.MouseEvent<HTMLButtonElement>) {
-    setMenuOpen(true);
-    setAnchorEl(e.currentTarget);
-  }
-
-  function handleCloseMenu() {
-    setMenuOpen(false);
-    setAnchorEl(null);
-  }
 
   return (
     <Table
@@ -93,16 +81,13 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
           <TableCell>
             {auth!.user.id === user.id ? (
               <>
-                <IconButton className="hover:opacity-55" onClick={handleOpenMenu}>
-                  {auth!.user.id === user.id ? <DotsIcon /> : <ChevronRightIcon />}
-                </IconButton>
-                <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleCloseMenu}>
+                <ActionMenu>
                   <MenuItemLink to="/users/$userId/profile" params={{ userId: user.id }}>
                     Profile
                   </MenuItemLink>
                   <MenuItem>Update user </MenuItem>
                   <MenuItem>Delete user</MenuItem>
-                </Menu>
+                </ActionMenu>
               </>
             ) : (
               <IconButtonLink to="/users/$userId/profile" params={{ userId: user.id }} className="hover:opacity-55">

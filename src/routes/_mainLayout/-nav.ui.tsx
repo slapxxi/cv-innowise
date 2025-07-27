@@ -9,7 +9,7 @@ import { cn, UserAvatar } from '~/shared';
 
 const navItems = [
   { to: '/users', name: 'Employees', icon: <Group />, props: { className: 'xl:mt-12' } },
-  { to: '/skills', name: 'Skills', icon: <TrendingUp /> },
+  { to: '/skills', name: 'Skills', icon: <TrendingUp />, exact: false },
   { to: '/languages', name: 'Languages', icon: <GTranslate /> },
   { to: '/cvs', name: 'CVs', icon: <ContactPageOutlined />, props: { className: 'hidden xl:flex' } },
 ];
@@ -82,16 +82,17 @@ interface NavItemProps {
   open: boolean;
   to: string;
   className?: string;
+  exact?: boolean;
 }
 
 export const SidebarItem: React.FC<NavItemProps> = (props) => {
-  const { to, icon, label, open, className = '' } = props;
+  const { to, icon, label, open, exact = false, className = '' } = props;
 
   return (
     <li className={cn(`flex xl:flex-col`, className)}>
       <Link
-        activeOptions={{ exact: true }}
         to={to}
+        activeOptions={{ exact }}
         activeProps={{
           className: cn(
             'bg-neutral-200 text-neutral-800 hover:bg-neutral-200 hover:text-neutral-800',

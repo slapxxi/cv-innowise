@@ -22,13 +22,13 @@ type TableProps<T extends { id: string }> = {
   headFields: TableField[];
   sort: string;
   order: 'asc' | 'desc';
-  page: number;
-  count: number;
-  limit: number;
   children: (item: T) => React.ReactNode;
   onChangeSort: (field: TableField) => void;
-  onChangePage: (page: number) => void;
-  onChangeRowsPerPage: (limit: number) => void;
+  onChangePage?: (page: number) => void;
+  onChangeRowsPerPage?: (limit: number) => void;
+  page?: number;
+  count?: number;
+  limit?: number;
   fixedHeight?: boolean;
 } & Omit<React.ComponentProps<typeof BaseTable>, 'children'>;
 
@@ -57,17 +57,17 @@ export const Table = <T extends { id: string }>(props: TableProps<T>) => {
   }
 
   function handleChangePage(_e: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, page: number) {
-    onChangePage(page);
+    onChangePage?.(page);
   }
 
   function handleChangeRowsPerPage(event: React.ChangeEvent<HTMLInputElement>) {
     const value = parseInt(event.target.value, 10);
-    onChangeRowsPerPage(value);
+    onChangeRowsPerPage?.(value);
   }
 
   return (
     <>
-      <TableContainer className={cn(fixedHeight && 'max-h-[calc(100vh-210px)] xl:max-h-[calc(100vh-180px)]')}>
+      <TableContainer className={cn(fixedHeight && 'max-h-[calc(100vh-240px)] xl:max-h-[calc(100vh-200px)]')}>
         <BaseTable stickyHeader {...rest}>
           <TableHead>
             <TableRow>
@@ -98,15 +98,17 @@ export const Table = <T extends { id: string }>(props: TableProps<T>) => {
           </TableBody>
         </BaseTable>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25, 50, 75, 100, 380]}
-        component="div"
-        count={count}
-        rowsPerPage={limit}
-        page={page - 1}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      {count && limit && page && (
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25, 50, 75, 100, 380]}
+          component="div"
+          count={count}
+          rowsPerPage={limit}
+          page={page - 1}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      )}
     </>
   );
 };
