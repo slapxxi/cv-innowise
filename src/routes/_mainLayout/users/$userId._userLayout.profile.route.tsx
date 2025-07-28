@@ -1,12 +1,21 @@
 import { PersonOutline } from '@mui/icons-material';
-import { createFileRoute } from '@tanstack/react-router';
-import { type User } from '~/shared';
+import { createFileRoute, useParams } from '@tanstack/react-router';
+import { type GetUserData } from '~/shared'; //type User
+import { UserPage } from '~/entities/user/ui/user-page/user-page.tsx';
+import { getUserQueryOptions, useUser } from '~/features';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/profile')({
   component: RouteComponent,
-  beforeLoad: ({ params, context }) => {
+
+  beforeLoad: async ({ params, context }) => {
     const { queryClient } = context;
-    const user = queryClient.getQueryData<User>(['user', params.userId]);
+
+    const user = await queryClient.ensureQueryData<GetUserData>({
+      ...getUserQueryOptions({
+        id: params.userId,
+        accessToken: context.auth!.accessToken,
+      }),
+    });
 
     if (user) {
       return {
@@ -19,11 +28,17 @@ export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/pro
     }
 
     return {
-      breadcumb: { title: 'User', pathname: `/users/${params.userId}/profile`, icon: <PersonOutline /> },
+      breadcrumb: { title: 'User', pathname: `/users/${params.userId}/profile`, icon: <PersonOutline /> },
+      user,
     };
   },
 });
 
 function RouteComponent() {
-  return <div>Profile</div>;
+  const { userId } = useParams({ from: '/_mainLayout/users/$userId/_userLayout/profile' });
+  const { user } = useUser({ id: userId });
+
+  if (user) {
+    return <UserPage user={user} />;
+  }
 }

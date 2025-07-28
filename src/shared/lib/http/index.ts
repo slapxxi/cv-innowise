@@ -25,3 +25,7 @@ export * from './update-cv.http';
 export * from './delete-cv.http';
 
 export * from './graphql.http';
+
+export * from './update-user.http';
+export * from './update-profile.http';
+export * from './upload-avatar.http';
