@@ -1,4 +1,4 @@
-import { MenuItem } from '@mui/material';
+import { MenuItem, TableRow } from '@mui/material';
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
@@ -69,7 +69,7 @@ function RouteComponent() {
         fixedHeight
       >
         {(department) => (
-          <>
+          <TableRow key={department.id}>
             <TableCell>
               <Highlight value={department.highlights.name}>
                 <OptionalLabel>{department.name}</OptionalLabel>
@@ -81,7 +81,7 @@ function RouteComponent() {
                 <MenuItem>Delete department</MenuItem>
               </ActionMenu>
             </TableCell>
-          </>
+          </TableRow>
         )}
       </Table>
     </section>

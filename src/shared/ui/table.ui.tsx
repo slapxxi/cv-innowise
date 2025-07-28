@@ -11,21 +11,22 @@ import {
 import { cn, switchOrder } from '../utils';
 import type { SortOrder } from '../types';
 
-export { TableCell } from '@mui/material';
+export { TableCell, TableRow } from '@mui/material';
 
 export type TableField = {
   id: string;
   title: string;
+  child?: React.ReactNode;
 };
 
 export type ChangeSortHandler = (sort: string, order: SortOrder) => void;
 
-type TableProps<T extends { id: string }> = {
+type TableProps<T> = {
   data: T[];
   headFields: TableField[];
   sort: string;
   order: 'asc' | 'desc';
-  children: (item: T) => React.ReactNode;
+  children: (item: T, index: number) => React.ReactNode;
   onChangeSort: ChangeSortHandler;
   onChangePage?: (page: number) => void;
   onChangeRowsPerPage?: (limit: number) => void;
@@ -78,28 +79,24 @@ export const Table = <T extends { id: string }>(props: TableProps<T>) => {
               {headFields.map((field) => (
                 <TableCell
                   key={field.id}
-                  align="left"
+                  align={field.title === '' ? 'center' : 'left'}
                   sortDirection={order}
                   onClick={() => handleChangeSort(field)}
                   className="bg-transparent backdrop-blur bg-gradient-to-b from-bg to-bg/50 dark:from-bg-dark dark:to-bg-dark/70"
                 >
                   {field.title !== '' ? (
                     <TableSortLabel active={field.id === sort} direction={order}>
-                      {field.title}
+                      {field.child || field.title}
                     </TableSortLabel>
                   ) : (
-                    field.title
+                    field.child || field.title
                   )}
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
 
-          <TableBody>
-            {data.map((item) => (
-              <TableRow key={item.id}>{children(item)}</TableRow>
-            ))}
-          </TableBody>
+          <TableBody>{data.map((item, i) => children(item, i))}</TableBody>
         </BaseTable>
       </TableContainer>
 

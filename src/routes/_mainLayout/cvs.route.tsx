@@ -1,21 +1,24 @@
-import { MenuItem } from '@mui/material';
+import { CloudUploadOutlined as CloudIcon } from '@mui/icons-material';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { SearchContainer } from '~/app';
-import { AddCvForm, cvsOptions, cvsSortingFields, useCvs } from '~/features';
+import { AddCvForm, cvsOptions, cvsSortingFields, UpdateCvForm, useCvs } from '~/features';
 import {
-  Modal,
   ActionMenu,
+  ActionMenuItem,
   ButtonAdd,
-  type ChangeSortHandler,
   Highlight,
+  Modal,
   OptionalLabel,
   Table,
   TableCell,
+  TableRow,
+  useEditingState,
+  type ChangeSortHandler,
+  type Cv,
 } from '~/shared';
-
 const cvsSearchSchema = z.object({
   sort: z.enum(cvsSortingFields).catch('name'),
   order: z.enum(['asc', 'desc']).catch('asc'),
@@ -35,8 +38,9 @@ function RouteComponent() {
   const { t } = useTranslation();
   const search = Route.useSearch();
   const nav = Route.useNavigate();
-  const { cvs, invalidateCvs } = useCvs({ ...search });
-  const [open, setOpen] = useState(false);
+  const { cvs, invalidateCvs, isFetching } = useCvs({ ...search });
+  const { state, add, update, cancel } = useEditingState<{ cv: Cv }>();
+  const [menuOpen, setMenuOpen] = useState<number | null>(null);
 
   const handleSearch = (q: string) => {
     nav({ search: (prev) => ({ ...prev, q }) });
@@ -48,15 +52,29 @@ function RouteComponent() {
 
   function handleCreateCv() {
     invalidateCvs();
-    setOpen(false);
+    cancel();
+  }
+
+  function handleUpdateCv() {
+    invalidateCvs();
+    cancel();
   }
 
   function handleOpen() {
-    setOpen(true);
+    add();
   }
 
   function handleCancel() {
-    setOpen(false);
+    cancel();
+  }
+
+  function handleUpdate(cv: Cv) {
+    update({ cv });
+    setMenuOpen(null);
+  }
+
+  function handleDelete() {
+    // deleteCv({ cvId: cv.id });
   }
 
   return (
@@ -66,8 +84,14 @@ function RouteComponent() {
       onSearch={handleSearch}
       actionSlot={<ButtonAdd onClick={handleOpen}>{t('Create cv')}</ButtonAdd>}
     >
-      <Modal title={t('Create cv')} open={open} onClose={handleCancel}>
+      <Modal title={t('Create cv')} open={state.status === 'adding'} onClose={handleCancel}>
         <AddCvForm onSuccess={handleCreateCv} onCancel={handleCancel} />
+      </Modal>
+
+      <Modal title={t('Update cv')} open={state.status === 'updating'} onClose={handleCancel}>
+        {state.status === 'updating' && (
+          <UpdateCvForm cv={state.context!.cv} onSuccess={handleUpdateCv} onCancel={handleCancel} />
+        )}
       </Modal>
 
       <Table
@@ -77,15 +101,15 @@ function RouteComponent() {
           { id: 'description', title: t('Cv description') },
           { id: 'education', title: t('Cv education') },
           { id: 'employee', title: t('Employee') },
-          { id: 'action', title: '' },
+          { id: 'action', title: '', child: isFetching ? <CloudIcon className="text-xl text-neutral-300" /> : null },
         ]}
         order={search.order}
         sort={search.sort}
         onChangeSort={handleChangeSort}
         fixedHeight
       >
-        {(cv) => (
-          <>
+        {(cv, i) => (
+          <TableRow key={cv.id}>
             <TableCell>
               <Highlight value={cv.highlights.name}>
                 <OptionalLabel>{cv.name}</OptionalLabel>
@@ -106,13 +130,13 @@ function RouteComponent() {
                 <OptionalLabel>{cv.user?.email}</OptionalLabel>
               </Highlight>
             </TableCell>
-            <TableCell>
-              <ActionMenu>
-                <MenuItem>Update cv </MenuItem>
-                <MenuItem>Delete cv</MenuItem>
+            <TableCell align="center">
+              <ActionMenu open={menuOpen === i} onOpen={() => setMenuOpen(i)} onClose={() => setMenuOpen(null)}>
+                <ActionMenuItem onClick={() => handleUpdate(cv)}>Update cv </ActionMenuItem>
+                <ActionMenuItem onClick={() => handleDelete()}>Delete cv</ActionMenuItem>
               </ActionMenu>
             </TableCell>
-          </>
+          </TableRow>
         )}
       </Table>
     </SearchContainer>

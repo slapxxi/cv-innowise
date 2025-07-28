@@ -2,38 +2,38 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { useAuth } from '~/app';
-import { useCreateCv } from '~/features';
-import { Button, TextField } from '~/shared';
+import { useUpdateCv } from '~/features';
+import { Button, TextField, type Cv } from '~/shared';
 
-const createCvSchema = z.object({
+const UpdateCvSchema = z.object({
   name: z.string().trim().nonempty('Name is required'),
   description: z.string().trim().nonempty('Description is required'),
   education: z.string().optional(),
 });
 
-type CreateCvForm = z.infer<typeof createCvSchema>;
+type UpdateCvForm = z.infer<typeof UpdateCvSchema>;
 
-type AddCvFormProps = { onSuccess: () => void; onCancel: () => void };
+type UpdateCvFormProps = { cv: Cv; onSuccess: (cv: Cv) => void; onCancel: () => void };
 
-export const AddCvForm: React.FC<AddCvFormProps> = (props) => {
-  const { onSuccess, onCancel } = props;
+export const UpdateCvForm: React.FC<UpdateCvFormProps> = (props) => {
+  const { cv, onSuccess, onCancel } = props;
   const { t } = useTranslation();
-  const auth = useAuth();
-  const { createCv } = useCreateCv({
+  const { updateCv } = useUpdateCv({
     onSuccess,
   });
 
-  const form = useForm<CreateCvForm>({
-    resolver: zodResolver(createCvSchema),
+  const form = useForm<UpdateCvForm>({
+    resolver: zodResolver(UpdateCvSchema),
     defaultValues: {
-      name: '',
+      name: cv.name,
+      description: cv.description,
+      education: cv.education ?? '',
     },
   });
 
-  const handleSubmit: SubmitHandler<CreateCvForm> = async (data) => {
-    createCv({
-      userId: auth!.user.id,
+  const handleSubmit: SubmitHandler<UpdateCvForm> = async (data) => {
+    updateCv({
+      cvId: cv.id,
       cv: data,
     });
   };

@@ -1,5 +1,5 @@
 import { ChevronRight as ChevronRightIcon } from '@mui/icons-material';
-import { MenuItem } from '@mui/material';
+import { MenuItem, TableRow } from '@mui/material';
 import { Link } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '~/app';
@@ -47,7 +47,7 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
       {...rest}
     >
       {(user) => (
-        <>
+        <TableRow key={user.id}>
           <TableCell>
             <Link to="/users/$userId/profile" params={{ userId: user.id }}>
               <UserAvatar user={user} className="hover:opacity-55" />
@@ -95,7 +95,7 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
               </IconButtonLink>
             )}
           </TableCell>
-        </>
+        </TableRow>
       )}
     </Table>
   );

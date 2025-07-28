@@ -1,22 +1,37 @@
 import { MoreVert as DotsIcon } from '@mui/icons-material';
-import { IconButton, Menu } from '@mui/material';
+import { IconButton, Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
 
-type ActionMenuProps = { children: React.ReactNode };
+type ActionMenuProps = {
+  children: React.ReactNode;
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpen?: () => void;
+  onClose?: () => void;
+} & Omit<React.ComponentProps<typeof Menu>, 'open'>;
 
 export const ActionMenu: React.FC<ActionMenuProps> = (props) => {
-  const { children } = props;
-  const [menuOpen, setMenuOpen] = useState(false);
+  const { children, open, defaultOpen = false, onOpen, onClose, ...rest } = props;
+  const isControlled = open !== undefined;
+  const [menuOpen, setMenuOpen] = useState(defaultOpen);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
+  const actualOpen = isControlled ? open : menuOpen;
+
   function handleOpenMenu(e: React.MouseEvent<HTMLButtonElement>) {
-    setMenuOpen(true);
+    if (!isControlled) {
+      setMenuOpen(true);
+    }
     setAnchorEl(e.currentTarget);
+    onOpen?.();
   }
 
   function handleCloseMenu() {
-    setMenuOpen(false);
+    if (!isControlled) {
+      setMenuOpen(false);
+    }
     setAnchorEl(null);
+    onClose?.();
   }
 
   return (
@@ -24,9 +39,11 @@ export const ActionMenu: React.FC<ActionMenuProps> = (props) => {
       <IconButton className="hover:opacity-55" onClick={handleOpenMenu}>
         <DotsIcon />
       </IconButton>
-      <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleCloseMenu}>
+      <Menu anchorEl={anchorEl} open={actualOpen} onClose={handleCloseMenu} {...rest}>
         {children}
       </Menu>
     </>
   );
 };
+
+export const ActionMenuItem = MenuItem;
