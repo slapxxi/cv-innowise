@@ -8,7 +8,8 @@ import {
   TableRow,
   TableSortLabel,
 } from '@mui/material';
-import { cn } from '../utils';
+import { cn, switchOrder } from '../utils';
+import type { SortOrder } from '../types';
 
 export { TableCell } from '@mui/material';
 
@@ -17,13 +18,15 @@ export type TableField = {
   title: string;
 };
 
+export type ChangeSortHandler = (sort: string, order: SortOrder) => void;
+
 type TableProps<T extends { id: string }> = {
   data: T[];
   headFields: TableField[];
   sort: string;
   order: 'asc' | 'desc';
   children: (item: T) => React.ReactNode;
-  onChangeSort: (field: TableField) => void;
+  onChangeSort: ChangeSortHandler;
   onChangePage?: (page: number) => void;
   onChangeRowsPerPage?: (limit: number) => void;
   page?: number;
@@ -53,7 +56,8 @@ export const Table = <T extends { id: string }>(props: TableProps<T>) => {
     if (item.title === '') {
       return;
     }
-    onChangeSort(item);
+
+    onChangeSort(item.id, item.id === sort ? switchOrder(order) : order);
   }
 
   function handleChangePage(_e: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, page: number) {
@@ -98,6 +102,7 @@ export const Table = <T extends { id: string }>(props: TableProps<T>) => {
           </TableBody>
         </BaseTable>
       </TableContainer>
+
       {count && limit && page && (
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, 50, 100]}

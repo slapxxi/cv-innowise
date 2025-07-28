@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { SearchContainer } from '~/app';
 import { cvsOptions, cvsSortingFields, useCvs } from '~/features';
-import { ActionMenu, Highlight, OptionalLabel, Table, TableCell, type TableField, switchOrder } from '~/shared';
+import { ActionMenu, ButtonAdd, type ChangeSortHandler, Highlight, OptionalLabel, Table, TableCell } from '~/shared';
 
 const cvsSearchSchema = z.object({
   sort: z.enum(cvsSortingFields).catch('name'),
@@ -31,18 +31,17 @@ function RouteComponent() {
     nav({ search: (prev) => ({ ...prev, q }) });
   };
 
-  function handleChangeSort(item: TableField) {
-    nav({
-      search: (prev) => ({
-        ...prev,
-        sort: item.id,
-        order: item.id === prev.sort ? switchOrder(prev.order) : prev.order,
-      }),
-    });
-  }
+  const handleChangeSort: ChangeSortHandler = (sort, order) => {
+    nav({ search: (prev) => ({ ...prev, sort, order }) });
+  };
 
   return (
-    <SearchContainer title={t('Cvs')} onSearch={handleSearch} query={search.q}>
+    <SearchContainer
+      title={t('Cvs')}
+      query={search.q}
+      onSearch={handleSearch}
+      actionSlot={<ButtonAdd>{t('Create cv')}</ButtonAdd>}
+    >
       <Table
         data={cvs}
         headFields={[

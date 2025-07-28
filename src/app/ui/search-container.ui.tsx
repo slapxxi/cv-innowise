@@ -1,10 +1,16 @@
 import { useTranslation } from 'react-i18next';
 import { PageTitle, SearchField } from '~/shared';
 
-type SearchContainerProps = { title: string; query: string; onSearch?: (q: string) => void; children: React.ReactNode };
+type SearchContainerProps = {
+  title: string;
+  query: string;
+  children: React.ReactNode;
+  onSearch?: (q: string) => void;
+  actionSlot?: React.ReactNode;
+};
 
 export const SearchContainer: React.FC<SearchContainerProps> = (props) => {
-  const { title, onSearch, query, children } = props;
+  const { title, onSearch, query, children, actionSlot } = props;
   const { t } = useTranslation();
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
@@ -20,9 +26,13 @@ export const SearchContainer: React.FC<SearchContainerProps> = (props) => {
       <header className="flex flex-col gap-2 bg-bg dark:bg-bg-dark">
         <PageTitle>{title}</PageTitle>
 
-        <form onSubmit={handleSearch} key={query}>
-          <SearchField placeholder={t('Search')} defaultValue={query} name="query" autoFocus={query !== ''} />
-        </form>
+        <div className="flex">
+          <form onSubmit={handleSearch} key={query}>
+            <SearchField placeholder={t('Search')} defaultValue={query} name="query" autoFocus={query !== ''} />
+          </form>
+
+          {actionSlot && <div className="ml-auto">{actionSlot}</div>}
+        </div>
       </header>
 
       {children}

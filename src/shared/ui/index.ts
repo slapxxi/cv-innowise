@@ -1,7 +1,10 @@
 export * from './action-menu.ui';
 export * from './breadcrumbs.ui';
-export * from './button-link.ui';
+
 export * from './button.ui';
+export * from './button-add.ui';
+export * from './button-link.ui';
+
 export * from './count.ui';
 export * from './form-errors.ui';
 export * from './highlight.ui';

@@ -5,14 +5,13 @@ import * as z from 'zod/v4';
 import { languagesOptions, languagesSortingFields, useLanguages } from '~/features';
 import {
   ActionMenu,
+  type ChangeSortHandler,
   Highlight,
   OptionalLabel,
   PageTitle,
   SearchField,
   Table,
   TableCell,
-  type TableField,
-  switchOrder,
 } from '~/shared';
 
 const languagesSearchSchema = z.object({
@@ -44,15 +43,9 @@ function RouteComponent() {
     e.preventDefault();
   };
 
-  function handleChangeSort(item: TableField) {
-    nav({
-      search: (prev) => ({
-        ...prev,
-        sort: item.id,
-        order: item.id === prev.sort ? switchOrder(prev.order) : prev.order,
-      }),
-    });
-  }
+  const handleChangeSort: ChangeSortHandler = (sort, order) => {
+    nav({ search: (prev) => ({ ...prev, sort, order }) });
+  };
 
   return (
     <section className="flex flex-col gap-4 p-6 py-4">

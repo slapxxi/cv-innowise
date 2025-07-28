@@ -51,6 +51,7 @@ const resources = {
       'Position name': 'Position Name',
       iso2: 'ISO2',
       'Cv name': 'CV Name',
+      'Create cv': 'Create CV',
     },
   },
   ru: {
@@ -125,7 +126,7 @@ const resources = {
       iso2: 'ISO2',
       'Position name': 'Название должности',
       'Cv name': 'Название резюме',
-      // etc...
+      'Create cv': 'Создать резюме',
     },
   },
 };

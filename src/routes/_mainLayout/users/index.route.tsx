@@ -4,7 +4,7 @@ import * as z from 'zod/v4';
 import i18n from '~/app/i18n.ts';
 import { UsersTable } from '~/entities';
 import { usersOptions, usersSortingFields } from '~/features';
-import { PageTitle, SearchField, switchOrder, type TableField } from '~/shared';
+import { PageTitle, SearchField, type ChangeSortHandler } from '~/shared';
 
 i18n.changeLanguage('ru');
 
@@ -39,16 +39,9 @@ function RouteComponent() {
     e.preventDefault();
   };
 
-  function handleChangeSort(item: TableField) {
-    nav({
-      search: (prev) => ({
-        ...prev,
-        page: 1,
-        sort: item.id,
-        order: item.id === prev.sort ? switchOrder(prev.order) : prev.order,
-      }),
-    });
-  }
+  const handleChangeSort: ChangeSortHandler = (sort, order) => {
+    nav({ search: (prev) => ({ ...prev, page: 1, sort, order }) });
+  };
 
   function handleChangePage(page: number) {
     nav({ search: (prev) => ({ ...prev, page: page + 1 }) });
