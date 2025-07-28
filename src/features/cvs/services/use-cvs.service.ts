@@ -6,7 +6,7 @@ import { createComparator, getCvs, type Cv, type GetCvsData, type GetCvsError, t
 
 type QueryOptions = UseSuspenseQueryOptions<GetCvsData, GetCvsError>;
 
-export const cvsSortingFields = ['name', 'description', 'employee'] as const;
+export const cvsSortingFields = ['name', 'description', 'education', 'employee'] as const;
 
 type CvsSortKey = (typeof cvsSortingFields)[number];
 
@@ -40,33 +40,34 @@ export function useCvs(params: Params = {}) {
   const queryClient = useQueryClient();
   const { sort = 'name', q = '', order = 'asc', ...restParams } = params ?? {};
   const auth = useAuth();
-  const { data: Cvs, ...rest } = useSuspenseQuery({
+  const { data: cvs, ...rest } = useSuspenseQuery({
     ...cvsOptions({ accessToken: auth!.accessToken }),
     ...restParams,
   });
 
   const searchedCvs = useMemo(() => {
-    const searchResults = fuzzysort.go(q, Cvs, {
+    const searchResults = fuzzysort.go(q, cvs, {
       all: true,
       threshold: 0,
-      keys: ['name', 'description', 'user.email'],
+      keys: ['name', 'description', 'education', 'user.email'],
     });
 
     const searchedCvs = searchResults.map((result) => {
-      const [name, description, userEmail] = result;
+      const [name, description, education, userEmail] = result;
 
       return {
         ...result.obj,
         highlights: {
           name: name.highlight(),
           description: description.highlight(),
+          education: education.highlight(),
           userEmail: userEmail.highlight(),
         },
       };
     });
 
     return searchedCvs;
-  }, [q, Cvs]);
+  }, [q, cvs]);
 
   const sortedCvs = useMemo(() => {
     return [...searchedCvs].sort(createComparator(sort, order, (position, key) => mapSortToProperty(position, key)));
