@@ -1,14 +1,21 @@
 import { PersonOutline } from '@mui/icons-material';
 import { createFileRoute, useParams } from '@tanstack/react-router';
-import { type User } from '~/shared';
+import { type GetUserData } from '~/shared'; //type User
 import { UserPage } from '~/entities/user/ui/user-page/user-page.tsx';
-import { useUser } from '~/features';
+import { getUserQueryOptions, useUser } from '~/features';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/profile')({
   component: RouteComponent,
-  beforeLoad: ({ params, context }) => {
+
+  beforeLoad: async ({ params, context }) => {
     const { queryClient } = context;
-    const user = queryClient.getQueryData<User>(['user', params.userId]);
+
+    const user = await queryClient.ensureQueryData<GetUserData>({
+      ...getUserQueryOptions({
+        id: params.userId,
+        accessToken: context.auth!.accessToken,
+      }),
+    });
 
     if (user) {
       return {
