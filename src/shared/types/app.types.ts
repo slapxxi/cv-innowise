@@ -1,5 +1,7 @@
 import type { Nullable } from '~/shared';
 
+export type SortOrder = 'asc' | 'desc';
+
 export type Auth = Nullable<{
   accessToken: string;
   user: User;

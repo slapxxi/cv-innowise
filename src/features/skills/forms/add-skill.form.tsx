@@ -31,7 +31,7 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = (props) => {
   const form = useForm<CreateSkillForm>({
     resolver: zodResolver(createSkillSchema),
     defaultValues: {
-      skillId: filteredSkills[0].id,
+      skillId: filteredSkills[0]?.id,
       masteryLevel: masteryLevels[0],
     },
   });
@@ -44,6 +44,15 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = (props) => {
     const categoryId = skill?.category?.id;
     createProfileSkill({ skill: { userId: params.userId, name: skill.name, categoryId, mastery: data.masteryLevel } });
   };
+
+  if (filteredSkills.length === 0) {
+    return (
+      <div className="flex flex-col gap-4 mt-4">
+        <p>{t('You have already added all skills')}</p>
+        <Button onClick={onCancel}>{t('Cancel')}</Button>
+      </div>
+    );
+  }
 
   return (
     <form className="flex flex-col gap-8 mt-4" onSubmit={form.handleSubmit(handleSubmit)}>

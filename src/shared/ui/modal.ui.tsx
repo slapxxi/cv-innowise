@@ -11,7 +11,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
   const { children, title, onClose, ...rest } = props;
 
   return (
-    <BaseModal {...rest}>
+    <BaseModal onClose={onClose} {...rest}>
       <div
         className={cn(
           'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-bg p-4 rounded shadow-lg w-3/4 max-w-[600px]',
@@ -26,8 +26,6 @@ export const Modal: React.FC<ModalProps> = (props) => {
         </header>
 
         {children}
-
-        <footer></footer>
       </div>
     </BaseModal>
   );

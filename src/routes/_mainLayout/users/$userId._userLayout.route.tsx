@@ -31,18 +31,21 @@ function RouteComponent() {
             params={{ userId: params.userId }}
             value="/users/$userId/profile"
             label={t('Profile')}
+            replace
           />
           <TabLink
             to="/users/$userId/skills"
             params={{ userId: params.userId }}
             value="/users/$userId/skills"
             label={t('Skills')}
+            replace
           />
           <TabLink
             to="/users/$userId/languages"
             params={{ userId: params.userId }}
             value="/users/$userId/languages"
             label={t('Languages')}
+            replace
           />
         </Tabs>
       </header>

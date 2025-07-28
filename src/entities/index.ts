@@ -1,3 +1,3 @@
-export * from './user/hooks';
-export * from './user/ui/users-table';
-export * from './user/dialogs/';
+export * from './users/index';
+export * from './cvs/index';
+export * from './user/index';

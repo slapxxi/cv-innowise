@@ -2,14 +2,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Add, Close as CloseIcon, DeleteForever } from '@mui/icons-material';
 import { Checkbox, IconButton } from '@mui/material';
 import { createFileRoute } from '@tanstack/react-router';
-import { Fragment, useReducer } from 'react';
+import { Fragment } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { useAuth } from '~/app';
 import i18n from '~/app/i18n';
 import { AddSkillForm, skillsOptions, UpdateSkillForm, useDeleteProfileSkills, useUser } from '~/features';
-import { Button, Count, Modal, SkillBar, Text, type SkillMastery } from '~/shared';
+import { Button, Count, Modal, PageTitle, SkillBar, useEditingState, type SkillMastery } from '~/shared';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/skills')({
   component: RouteComponent,
@@ -26,58 +26,29 @@ const deleteSkillsSchema = z.object({
   skills: z.string().array().min(1),
 });
 
-type Action = { type: 'add' } | { type: 'delete' } | { type: 'update'; skill: SkillMastery } | { type: 'cancel' };
-
-type State = {
-  status: 'idle' | 'adding' | 'updating' | 'deleting';
-  context?: {
-    skill: SkillMastery;
-  };
-};
-
-function routeReducer(state: State, action: Action): State {
-  if (action.type === 'cancel') {
-    return { status: 'idle' };
-  }
-
-  switch (state.status) {
-    case 'idle':
-      if (action.type === 'add') {
-        return { status: 'adding' };
-      }
-      if (action.type === 'delete') {
-        return { status: 'deleting' };
-      }
-      if (action.type === 'update') {
-        return { status: 'updating', context: { skill: action.skill } };
-      }
-      return state;
-    default:
-      return state;
-  }
-}
-
 function RouteComponent() {
   const params = Route.useParams();
   const { t } = useTranslation();
   const auth = useAuth();
   const { user, invalidateUser } = useUser({ id: params.userId });
-  const multipleForm = useForm({
+  const deleteMultipleForm = useForm({
     resolver: zodResolver(deleteSkillsSchema),
   });
-  const [state, send] = useReducer(routeReducer, { status: 'idle' });
+  const { state, update, del, add, cancel } = useEditingState<{ skill: SkillMastery }>();
   const { deleteProfileSkills } = useDeleteProfileSkills({
     onSuccess: () => {
       handleCancel();
       invalidateUser();
     },
   });
-  const isOwner = user.id === auth!.user.id;
 
-  const selectedSkills = multipleForm.watch('skills');
+  const isOwner = user.id === auth!.user.id;
+  const selectedSkills = deleteMultipleForm.watch('skills');
 
   function handleUpdate(skill: SkillMastery) {
-    send({ type: 'update', skill });
+    if (isOwner) {
+      update({ skill });
+    }
   }
 
   function handleDelete(skill: SkillMastery) {
@@ -95,19 +66,17 @@ function RouteComponent() {
   };
 
   function handleCancel() {
-    send({ type: 'cancel' });
+    cancel();
   }
 
   return (
     <div className="px-6 py-4">
-      <Text asChild variant="light">
-        <h2>{t('Skills')}</h2>
-      </Text>
+      <PageTitle>{t('Skills')}</PageTitle>
 
       <Modal open={state.status === 'adding'} title={t('Add Skill')} onClose={handleCancel}>
         <AddSkillForm
           onSuccess={() => {
-            handleCancel();
+            cancel();
             invalidateUser();
           }}
           onCancel={handleCancel}
@@ -119,7 +88,7 @@ function RouteComponent() {
           <UpdateSkillForm
             skill={state.context!.skill}
             onSuccess={() => {
-              handleCancel();
+              cancel();
               invalidateUser();
             }}
             onCancel={handleCancel}
@@ -127,7 +96,7 @@ function RouteComponent() {
         )}
       </Modal>
 
-      <form className="relative mx-auto xl:max-w-[900px]" onSubmit={multipleForm.handleSubmit(handleMultipleDelete)}>
+      <form className="relative mx-auto xl:max-w-4xl" onSubmit={deleteMultipleForm.handleSubmit(handleMultipleDelete)}>
         {user.skillsByCategories &&
           Object.entries(user.skillsByCategories)
             .sort()
@@ -149,7 +118,7 @@ function RouteComponent() {
                         </label>
 
                         {state.status === 'deleting' ? (
-                          <Checkbox id={`skill-${s.name}`} value={s.name} {...multipleForm.register('skills')} />
+                          <Checkbox id={`skill-${s.name}`} value={s.name} {...deleteMultipleForm.register('skills')} />
                         ) : (
                           isOwner && (
                             <IconButton
@@ -174,7 +143,7 @@ function RouteComponent() {
                 {t('Cancel')}
               </Button>
             ) : (
-              <Button variant="text" startIcon={<Add />} onClick={() => send({ type: 'add' })} key="add-skill">
+              <Button variant="text" startIcon={<Add />} onClick={() => add()} key="add-skill">
                 {t('Add Skill')}
               </Button>
             )}
@@ -189,13 +158,7 @@ function RouteComponent() {
                 {t('Delete')}
               </Button>
             ) : (
-              <Button
-                key="remove"
-                variant="text"
-                startIcon={<DeleteForever />}
-                onClick={() => send({ type: 'delete' })}
-                dangerous
-              >
+              <Button key="remove" variant="text" startIcon={<DeleteForever />} onClick={() => del()} dangerous>
                 {t('Remove Skills')}
               </Button>
             )}

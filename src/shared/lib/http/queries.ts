@@ -74,6 +74,14 @@ const POSITION_QUERY = gql`
 `;
 
 const LANGUAGE_QUERY = gql`
+  id
+  createdAt: created_at
+  name
+  nativeName: native_name
+  iso2
+`;
+
+const LANGUAGE_PROFICIENCY_QUERY = gql`
   name
   proficiency
 `;
@@ -89,7 +97,7 @@ const PROFILE_QUERY = gql`
     ${SKILL_MASTERY_QUERY}
   }
   languages {
-    ${LANGUAGE_QUERY}
+    ${LANGUAGE_PROFICIENCY_QUERY}
   }
 `;
 
@@ -101,6 +109,7 @@ const CV_QUERY = gql`
   description
   user {
     id
+    email
   }
   projects {
     id
@@ -109,8 +118,8 @@ const CV_QUERY = gql`
 
 const DEPARTMENT_QUERY = gql`
   id
-  created_at
   name
+  createdAt: created_at
 `;
 
 const USER_QUERY = gql`
