@@ -1,6 +1,8 @@
 import { PersonOutline } from '@mui/icons-material';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useParams } from '@tanstack/react-router';
 import { type User } from '~/shared';
+import { UserPage } from '~/entities/user/ui/user-page/user-page.tsx';
+import { useUser } from '~/features';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/profile')({
   component: RouteComponent,
@@ -19,11 +21,17 @@ export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/pro
     }
 
     return {
-      breadcumb: { title: 'User', pathname: `/users/${params.userId}/profile`, icon: <PersonOutline /> },
+      breadcrumb: { title: 'User', pathname: `/users/${params.userId}/profile`, icon: <PersonOutline /> },
+      user,
     };
   },
 });
 
 function RouteComponent() {
-  return <div>Profile</div>;
+  const { userId } = useParams({ from: '/_mainLayout/users/$userId/_userLayout/profile' });
+  const { user } = useUser({ id: userId });
+
+  if (user) {
+    return <UserPage user={user} />;
+  }
 }
