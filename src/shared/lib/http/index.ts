@@ -22,5 +22,6 @@ export * from './get-departments.http';
 export * from './get-cvs.http';
 export * from './create-cv.http';
 export * from './update-cv.http';
+export * from './delete-cv.http';
 
 export * from './graphql.http';

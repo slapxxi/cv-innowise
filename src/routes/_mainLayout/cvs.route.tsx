@@ -4,11 +4,12 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { SearchContainer } from '~/app';
-import { AddCvForm, cvsOptions, cvsSortingFields, UpdateCvForm, useCvs } from '~/features';
+import { AddCvForm, cvsOptions, cvsSortingFields, UpdateCvForm, useCvs, useDeleteCvs } from '~/features';
 import {
   ActionMenu,
   ActionMenuItem,
   ButtonAdd,
+  Confirm,
   Highlight,
   Modal,
   OptionalLabel,
@@ -19,6 +20,7 @@ import {
   type ChangeSortHandler,
   type Cv,
 } from '~/shared';
+
 const cvsSearchSchema = z.object({
   sort: z.enum(cvsSortingFields).catch('name'),
   order: z.enum(['asc', 'desc']).catch('asc'),
@@ -39,8 +41,14 @@ function RouteComponent() {
   const search = Route.useSearch();
   const nav = Route.useNavigate();
   const { cvs, invalidateCvs, isFetching } = useCvs({ ...search });
-  const { state, add, update, cancel } = useEditingState<{ cv: Cv }>();
+  const { state, add, update, del, cancel } = useEditingState<{ cv: Cv }>();
   const [menuOpen, setMenuOpen] = useState<number | null>(null);
+  const { deleteCvs } = useDeleteCvs({
+    onSuccess: () => {
+      invalidateCvs();
+      cancel();
+    },
+  });
 
   const handleSearch = (q: string) => {
     nav({ search: (prev) => ({ ...prev, q }) });
@@ -60,6 +68,10 @@ function RouteComponent() {
     cancel();
   }
 
+  function handleDeleteCv() {
+    deleteCvs({ cvId: state.context!.cv.id });
+  }
+
   function handleOpen() {
     add();
   }
@@ -73,8 +85,9 @@ function RouteComponent() {
     setMenuOpen(null);
   }
 
-  function handleDelete() {
-    // deleteCv({ cvId: cv.id });
+  function handleDelete(cv: Cv) {
+    del({ cv });
+    setMenuOpen(null);
   }
 
   return (
@@ -84,6 +97,11 @@ function RouteComponent() {
       onSearch={handleSearch}
       actionSlot={<ButtonAdd onClick={handleOpen}>{t('Create cv')}</ButtonAdd>}
     >
+      <Confirm title="Delete CV" open={state.status === 'deleting'} onCancel={handleCancel} onConfirm={handleDeleteCv}>
+        {`${t('Are you sure you want to delete CV')}`}
+        <b>{` "${state.context?.cv.name}"`}?</b>
+      </Confirm>
+
       <Modal title={t('Create cv')} open={state.status === 'adding'} onClose={handleCancel}>
         <AddCvForm onSuccess={handleCreateCv} onCancel={handleCancel} />
       </Modal>
@@ -133,7 +151,7 @@ function RouteComponent() {
             <TableCell align="center">
               <ActionMenu open={menuOpen === i} onOpen={() => setMenuOpen(i)} onClose={() => setMenuOpen(null)}>
                 <ActionMenuItem onClick={() => handleUpdate(cv)}>Update cv </ActionMenuItem>
-                <ActionMenuItem onClick={() => handleDelete()}>Delete cv</ActionMenuItem>
+                <ActionMenuItem onClick={() => handleDelete(cv)}>Delete cv</ActionMenuItem>
               </ActionMenu>
             </TableCell>
           </TableRow>
