@@ -18,6 +18,6 @@ export function useUserFormData(params: { accessToken: string }) {
       }
       throw formDataResult.error;
     },
-    staleTime: 5 * 60 * 1000,
+    staleTime: Infinity,
   });
 }
