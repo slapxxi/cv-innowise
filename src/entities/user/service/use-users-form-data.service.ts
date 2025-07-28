@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import type { Department, Position } from 'cv-graphql';
 import { fetchUserFormData } from '~/shared/lib/http/fetch-user-form-data.http.ts';
+import type { Department, Position } from '~/shared';
 
 type FormData = {
   departments: Department[];

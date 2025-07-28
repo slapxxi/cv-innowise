@@ -11,3 +11,4 @@ export * from './signup.http';
 export * from './update-token.http';
 export * from './update-user.http';
 export * from './update-profile.http';
+export * from './upload-avatar.http';

@@ -1,8 +1,8 @@
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import type { Department, Position } from 'cv-graphql';
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import type { FormType } from '~/entities/user/types';
+import type { Department, Position } from '~/shared';
 
 type UserFormFieldsProps = {
   className?: string;
