@@ -16,6 +16,8 @@ type QueryOptions = UseSuspenseQueryOptions<GetUsersData, GetUsersError>;
 
 export const usersSortingFields = ['firstName', 'lastName', 'email', 'positionName', 'departmentName'] as const;
 
+export type UsersSortKey = (typeof usersSortingFields)[number];
+
 export const usersOptions = (params: { accessToken: string }) => {
   const { accessToken } = params;
   return {
@@ -34,7 +36,7 @@ export const usersOptions = (params: { accessToken: string }) => {
 
 export type UsersSearchParams = {
   q?: string;
-  sort?: (typeof usersSortingFields)[number];
+  sort?: UsersSortKey;
   order?: SortOrder;
   page?: number;
   limit?: number;
@@ -91,7 +93,7 @@ export function useUsers(params: UseUsersParams) {
   };
 }
 
-function mapSortToProperty(user: User, sort: (typeof usersSortingFields)[number]) {
+function mapSortToProperty(user: User, sort: UsersSortKey) {
   let result;
 
   switch (sort) {
@@ -101,15 +103,8 @@ function mapSortToProperty(user: User, sort: (typeof usersSortingFields)[number]
     case 'lastName':
       result = user.profile.lastName;
       break;
-    case 'email':
-      result = user.email;
-      break;
-    case 'positionName':
-      result = user.positionName;
-      break;
-    case 'departmentName':
-      result = user.departmentName;
-      break;
+    default:
+      result = user[sort];
   }
 
   return result ?? '';

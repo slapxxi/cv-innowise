@@ -109,6 +109,7 @@ const CV_QUERY = gql`
   description
   user {
     id
+    email
   }
   projects {
     id

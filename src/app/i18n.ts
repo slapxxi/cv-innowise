@@ -9,6 +9,7 @@ const resources = {
     translation: {
       Cancel: 'Cancel',
       CVs: 'CVs',
+      Cvs: 'CVs',
       Department: 'Department',
       Email: 'Email',
       'Email is required': 'Email is required',
@@ -49,12 +50,14 @@ const resources = {
       'No category': 'No Category',
       'Position name': 'Position Name',
       iso2: 'ISO2',
+      'Cv name': 'CV Name',
     },
   },
   ru: {
     translation: {
       Cancel: 'Отменить',
       CVs: 'Резюме',
+      Cvs: 'Резюме',
       Department: 'Отдел',
       'Email is required': 'Электронная почта обязательна',
       Email: 'Электронная почта',
@@ -121,6 +124,7 @@ const resources = {
       'Native name': 'Нативное название',
       iso2: 'ISO2',
       'Position name': 'Название должности',
+      'Cv name': 'Название резюме',
       // etc...
     },
   },

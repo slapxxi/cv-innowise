@@ -100,7 +100,7 @@ export const Table = <T extends { id: string }>(props: TableProps<T>) => {
       </TableContainer>
       {count && limit && page && (
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25, 50, 75, 100, 380]}
+          rowsPerPageOptions={[5, 10, 25, 50, 100]}
           component="div"
           count={count}
           rowsPerPage={limit}
