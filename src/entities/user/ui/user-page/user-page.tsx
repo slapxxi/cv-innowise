@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useAuth } from '~/app';
 import UserMeta from '~/entities/user/ui/user-page/user-meta.tsx';
+import { useMemo } from 'react';
 
 type PropsType = {
   user: User;
@@ -26,9 +27,18 @@ export const UserPage = ({ user }: PropsType) => {
     positionId: user.position?.id || '',
     positionName: user.position?.name || '',
   });
+  const formIsChanged = useMemo(() => {
+    return (
+      form.firstName !== (profile?.firstName || '') ||
+      form.lastName !== (profile?.lastName || '') ||
+      form.departmentId !== (user.department?.id || '') ||
+      form.positionId !== (user.position?.id || '')
+    );
+  }, [form, profile, user]);
 
   const updateUserMutation = useUpdateUser();
   const updateProfileMutation = useUpdateProfile();
+
   const handleSubmit = () => {
     updateProfileMutation.mutate(
       {
@@ -60,7 +70,7 @@ export const UserPage = ({ user }: PropsType) => {
         gap: 2,
       }}
     >
-      <UserMeta profile={profile} user={user} />
+      <UserMeta isOwner={isOwner} profile={profile} user={user} />
 
       <UserFormFields
         className={'w-full grid grid-cols-1 xl:grid-cols-2 gap-4 '}
@@ -73,10 +83,13 @@ export const UserPage = ({ user }: PropsType) => {
         onChange={handleChange}
       />
       {isOwner && (
-        <Box>
-          <Button variant="contained" onClick={handleSubmit}>
-            Save Changes
-          </Button>
+        <Box className={'w-full grid grid-cols-1 xl:grid-cols-2 gap-4 '}>
+          <Box />
+          <Box className={'flex justify-end'}>
+            <Button disabled={!formIsChanged} variant="contained" className={'w-full'} onClick={handleSubmit}>
+              Save Changes
+            </Button>
+          </Box>
         </Box>
       )}
     </Box>
