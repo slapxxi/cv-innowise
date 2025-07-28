@@ -86,8 +86,14 @@ export const UserPage = ({ user }: PropsType) => {
         <Box className={'w-full grid grid-cols-1 xl:grid-cols-2 gap-4 '}>
           <Box />
           <Box className={'flex justify-end'}>
-            <Button disabled={!formIsChanged} variant="contained" className={'w-full'} onClick={handleSubmit}>
-              Save Changes
+            <Button
+              sx={{ borderRadius: '40px' }}
+              disabled={!formIsChanged}
+              variant="contained"
+              className={'w-full'}
+              onClick={handleSubmit}
+            >
+              Update
             </Button>
           </Box>
         </Box>
