@@ -1,25 +1,10 @@
-import { CloudUploadOutlined as CloudIcon } from '@mui/icons-material';
 import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { SearchContainer } from '~/app';
+import { CvsTable } from '~/entities';
 import { AddCvForm, cvsOptions, cvsSortingFields, UpdateCvForm, useCvs, useDeleteCvs } from '~/features';
-import {
-  ActionMenu,
-  ActionMenuItem,
-  ButtonAdd,
-  Confirm,
-  Highlight,
-  Modal,
-  OptionalLabel,
-  Table,
-  TableCell,
-  TableRow,
-  useEditingState,
-  type ChangeSortHandler,
-  type Cv,
-} from '~/shared';
+import { ButtonAdd, Confirm, Modal, useEditingState, type ChangeSortHandler, type Cv } from '~/shared';
 
 const cvsSearchSchema = z.object({
   sort: z.enum(cvsSortingFields).catch('name'),
@@ -40,9 +25,8 @@ function RouteComponent() {
   const { t } = useTranslation();
   const search = Route.useSearch();
   const nav = Route.useNavigate();
-  const { cvs, invalidateCvs, isFetching } = useCvs({ ...search });
+  const { invalidateCvs } = useCvs({ ...search });
   const { state, add, update, del, cancel } = useEditingState<{ cv: Cv }>();
-  const [menuOpen, setMenuOpen] = useState<number | null>(null);
   const { deleteCvs } = useDeleteCvs({
     onSuccess: () => {
       invalidateCvs();
@@ -82,12 +66,10 @@ function RouteComponent() {
 
   function handleUpdate(cv: Cv) {
     update({ cv });
-    setMenuOpen(null);
   }
 
   function handleDelete(cv: Cv) {
     del({ cv });
-    setMenuOpen(null);
   }
 
   return (
@@ -112,51 +94,14 @@ function RouteComponent() {
         )}
       </Modal>
 
-      <Table
-        data={cvs}
-        headFields={[
-          { id: 'name', title: t('Cv name') },
-          { id: 'description', title: t('Cv description') },
-          { id: 'education', title: t('Cv education') },
-          { id: 'employee', title: t('Employee') },
-          { id: 'action', title: '', child: isFetching ? <CloudIcon className="text-xl text-neutral-300" /> : null },
-        ]}
-        order={search.order}
+      <CvsTable
+        q={search.q}
         sort={search.sort}
+        order={search.order}
+        onUpdate={handleUpdate}
+        onDelete={handleDelete}
         onChangeSort={handleChangeSort}
-        fixedHeight
-      >
-        {(cv, i) => (
-          <TableRow key={cv.id}>
-            <TableCell>
-              <Highlight value={cv.highlights.name}>
-                <OptionalLabel>{cv.name}</OptionalLabel>
-              </Highlight>
-            </TableCell>
-            <TableCell>
-              <Highlight value={cv.highlights.description}>
-                <OptionalLabel>{cv.description}</OptionalLabel>
-              </Highlight>
-            </TableCell>
-            <TableCell>
-              <Highlight value={cv.highlights.education}>
-                <OptionalLabel>{cv.education}</OptionalLabel>
-              </Highlight>
-            </TableCell>
-            <TableCell>
-              <Highlight value={cv.highlights.userEmail}>
-                <OptionalLabel>{cv.user?.email}</OptionalLabel>
-              </Highlight>
-            </TableCell>
-            <TableCell align="center">
-              <ActionMenu open={menuOpen === i} onOpen={() => setMenuOpen(i)} onClose={() => setMenuOpen(null)}>
-                <ActionMenuItem onClick={() => handleUpdate(cv)}>Update cv </ActionMenuItem>
-                <ActionMenuItem onClick={() => handleDelete(cv)}>Delete cv</ActionMenuItem>
-              </ActionMenu>
-            </TableCell>
-          </TableRow>
-        )}
-      </Table>
+      />
     </SearchContainer>
   );
 }

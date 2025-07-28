@@ -8,7 +8,7 @@ type QueryOptions = UseSuspenseQueryOptions<GetCvsData, GetCvsError>;
 
 export const cvsSortingFields = ['name', 'description', 'education', 'employee'] as const;
 
-type CvsSortKey = (typeof cvsSortingFields)[number];
+export type CvsSortKey = (typeof cvsSortingFields)[number];
 
 const queryKey = ['cvs'];
 

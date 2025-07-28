@@ -1,10 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
+import { SearchContainer } from '~/app';
 import i18n from '~/app/i18n.ts';
 import { UsersTable } from '~/entities';
 import { usersOptions, usersSortingFields } from '~/features';
-import { PageTitle, SearchField, type ChangeSortHandler } from '~/shared';
+import { type ChangeSortHandler } from '~/shared';
 
 i18n.changeLanguage('ru');
 
@@ -31,12 +32,8 @@ function RouteComponent() {
   const search = Route.useSearch();
   const nav = Route.useNavigate();
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    const form = e.currentTarget;
-    const fd = new FormData(form);
-    const q = fd.get('query');
+  const handleSearch = (q: string) => {
     nav({ search: (prev) => ({ ...prev, q, page: 1 }) });
-    e.preventDefault();
   };
 
   const handleChangeSort: ChangeSortHandler = (sort, order) => {
@@ -52,15 +49,7 @@ function RouteComponent() {
   }
 
   return (
-    <section className="flex flex-col p-6 py-4 gap-4">
-      <header className="sticky top-4 z-10 flex flex-col gap-2 bg-bg dark:bg-bg-dark">
-        <PageTitle>{t('Employees')}</PageTitle>
-
-        <form onSubmit={handleSearch} key={search.q}>
-          <SearchField placeholder={t('Search')} defaultValue={search.q} name="query" autoFocus={search.q !== ''} />
-        </form>
-      </header>
-
+    <SearchContainer title={t('Employees')} query={search.q} onSearch={handleSearch}>
       <UsersTable
         fixedHeight
         onChangeSort={handleChangeSort}
@@ -68,6 +57,6 @@ function RouteComponent() {
         onChangeRowsPerPage={handleChangeRowsPerPage}
         {...search}
       />
-    </section>
+    </SearchContainer>
   );
 }

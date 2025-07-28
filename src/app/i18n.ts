@@ -52,6 +52,8 @@ const resources = {
       iso2: 'ISO2',
       'Cv name': 'CV Name',
       'Create cv': 'Create CV',
+      'Update cv': 'Update CV',
+      'Delete cv': 'Delete CV',
     },
   },
   ru: {
@@ -134,6 +136,9 @@ const resources = {
       'Name is required': 'Название обязательно',
       'Description is required': 'Описание обязательно',
       Description: 'Описание',
+      'Update cv': 'Обновить резюме',
+      'Delete cv': 'Удалить резюме',
+      Search: 'Поиск',
     },
   },
 };

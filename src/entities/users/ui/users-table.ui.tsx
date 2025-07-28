@@ -1,31 +1,46 @@
 import { ChevronRight as ChevronRightIcon } from '@mui/icons-material';
-import { MenuItem, TableRow } from '@mui/material';
+import { TableRow } from '@mui/material';
 import { Link } from '@tanstack/react-router';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '~/app';
 import { useUsers, type UsersSearchParams } from '~/features';
 import {
   ActionMenu,
+  ActionMenuItem,
   Highlight,
   IconButtonLink,
-  MenuItemLink,
   OptionalLabel,
   Table,
   TableCell,
   UserAvatar,
   type NonUndefined,
+  type User,
 } from '~/shared';
 
 type UsersTableProps = {
   q: NonUndefined<UsersSearchParams['q']>;
   sort: NonUndefined<UsersSearchParams['sort']>;
+  onUpdate?: (user: User) => void;
+  onDelete?: (user: User) => void;
 } & Omit<React.ComponentProps<typeof Table>, 'data' | 'children' | 'headFields' | 'count' | 'sort'>;
 
 export const UsersTable: React.FC<UsersTableProps> = (props) => {
-  const { sort, page, limit, order, q, ...rest } = props;
+  const { sort, page, limit, order, q, onUpdate, onDelete, ...rest } = props;
   const { t } = useTranslation();
   const auth = useAuth();
   const { users, total } = useUsers({ sort, order, page, limit, q });
+  const [menuOpen, setMenuOpen] = useState<number | null>(null);
+
+  function handleUpdate(user: User) {
+    onUpdate?.(user);
+    setMenuOpen(null);
+  }
+
+  function handleDelete(user: User) {
+    onDelete?.(user);
+    setMenuOpen(null);
+  }
 
   return (
     <Table
@@ -46,7 +61,7 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
       order={order}
       {...rest}
     >
-      {(user) => (
+      {(user, i) => (
         <TableRow key={user.id}>
           <TableCell>
             <Link to="/users/$userId/profile" params={{ userId: user.id }}>
@@ -78,17 +93,12 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
               <OptionalLabel>{user.positionName}</OptionalLabel>
             </Highlight>
           </TableCell>
-          <TableCell>
+          <TableCell align="center">
             {auth!.user.id === user.id ? (
-              <>
-                <ActionMenu>
-                  <MenuItemLink to="/users/$userId/profile" params={{ userId: user.id }}>
-                    Profile
-                  </MenuItemLink>
-                  <MenuItem>Update user </MenuItem>
-                  <MenuItem>Delete user</MenuItem>
-                </ActionMenu>
-              </>
+              <ActionMenu open={menuOpen === i} onOpen={() => setMenuOpen(i)} onClose={() => setMenuOpen(null)}>
+                <ActionMenuItem onClick={() => handleUpdate(user)}>{t('Update user')}</ActionMenuItem>
+                <ActionMenuItem onClick={() => handleDelete(user)}>{t('Delete user')}</ActionMenuItem>
+              </ActionMenu>
             ) : (
               <IconButtonLink to="/users/$userId/profile" params={{ userId: user.id }} className="hover:opacity-55">
                 <ChevronRightIcon />
