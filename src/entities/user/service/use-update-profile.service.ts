@@ -35,9 +35,8 @@ export const useUpdateProfile = () => {
   const queryClient = useQueryClient();
 
   return useUpdateProfileMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] });
-      queryClient.invalidateQueries({ queryKey: ['user'] });
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['user', variables.userId] });
     },
   });
 };
