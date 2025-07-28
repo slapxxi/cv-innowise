@@ -5,10 +5,12 @@ import { useCvs, type CvsSortKey } from '~/features';
 import {
   ActionMenu,
   ActionMenuItem,
+  ActionMenuItemLink,
   Highlight,
   OptionalLabel,
   Table,
   TableCell,
+  TableCellLink,
   TableRow,
   type ChangeSortHandler,
   type Cv,
@@ -63,11 +65,15 @@ export const CvsTable: React.FC<CvsTableProps> = (props) => {
       >
         {(cv, i) => (
           <TableRow key={cv.id}>
-            <TableCell>
+            <TableCellLink
+              to="/cvs/$cvId/details"
+              params={{ cvId: cv.id }}
+              className="cursor-pointer hover:bg-neutral-200/20"
+            >
               <Highlight value={cv.highlights.name}>
                 <OptionalLabel>{cv.name}</OptionalLabel>
               </Highlight>
-            </TableCell>
+            </TableCellLink>
             <TableCell>
               <Highlight value={cv.highlights.description}>
                 <OptionalLabel>{cv.description}</OptionalLabel>
@@ -85,6 +91,9 @@ export const CvsTable: React.FC<CvsTableProps> = (props) => {
             </TableCell>
             <TableCell align="center">
               <ActionMenu open={menuOpen === i} onOpen={() => setMenuOpen(i)} onClose={() => setMenuOpen(null)}>
+                <ActionMenuItemLink to="/cvs/$cvId/details" params={{ cvId: cv.id }}>
+                  {t('Details')}
+                </ActionMenuItemLink>
                 <ActionMenuItem onClick={() => handleUpdate(cv)}>{t('Update cv')}</ActionMenuItem>
                 <ActionMenuItem onClick={() => handleDelete(cv)}>{t('Delete cv')}</ActionMenuItem>
               </ActionMenu>

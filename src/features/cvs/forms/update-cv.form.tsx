@@ -13,10 +13,17 @@ const UpdateCvSchema = z.object({
 
 type UpdateCvForm = z.infer<typeof UpdateCvSchema>;
 
-type UpdateCvFormProps = { cv: Cv; onSuccess: (cv: Cv) => void; onCancel: () => void };
+type UpdateCvFormProps = {
+  cv: Cv;
+  animate?: boolean;
+  onSubmit?: (data: UpdateCvForm) => void;
+  onSuccess?: (cv: Cv) => void;
+  onCancel?: () => void;
+  children?: React.ReactNode;
+};
 
 export const UpdateCvForm: React.FC<UpdateCvFormProps> = (props) => {
-  const { cv, onSuccess, onCancel } = props;
+  const { cv, animate = true, onSubmit, onSuccess, onCancel, children } = props;
   const { t } = useTranslation();
   const { updateCv } = useUpdateCv({
     onSuccess,
@@ -32,23 +39,29 @@ export const UpdateCvForm: React.FC<UpdateCvFormProps> = (props) => {
   });
 
   const handleSubmit: SubmitHandler<UpdateCvForm> = async (data) => {
-    updateCv({
-      cvId: cv.id,
-      cv: data,
-    });
+    if (onSubmit) {
+      onSubmit(data);
+    } else {
+      updateCv({
+        cvId: cv.id,
+        cv: data,
+      });
+    }
   };
 
   return (
     <form className="flex flex-col gap-8 mt-4" onSubmit={form.handleSubmit(handleSubmit)}>
       <div className="flex flex-col gap-4">
         <TextField
+          animate={animate}
           label={t('Name')}
           {...form.register('name')}
           error={!!form.formState.errors.name}
           helperText={form.formState.errors.name?.message && t(form.formState.errors.name?.message)}
         />
-        <TextField label={t('Education')} {...form.register('education')} />
+        <TextField animate={animate} label={t('Education')} {...form.register('education')} />
         <TextField
+          animate={animate}
           multiline
           rows={8}
           label={t('Description')}
@@ -58,12 +71,16 @@ export const UpdateCvForm: React.FC<UpdateCvFormProps> = (props) => {
         />
       </div>
 
-      <div className="flex gap-2 justify-end">
-        <Button variant="outlined" onClick={() => onCancel()}>
-          {t('Cancel')}
-        </Button>
-        <Button type="submit">{t('Confirm')}</Button>
-      </div>
+      {children !== undefined ? (
+        children
+      ) : (
+        <div className="flex gap-2 justify-end">
+          <Button variant="outlined" onClick={() => onCancel?.()}>
+            {t('Cancel')}
+          </Button>
+          <Button type="submit">{t('Confirm')}</Button>
+        </div>
+      )}
     </form>
   );
 };

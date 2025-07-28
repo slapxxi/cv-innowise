@@ -1,5 +1,6 @@
 import { MoreVert as DotsIcon } from '@mui/icons-material';
 import { IconButton, Menu, MenuItem } from '@mui/material';
+import { createLink } from '@tanstack/react-router';
 import { useState } from 'react';
 
 type ActionMenuProps = {
@@ -47,3 +48,5 @@ export const ActionMenu: React.FC<ActionMenuProps> = (props) => {
 };
 
 export const ActionMenuItem = MenuItem;
+
+export const ActionMenuItemLink = createLink(ActionMenuItem);

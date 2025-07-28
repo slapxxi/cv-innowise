@@ -139,6 +139,9 @@ const resources = {
       'Update cv': 'Обновить резюме',
       'Delete cv': 'Удалить резюме',
       Search: 'Поиск',
+      Details: 'Детали',
+      Projects: 'Проекты',
+      Preview: 'Предпросмотр',
     },
   },
 };

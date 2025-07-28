@@ -19,6 +19,7 @@ export * from './get-positions.http';
 
 export * from './get-departments.http';
 
+export * from './get-cv.http';
 export * from './get-cvs.http';
 export * from './create-cv.http';
 export * from './update-cv.http';
