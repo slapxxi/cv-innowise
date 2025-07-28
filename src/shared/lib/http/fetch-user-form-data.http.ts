@@ -1,5 +1,4 @@
-import { gql, type HttpError, type HttpResult } from '~/shared';
-import type { Department, Position } from 'cv-graphql';
+import { type Department, gql, type HttpError, type HttpResult, type Position } from '~/shared';
 import { ClientError } from 'graphql-request';
 import { API_URL, StatusCodes } from '~/shared/lib/http/const.ts';
 import { request } from '~/shared';
