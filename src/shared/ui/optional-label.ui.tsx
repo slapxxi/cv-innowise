@@ -1,14 +1,15 @@
 import { useTranslation } from 'react-i18next';
+import { cn } from '../utils';
 
-type OptionalFieldProps = { children?: React.ReactNode };
+type OptionalFieldProps = { text?: string; children?: React.ReactNode; className?: string };
 
 export const OptionalLabel: React.FC<OptionalFieldProps> = (props) => {
-  const { children } = props;
+  const { text, children, className } = props;
   const { t } = useTranslation();
 
   if (children) {
     return children;
   }
 
-  return <div className="italic text-neutral-400 text-sm">{t('Not specified')}</div>;
+  return <div className={cn('italic text-neutral-400 text-sm', className)}>{text || t('Not specified')}</div>;
 };

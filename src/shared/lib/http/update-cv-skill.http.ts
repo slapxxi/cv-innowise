@@ -47,6 +47,7 @@ export async function updateCvSkill(params: UpdateCvSkillParams): Promise<Update
     const parsedCv = cvSchema.parse(response.updateCvSkill);
     return { ok: true, data: parsedCv };
   } catch (e) {
+    console.log(e);
     if (e instanceof ClientError) {
       const parseResult = errorsSchema.safeParse(e.response);
 

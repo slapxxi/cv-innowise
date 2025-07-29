@@ -142,6 +142,12 @@ const resources = {
       Details: 'Детали',
       Projects: 'Проекты',
       Preview: 'Предпросмотр',
+      'Till now': 'До сих пор',
+      'Project name': 'Название проекта',
+      'Internal name': 'Внутреннее название',
+      Domain: 'Домен',
+      'Start date': 'Дата начала',
+      'End date': 'Дата окончания',
     },
   },
 };

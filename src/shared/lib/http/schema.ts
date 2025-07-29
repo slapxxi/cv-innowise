@@ -25,6 +25,18 @@ export const errorsSchema = errorResponseSchema.transform((data) => {
   };
 });
 
+export const projectSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  internalName: z.string(),
+  domain: z.string(),
+  description: z.string(),
+  environment: z.string().array(),
+  startDate: z.string(),
+  endDate: z.string().nullable(),
+  createdAt: z.string(),
+});
+
 export const skillSchema = z.object({
   name: z.string(),
   mastery: z.enum(['Novice', 'Advanced', 'Competent', 'Proficient', 'Expert']),
@@ -40,6 +52,20 @@ export const languageSchema = z.object({
   proficiency: z.enum(['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'Native']),
 });
 
+export const cvProjectSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  internalName: z.string(),
+  description: z.string(),
+  domain: z.string(),
+  startDate: z.string(),
+  endDate: z.string().nullable(),
+  environment: z.string().array(),
+  responsibilities: z.string().array(),
+  roles: z.string().array(),
+  project: projectSchema,
+});
+
 export const cvSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -49,6 +75,7 @@ export const cvSchema = z.object({
   user: z.object({ id: z.string(), email: z.string() }).nullable(),
   skills: skillSchema.array().default([]),
   languages: languageSchema.array().default([]),
+  projects: cvProjectSchema.array().nullable().default([]),
 });
 
 export const skillCategorySchema = z.object({

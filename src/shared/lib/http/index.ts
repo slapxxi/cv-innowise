@@ -33,3 +33,5 @@ export * from './graphql.http';
 export * from './update-user.http';
 export * from './update-profile.http';
 export * from './upload-avatar.http';
+
+export * from './get-projects.http';

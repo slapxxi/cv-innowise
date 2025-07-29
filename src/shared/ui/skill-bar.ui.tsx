@@ -51,13 +51,13 @@ export const SkillBar: React.FC<UserSkillProps> = (props) => {
   return (
     <svg viewBox="0 0 80 4" className={cn('select-none w-[80px]', className)}>
       <rect
-        className="fill-neutral-700 transition-[width,fill] w-full h-full"
+        className="h-full w-full fill-neutral-700 transition-[width,fill] delay-100"
         style={{
           fill: finalColor.light,
         }}
       />
       <rect
-        className="fill-neutral-700 transition-[width,fill] h-full animate-enter"
+        className="h-full animate-enter fill-neutral-700 transition-[width,fill] delay-100"
         style={{
           width: `${t * 100}%`,
           fill: finalColor.normal,
