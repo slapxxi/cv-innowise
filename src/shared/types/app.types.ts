@@ -1,8 +1,13 @@
 import type { Nullable } from '~/shared';
+import 'cv-graphql';
+
+export type WithSkillsByCategories<T> = T & {
+  skillsByCategories: Record<SkillCategory['name'], SkillMastery[]> | null;
+};
 
 export type BreadcrumbEntry = {
-  name: string;
-  path: string;
+  title: string;
+  to?: string;
   icon?: React.ReactNode;
 };
 
@@ -31,9 +36,7 @@ export type User = {
   role: UserRole;
 };
 
-export type UserWithSkillsByCategories = User & {
-  skillsByCategories: Record<SkillCategory['name'], SkillMastery[]> | null;
-};
+export type UserWithSkillsByCategories = WithSkillsByCategories<User>;
 
 export type UserRole = 'Employee' | 'Admin';
 
@@ -60,9 +63,7 @@ export type Cv = {
   languages: LanguageProficiency[];
 };
 
-export type CvWithSkillsByCategories = Cv & {
-  skillsByCategories: Record<SkillCategory['name'], SkillMastery[]> | null;
-};
+export type CvWithSkillsByCategories = WithSkillsByCategories<Cv>;
 
 export type Department = {
   id: string;

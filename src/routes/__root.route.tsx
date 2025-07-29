@@ -2,12 +2,12 @@ import { QueryClient } from '@tanstack/react-query';
 import { HeadContent, Outlet, createRootRouteWithContext } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { decodeJWT, getUser, updateToken, type Auth } from '~/shared';
+import { decodeJWT, getUser, updateToken, type Auth, type BreadcrumbEntry } from '~/shared';
 
 export type CVRouterContext = {
   queryClient: QueryClient;
   auth: Auth;
-  breadcrumb?: { title: string; pathname: string; icon?: React.ReactNode };
+  breadcrumbs?: BreadcrumbEntry[];
 };
 
 export const Route = createRootRouteWithContext<CVRouterContext>()({

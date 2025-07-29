@@ -7,12 +7,12 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { useAuth } from '~/app';
-import i18n from '~/app/i18n';
-import { languagesOptions, useUser, AddLanguageForm, useDeleteProfileLanguages } from '~/features';
+import { AddLanguageForm, languagesOptions, useDeleteProfileLanguages, useUser } from '~/features';
 import { UpdateLanguageForm } from '~/features/languages/forms/update-language.form';
 import {
   Button,
   Count,
+  mergeBreadcrumbs,
   Modal,
   PageTitle,
   useEditingState,
@@ -22,8 +22,10 @@ import {
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/languages')({
   component: RouteComponent,
-  beforeLoad: ({ params }) => {
-    return { breadcrumb: { title: i18n.t('Languages'), pathname: `/users/${params.userId}/languages` } };
+  beforeLoad: ({ context }) => {
+    return {
+      breadcrumbs: mergeBreadcrumbs(context.breadcrumbs, { title: 'Languages', to: '/users/$userId/languages' }),
+    };
   },
   loader: ({ context }) => {
     const { queryClient, auth } = context;

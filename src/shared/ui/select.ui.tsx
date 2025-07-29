@@ -4,11 +4,11 @@ import { useId } from 'react';
 type SelectProps = { labelProps?: React.ComponentProps<typeof InputLabel> } & React.ComponentProps<typeof BaseSelect>;
 
 export const Select: React.FC<SelectProps> = (props) => {
-  const { children, label, labelProps, ...rest } = props;
+  const { children, label, labelProps, className, ...rest } = props;
   const labelId = useId();
 
   return (
-    <FormControl>
+    <FormControl className={className}>
       <InputLabel id={labelId} {...labelProps}>
         {label}
       </InputLabel>

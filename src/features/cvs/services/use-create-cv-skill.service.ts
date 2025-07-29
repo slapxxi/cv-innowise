@@ -17,7 +17,6 @@ export function useCreateCvSkill(params: Params = {}) {
       });
 
       if (createCvSkillResult.ok) {
-        console.log(createCvSkillResult.data);
         const cv = createCvSkillResult.data;
         return cv;
       }

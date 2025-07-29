@@ -63,19 +63,11 @@ export const cvProjectSchema = z.object({
   environment: z.string().array(),
   responsibilities: z.string().array(),
   roles: z.string().array(),
-  project: projectSchema,
+  project: z.object({ id: z.string(), name: z.string() }),
 });
 
 export const cvSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  createdAt: z.string(),
-  education: z.string().nullable(),
-  description: z.string(),
-  user: z.object({ id: z.string(), email: z.string() }).nullable(),
   skills: skillSchema.array().default([]),
-  languages: languageSchema.array().default([]),
-  projects: cvProjectSchema.array().nullable().default([]),
 });
 
 export const skillCategorySchema = z.object({

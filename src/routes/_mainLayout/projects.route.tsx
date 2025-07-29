@@ -18,7 +18,7 @@ import {
   type ChangeSortHandler,
 } from '~/shared';
 
-const positionsSearchSchema = z.object({
+const projectsSearchSchema = z.object({
   sort: z.enum(projectsSortingFields).catch('name'),
   order: z.enum(['asc', 'desc']).catch('asc'),
   q: z.string().trim().catch(''),
@@ -30,7 +30,7 @@ export const Route = createFileRoute('/_mainLayout/projects')({
     const { queryClient } = context;
     queryClient.prefetchQuery(projectsOptions({ accessToken: context.auth!.accessToken }));
   },
-  validateSearch: positionsSearchSchema,
+  validateSearch: projectsSearchSchema,
 });
 
 function RouteComponent() {

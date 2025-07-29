@@ -1,8 +1,8 @@
-import type { HttpError, HttpResult, Cv } from '~/shared';
+import type { Cv, HttpError, HttpResult } from '~/shared';
 import { API_URL } from './const';
 import { ClientError, gql, request } from './graphql.http';
 import { Queries } from './queries';
-import { cvSchema, errorsSchema } from './schema';
+import { errorsSchema } from './schema';
 
 const DELETE_CV_SKILL = gql`
   mutation DeleteCvSkill($skill: DeleteCvSkillInput!) {
@@ -43,8 +43,7 @@ export async function deleteCvSkills(params: DeleteCvSkillsParams): Promise<Dele
         Authorization: `Bearer ${params.accessToken}`,
       },
     });
-    const parsedCv = cvSchema.parse(response.deleteCvSkill);
-    return { ok: true, data: parsedCv };
+    return { ok: true, data: response.deleteCvSkill };
   } catch (e) {
     if (e instanceof ClientError) {
       const parseResult = errorsSchema.safeParse(e.response);

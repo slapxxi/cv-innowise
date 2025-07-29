@@ -1,8 +1,8 @@
-import type { HttpError, HttpResult, Mastery, Cv } from '~/shared';
+import type { Cv, HttpError, HttpResult, Mastery } from '~/shared';
 import { API_URL } from './const';
 import { ClientError, gql, request } from './graphql.http';
 import { Queries } from './queries';
-import { cvSchema, errorsSchema } from './schema';
+import { errorsSchema } from './schema';
 
 const UPDATE_CV_SKILL = gql`
   mutation UpdateCvSkill($skill: UpdateCvSkillInput!) {
@@ -44,10 +44,8 @@ export async function updateCvSkill(params: UpdateCvSkillParams): Promise<Update
         Authorization: `Bearer ${params.accessToken}`,
       },
     });
-    const parsedCv = cvSchema.parse(response.updateCvSkill);
-    return { ok: true, data: parsedCv };
+    return { ok: true, data: response.updateCvSkill };
   } catch (e) {
-    console.log(e);
     if (e instanceof ClientError) {
       const parseResult = errorsSchema.safeParse(e.response);
 

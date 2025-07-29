@@ -45,27 +45,44 @@ const PROJECT_QUERY = gql`
   name
   internalName: internal_name
   domain
-  startDate: start_date
-  endDate: end_date
   description
   environment
+  startDate: start_date
+  endDate: end_date
 `;
 
 const CVPROJECT_QUERY = gql`
   id
-  project {
-    id
-  }
   name
-  internalName: internal_name
-  description
+  roles
   domain
+  description
+  internalName: internal_name
+  environment
+  responsibilities
   startDate: start_date
   endDate: end_date
-  environment
-  roles
-  responsibilities
+  project {
+    id
+    name
+    internalName: internal_name
+    description
+  }
 `;
+
+// export interface CvProject {
+//   id: string;
+//   project: Project;
+//   name: string;
+//   internal_name: string;
+//   description: string;
+//   domain: string;
+//   start_date: string;
+//   end_date?: Nullable<string>;
+//   environment: string[];
+//   roles: string[];
+//   responsibilities: string[];
+// }
 
 const POSITION_QUERY = gql`
   id
@@ -112,11 +129,13 @@ const CV_QUERY = gql`
     email
   }
   projects {
-    id
-    name
+    ${CVPROJECT_QUERY}
   }
   skills {
     ${SKILL_MASTERY_QUERY}
+  }
+  languages {
+    ${LANGUAGE_PROFICIENCY_QUERY}
   }
 `;
 

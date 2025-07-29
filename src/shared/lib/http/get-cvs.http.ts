@@ -1,11 +1,17 @@
 import { ClientError, gql, request, type Cv, type HttpError, type HttpResult } from '~/shared';
 import { API_URL, StatusCodes } from './const';
-import { Queries } from './queries';
 
 const GET_CVS = gql`
   query Cvs {
     cvs {
-      ${Queries.CV_QUERY}
+      id
+      name
+      description
+      education
+      user {
+        id
+        email
+      }
     }
   }
 `;

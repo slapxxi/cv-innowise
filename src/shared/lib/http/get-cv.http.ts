@@ -71,9 +71,8 @@ export const getCv = async (params: GetCvParams): Promise<GetCvResult> => {
       variables: { cvId: params.id },
     });
     const { data, success } = groupByCategoriesSchema.safeParse(response);
-    const parsedCv = cvSchema.parse(response.cv);
     const result = {
-      ...parsedCv,
+      ...response.cv,
       skillsByCategories: success ? data : null,
     };
     return { ok: true, data: result };
