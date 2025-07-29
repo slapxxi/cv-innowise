@@ -1,11 +1,16 @@
 import { createFileRoute, Outlet, useMatches } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
+import { cvOptions } from '~/features';
 import { Breadcrumbs, TabLink, Tabs } from '~/shared';
 
 export const Route = createFileRoute('/_mainLayout/cvs/$cvId/_cvsLayout')({
   component: RouteComponent,
   beforeLoad: () => {
     return { breadcrumb: { title: 'CVs', pathname: `/cvs` } };
+  },
+  loader: ({ context, params }) => {
+    const { auth, queryClient } = context;
+    queryClient.prefetchQuery(cvOptions({ id: params.cvId, accessToken: auth!.accessToken }));
   },
 });
 

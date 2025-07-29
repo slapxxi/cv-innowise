@@ -1,11 +1,28 @@
-import { ClientError, gql, request, type Cv, type HttpError, type HttpResult } from '~/shared';
+import { groupBy } from 'lodash';
+import z from 'zod/v4';
+import {
+  ClientError,
+  gql,
+  request,
+  type Cv,
+  type CvWithSkillsByCategories,
+  type HttpError,
+  type HttpResult,
+  type Mastery,
+} from '~/shared';
 import { API_URL, StatusCodes } from './const';
 import { Queries } from './queries';
+import { cvSchema, skillCategorySchema } from './schema';
 
 const GET_CV = gql`
   query Cv($cvId: ID!) {
     cv(cvId: $cvId) {
       ${Queries.CV_QUERY}
+    }
+
+    skillCategories {
+      id
+      name
     }
   }
 `;
@@ -16,7 +33,7 @@ type GetCvQueryVariables = {
   cvId: string;
 };
 
-export type GetCvData = Cv;
+export type GetCvData = CvWithSkillsByCategories;
 
 export type GetCvError = HttpError;
 
@@ -26,6 +43,22 @@ export type GetCvParams = {
 };
 
 export type GetCvResult = HttpResult<GetCvData, GetCvError>;
+
+const groupByCategoriesSchema = z
+  .object({
+    cv: cvSchema,
+    skillCategories: skillCategorySchema.array(),
+  })
+  .transform((data) => {
+    const skills = data.cv.skills;
+    const mapped = skills?.map((s) => ({
+      name: s.name,
+      mastery: s.mastery as Mastery,
+      categoryId: s.categoryId,
+      categoryName: data.skillCategories.find((c) => c.id === s.categoryId)?.name ?? 'No category',
+    }));
+    return groupBy(mapped ?? [], 'categoryName');
+  });
 
 export const getCv = async (params: GetCvParams): Promise<GetCvResult> => {
   try {
@@ -37,7 +70,13 @@ export const getCv = async (params: GetCvParams): Promise<GetCvResult> => {
       },
       variables: { cvId: params.id },
     });
-    return { ok: true, data: response.cv };
+    const { data, success } = groupByCategoriesSchema.safeParse(response);
+    const parsedCv = cvSchema.parse(response.cv);
+    const result = {
+      ...parsedCv,
+      skillsByCategories: success ? data : null,
+    };
+    return { ok: true, data: result };
   } catch (e) {
     if (e instanceof ClientError) {
       if (e.response.errors?.find((e) => e.message.toLowerCase() === 'unauthorized')) {

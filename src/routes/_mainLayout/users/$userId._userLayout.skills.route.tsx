@@ -7,14 +7,13 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { useAuth } from '~/app';
-import i18n from '~/app/i18n';
 import { AddSkillForm, skillsOptions, UpdateSkillForm, useDeleteProfileSkills, useUser } from '~/features';
 import { Button, Count, Modal, PageTitle, SkillBar, useEditingState, type SkillMastery } from '~/shared';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/skills')({
   component: RouteComponent,
   beforeLoad: ({ params }) => {
-    return { breadcrumb: { title: i18n.t('Skills'), pathname: `/users/${params.userId}/skills` } };
+    return { breadcrumb: { title: 'Skills', pathname: `/users/${params.userId}/skills` } };
   },
   loader: ({ context }) => {
     const { auth, queryClient } = context;
