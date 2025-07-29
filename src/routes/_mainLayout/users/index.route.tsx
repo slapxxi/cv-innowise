@@ -7,8 +7,6 @@ import { UsersTable } from '~/entities';
 import { usersOptions, usersSortingFields } from '~/features';
 import { type ChangeSortHandler } from '~/shared';
 
-i18n.changeLanguage('ru');
-
 const searchSchema = z.object({
   page: z.number().min(1).catch(1),
   limit: z.number().min(1).max(100).catch(10),
