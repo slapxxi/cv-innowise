@@ -28,6 +28,7 @@ export const useUpdateUser = () => {
   return useUpdateUserMutation({
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['user', variables.userId] });
+      queryClient.invalidateQueries({ queryKey: ['users'] });
     },
   });
 };
