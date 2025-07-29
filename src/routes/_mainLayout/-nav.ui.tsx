@@ -7,6 +7,7 @@ import {
   TrendingUp,
   WorkOutline as WorkIcon,
   Business as BusinessIcon,
+  FolderCopyOutlined as FolderIcon,
 } from '@mui/icons-material';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
@@ -20,6 +21,7 @@ const navItems = [
   { to: '/users', name: 'Employees', icon: <Group />, props: { className: 'xl:mt-12' } },
   { to: '/skills', name: 'Skills', icon: <TrendingUp /> },
   { to: '/languages', name: 'Languages', icon: <GTranslate /> },
+  { to: '/projects', name: 'Projects', icon: <FolderIcon /> },
   { to: '/positions', name: 'Positions', icon: <WorkIcon />, admin: true },
   { to: '/departments', name: 'Departments', icon: <BusinessIcon />, admin: true },
   { to: '/cvs', name: 'CVs', icon: <ContactPageOutlined />, props: { className: 'hidden xl:flex' } },

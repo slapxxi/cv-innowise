@@ -19,13 +19,19 @@ export * from './get-positions.http';
 
 export * from './get-departments.http';
 
+export * from './get-cv.http';
 export * from './get-cvs.http';
 export * from './create-cv.http';
 export * from './update-cv.http';
 export * from './delete-cv.http';
+export * from './create-cv-skill.http';
+export * from './update-cv-skill.http';
+export * from './delete-cv-skills.http';
 
 export * from './graphql.http';
 
 export * from './update-user.http';
 export * from './update-profile.http';
 export * from './upload-avatar.http';
+
+export * from './get-projects.http';

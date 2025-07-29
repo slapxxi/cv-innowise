@@ -19,8 +19,8 @@ const SKILL_CATEGORY_QUERY = gql`
 
 const SKILL_MASTERY_QUERY = gql`
   name
-  categoryId
   mastery
+  categoryId
 `;
 
 const SKILL_QUERY = gql`
@@ -113,6 +113,10 @@ const CV_QUERY = gql`
   }
   projects {
     id
+    name
+  }
+  skills {
+    ${SKILL_MASTERY_QUERY}
   }
 `;
 

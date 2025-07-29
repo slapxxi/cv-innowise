@@ -12,7 +12,7 @@ export function createComparator<T, S extends string>(
       if (valA === '') return isAsc ? 1 : -1;
       if (valB === '') return isAsc ? -1 : 1;
 
-      const comparison = valA.localeCompare(valB);
+      const comparison = valA.trim().localeCompare(valB.trim());
       return isAsc ? comparison : -comparison;
     }
 

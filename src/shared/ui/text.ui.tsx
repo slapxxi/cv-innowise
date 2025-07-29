@@ -3,14 +3,15 @@ import { cva } from 'class-variance-authority';
 
 type TextProps = {
   asChild?: boolean;
-  variant?: 'light' | 'normal';
+  variant?: 'light' | 'normal' | 'success';
 } & React.HTMLAttributes<HTMLParagraphElement>;
 
-const textVariants = cva('font-sans text-base text-neutral-400', {
+const textVariants = cva('font-sans text-base', {
   variants: {
     variant: {
       light: 'text-neutral-500',
       normal: 'text-neutral-900 dark:text-white',
+      success: 'text-green-700 text-sm',
     },
   },
   defaultVariants: {

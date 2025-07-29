@@ -7,13 +7,13 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { useAuth } from '~/app';
-import { AddSkillForm, skillsOptions, UpdateSkillForm, useDeleteProfileSkills, useUser } from '~/features';
+import { AddCvSkillForm, skillsOptions, UpdateCvSkillForm, useCv, useDeleteCvSkills } from '~/features';
 import { Button, Count, Modal, PageTitle, SkillBar, useEditingState, type SkillMastery } from '~/shared';
 
-export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/skills')({
+export const Route = createFileRoute('/_mainLayout/cvs/$cvId/_cvsLayout/skills')({
   component: RouteComponent,
   beforeLoad: ({ params }) => {
-    return { breadcrumb: { title: 'Skills', pathname: `/users/${params.userId}/skills` } };
+    return { breadcrumb: { title: 'Skills', pathname: `/cvs/${params.cvId}/skills` } };
   },
   loader: ({ context }) => {
     const { auth, queryClient } = context;
@@ -29,19 +29,19 @@ function RouteComponent() {
   const params = Route.useParams();
   const { t } = useTranslation();
   const auth = useAuth();
-  const { user, invalidateUser } = useUser({ id: params.userId });
+  const { cv, invalidateCv } = useCv({ id: params.cvId });
   const deleteMultipleForm = useForm({
     resolver: zodResolver(deleteSkillsSchema),
   });
   const { state, update, del, add, cancel } = useEditingState<{ skill: SkillMastery }>();
-  const { deleteProfileSkills } = useDeleteProfileSkills({
+  const { deleteCvSkills } = useDeleteCvSkills({
     onSuccess: () => {
       handleCancel();
-      invalidateUser();
+      invalidateCv();
     },
   });
 
-  const isOwner = user.id === auth!.user.id;
+  const isOwner = cv.user?.id === auth!.user.id;
   const selectedSkills = deleteMultipleForm.watch('skills');
 
   function handleUpdate(skill: SkillMastery) {
@@ -51,15 +51,15 @@ function RouteComponent() {
   }
 
   function handleDelete(skill: SkillMastery) {
-    deleteProfileSkills({
-      userId: params.userId,
+    deleteCvSkills({
+      cvId: params.cvId,
       skillNames: [skill.name],
     });
   }
 
   const handleMultipleDelete: SubmitHandler<z.infer<typeof deleteSkillsSchema>> = async (data) => {
-    deleteProfileSkills({
-      userId: params.userId,
+    deleteCvSkills({
+      cvId: params.cvId,
       skillNames: data.skills,
     });
   };
@@ -73,10 +73,10 @@ function RouteComponent() {
       <PageTitle>{t('Skills')}</PageTitle>
 
       <Modal open={state.status === 'adding'} title={t('Add Skill')} onClose={handleCancel}>
-        <AddSkillForm
+        <AddCvSkillForm
           onSuccess={() => {
             cancel();
-            invalidateUser();
+            invalidateCv();
           }}
           onCancel={handleCancel}
         />
@@ -84,11 +84,11 @@ function RouteComponent() {
 
       <Modal open={state.status === 'updating'} title={t('Update Skill')} onClose={handleCancel}>
         {state.status === 'updating' && (
-          <UpdateSkillForm
+          <UpdateCvSkillForm
             skill={state.context!.skill}
             onSuccess={() => {
               cancel();
-              invalidateUser();
+              invalidateCv();
             }}
             onCancel={handleCancel}
           />
@@ -96,8 +96,8 @@ function RouteComponent() {
       </Modal>
 
       <form className="relative mx-auto xl:max-w-4xl" onSubmit={deleteMultipleForm.handleSubmit(handleMultipleDelete)}>
-        {user.skillsByCategories &&
-          Object.entries(user.skillsByCategories)
+        {cv.skillsByCategories &&
+          Object.entries(cv.skillsByCategories)
             .sort()
             .map(([categoryName, skills]) => (
               <section key={categoryName} className="my-8">

@@ -1,10 +1,10 @@
 import BaseTextField from '@mui/material/TextField';
 import { merge } from 'lodash';
 
-type TextFieldProps = {} & React.ComponentProps<typeof BaseTextField>;
+type TextFieldProps = { animate?: boolean } & React.ComponentProps<typeof BaseTextField>;
 
 export const TextField: React.FC<TextFieldProps> = (props) => {
-  const { slotProps, ...rest } = props;
+  const { slotProps, animate = true, ...rest } = props;
 
   return (
     <BaseTextField
@@ -13,6 +13,7 @@ export const TextField: React.FC<TextFieldProps> = (props) => {
         {
           input: { className: 'rounded-none' },
           htmlInput: { className: 'autofill:shadow-none' },
+          inputLabel: animate ? {} : { className: 'transition-none' },
         },
         slotProps
       )}

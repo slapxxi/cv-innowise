@@ -12,7 +12,7 @@ const cvsSearchSchema = z.object({
   q: z.string().trim().catch(''),
 });
 
-export const Route = createFileRoute('/_mainLayout/cvs')({
+export const Route = createFileRoute('/_mainLayout/cvs/')({
   component: RouteComponent,
   loader: ({ context }) => {
     const { queryClient } = context;
@@ -90,7 +90,7 @@ function RouteComponent() {
 
       <Modal title={t('Update cv')} open={state.status === 'updating'} onClose={handleCancel}>
         {state.status === 'updating' && (
-          <UpdateCvForm cv={state.context!.cv} onSuccess={handleUpdateCv} onCancel={handleCancel} />
+          <UpdateCvForm cv={state.context!.cv} onSuccess={handleUpdateCv} onCancel={handleCancel} animate={false} />
         )}
       </Modal>
 

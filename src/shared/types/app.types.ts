@@ -1,5 +1,11 @@
 import type { Nullable } from '~/shared';
 
+export type BreadcrumbEntry = {
+  name: string;
+  path: string;
+  icon?: React.ReactNode;
+};
+
 export type SortOrder = 'asc' | 'desc';
 
 export type Auth = Nullable<{
@@ -48,10 +54,14 @@ export type Cv = {
   name: string;
   education?: Nullable<string>;
   description: string;
-  user?: Nullable<User>;
+  user?: Nullable<{ id: string; email: string }>;
   projects?: Nullable<CvProject[]>;
   skills: SkillMastery[];
   languages: LanguageProficiency[];
+};
+
+export type CvWithSkillsByCategories = Cv & {
+  skillsByCategories: Record<SkillCategory['name'], SkillMastery[]> | null;
 };
 
 export type Department = {

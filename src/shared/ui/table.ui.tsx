@@ -8,10 +8,13 @@ import {
   TableRow,
   TableSortLabel,
 } from '@mui/material';
-import { cn, switchOrder } from '../utils';
+import { createLink } from '@tanstack/react-router';
 import type { SortOrder } from '../types';
+import { cn, switchOrder } from '../utils';
 
 export { TableCell, TableRow } from '@mui/material';
+
+export const TableCellLink = createLink(TableCell);
 
 export type TableField = {
   id: string;

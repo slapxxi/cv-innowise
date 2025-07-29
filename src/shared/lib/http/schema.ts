@@ -25,15 +25,62 @@ export const errorsSchema = errorResponseSchema.transform((data) => {
   };
 });
 
-export const skillCategorySchema = z.object({
+export const projectSchema = z.object({
   id: z.string(),
   name: z.string(),
+  internalName: z.string(),
+  domain: z.string(),
+  description: z.string(),
+  environment: z.string().array(),
+  startDate: z.string(),
+  endDate: z.string().nullable(),
+  createdAt: z.string(),
 });
 
 export const skillSchema = z.object({
   name: z.string(),
-  mastery: z.string(),
+  mastery: z.enum(['Novice', 'Advanced', 'Competent', 'Proficient', 'Expert']),
   categoryId: z.string().nullable(),
+});
+
+export const languageSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  nativeName: z.string(),
+  iso2: z.string(),
+  createdAt: z.string(),
+  proficiency: z.enum(['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'Native']),
+});
+
+export const cvProjectSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  internalName: z.string(),
+  description: z.string(),
+  domain: z.string(),
+  startDate: z.string(),
+  endDate: z.string().nullable(),
+  environment: z.string().array(),
+  responsibilities: z.string().array(),
+  roles: z.string().array(),
+  project: projectSchema,
+});
+
+export const cvSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  createdAt: z.string(),
+  education: z.string().nullable(),
+  description: z.string(),
+  user: z.object({ id: z.string(), email: z.string() }).nullable(),
+  skills: skillSchema.array().default([]),
+  languages: languageSchema.array().default([]),
+  projects: cvProjectSchema.array().nullable().default([]),
+});
+
+export const skillCategorySchema = z.object({
+  id: z.string(),
+  name: z.string(),
 });
 
 export const profileSchema = z.object({

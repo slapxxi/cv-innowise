@@ -18,22 +18,29 @@ import { Route as IndexRouteRouteImport } from './routes/index.route'
 import { Route as AuthForgotPasswordRouteRouteImport } from './routes/auth/forgot-password.route'
 import { Route as AuthAuthLayoutRouteRouteImport } from './routes/auth/_authLayout.route'
 import { Route as MainLayoutSkillsRouteRouteImport } from './routes/_mainLayout/skills.route'
+import { Route as MainLayoutProjectsRouteRouteImport } from './routes/_mainLayout/projects.route'
 import { Route as MainLayoutPositionsRouteRouteImport } from './routes/_mainLayout/positions.route'
 import { Route as MainLayoutLanguagesRouteRouteImport } from './routes/_mainLayout/languages.route'
 import { Route as MainLayoutDepartmentsRouteRouteImport } from './routes/_mainLayout/departments.route'
-import { Route as MainLayoutCvsRouteRouteImport } from './routes/_mainLayout/cvs.route'
 import { Route as MainLayoutUsersIndexRouteRouteImport } from './routes/_mainLayout/users/index.route'
+import { Route as MainLayoutCvsIndexRouteRouteImport } from './routes/_mainLayout/cvs/index.route'
 import { Route as AuthAuthLayoutSignupRouteRouteImport } from './routes/auth/_authLayout.signup.route'
 import { Route as AuthAuthLayoutLoginRouteRouteImport } from './routes/auth/_authLayout.login.route'
 import { Route as MainLayoutUsersUserIdUserLayoutRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.route'
+import { Route as MainLayoutCvsCvIdCvsLayoutRouteRouteImport } from './routes/_mainLayout/cvs/$cvId/_cvsLayout.route'
 import { Route as MainLayoutUsersUserIdUserLayoutSkillsRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.skills.route'
 import { Route as MainLayoutUsersUserIdUserLayoutProfileRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.profile.route'
 import { Route as MainLayoutUsersUserIdUserLayoutLanguagesRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.languages.route'
+import { Route as MainLayoutCvsCvIdCvsLayoutSkillsRouteRouteImport } from './routes/_mainLayout/cvs/$cvId/_cvsLayout.skills.route'
+import { Route as MainLayoutCvsCvIdCvsLayoutProjectsRouteRouteImport } from './routes/_mainLayout/cvs/$cvId/_cvsLayout.projects.route'
+import { Route as MainLayoutCvsCvIdCvsLayoutPreviewRouteRouteImport } from './routes/_mainLayout/cvs/$cvId/_cvsLayout.preview.route'
+import { Route as MainLayoutCvsCvIdCvsLayoutDetailsRouteRouteImport } from './routes/_mainLayout/cvs/$cvId/_cvsLayout.details.route'
 
 const AuthRouteImport = createFileRoute('/auth')()
 const MainLayoutUsersUserIdRouteImport = createFileRoute(
   '/_mainLayout/users/$userId',
 )()
+const MainLayoutCvsCvIdRouteImport = createFileRoute('/_mainLayout/cvs/$cvId')()
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -73,6 +80,11 @@ const MainLayoutSkillsRouteRoute = MainLayoutSkillsRouteRouteImport.update({
   path: '/skills',
   getParentRoute: () => MainLayoutRouteRoute,
 } as any)
+const MainLayoutProjectsRouteRoute = MainLayoutProjectsRouteRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
 const MainLayoutPositionsRouteRoute =
   MainLayoutPositionsRouteRouteImport.update({
     id: '/positions',
@@ -91,14 +103,14 @@ const MainLayoutDepartmentsRouteRoute =
     path: '/departments',
     getParentRoute: () => MainLayoutRouteRoute,
   } as any)
-const MainLayoutCvsRouteRoute = MainLayoutCvsRouteRouteImport.update({
-  id: '/cvs',
-  path: '/cvs',
-  getParentRoute: () => MainLayoutRouteRoute,
-} as any)
 const MainLayoutUsersUserIdRoute = MainLayoutUsersUserIdRouteImport.update({
   id: '/users/$userId',
   path: '/users/$userId',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
+const MainLayoutCvsCvIdRoute = MainLayoutCvsCvIdRouteImport.update({
+  id: '/cvs/$cvId',
+  path: '/cvs/$cvId',
   getParentRoute: () => MainLayoutRouteRoute,
 } as any)
 const MainLayoutUsersIndexRouteRoute =
@@ -107,6 +119,11 @@ const MainLayoutUsersIndexRouteRoute =
     path: '/users/',
     getParentRoute: () => MainLayoutRouteRoute,
   } as any)
+const MainLayoutCvsIndexRouteRoute = MainLayoutCvsIndexRouteRouteImport.update({
+  id: '/cvs/',
+  path: '/cvs/',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
 const AuthAuthLayoutSignupRouteRoute =
   AuthAuthLayoutSignupRouteRouteImport.update({
     id: '/signup',
@@ -123,6 +140,11 @@ const MainLayoutUsersUserIdUserLayoutRouteRoute =
   MainLayoutUsersUserIdUserLayoutRouteRouteImport.update({
     id: '/_userLayout',
     getParentRoute: () => MainLayoutUsersUserIdRoute,
+  } as any)
+const MainLayoutCvsCvIdCvsLayoutRouteRoute =
+  MainLayoutCvsCvIdCvsLayoutRouteRouteImport.update({
+    id: '/_cvsLayout',
+    getParentRoute: () => MainLayoutCvsCvIdRoute,
   } as any)
 const MainLayoutUsersUserIdUserLayoutSkillsRouteRoute =
   MainLayoutUsersUserIdUserLayoutSkillsRouteRouteImport.update({
@@ -142,22 +164,52 @@ const MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute =
     path: '/languages',
     getParentRoute: () => MainLayoutUsersUserIdUserLayoutRouteRoute,
   } as any)
+const MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute =
+  MainLayoutCvsCvIdCvsLayoutSkillsRouteRouteImport.update({
+    id: '/skills',
+    path: '/skills',
+    getParentRoute: () => MainLayoutCvsCvIdCvsLayoutRouteRoute,
+  } as any)
+const MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute =
+  MainLayoutCvsCvIdCvsLayoutProjectsRouteRouteImport.update({
+    id: '/projects',
+    path: '/projects',
+    getParentRoute: () => MainLayoutCvsCvIdCvsLayoutRouteRoute,
+  } as any)
+const MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute =
+  MainLayoutCvsCvIdCvsLayoutPreviewRouteRouteImport.update({
+    id: '/preview',
+    path: '/preview',
+    getParentRoute: () => MainLayoutCvsCvIdCvsLayoutRouteRoute,
+  } as any)
+const MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute =
+  MainLayoutCvsCvIdCvsLayoutDetailsRouteRouteImport.update({
+    id: '/details',
+    path: '/details',
+    getParentRoute: () => MainLayoutCvsCvIdCvsLayoutRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRouteRoute
   '/about': typeof AboutRouteRoute
   '/verify-email': typeof VerifyEmailRouteRoute
-  '/cvs': typeof MainLayoutCvsRouteRoute
   '/departments': typeof MainLayoutDepartmentsRouteRoute
   '/languages': typeof MainLayoutLanguagesRouteRoute
   '/positions': typeof MainLayoutPositionsRouteRoute
+  '/projects': typeof MainLayoutProjectsRouteRoute
   '/skills': typeof MainLayoutSkillsRouteRoute
   '/auth': typeof AuthAuthLayoutRouteRouteWithChildren
   '/auth/forgot-password': typeof AuthForgotPasswordRouteRoute
   '/auth/login': typeof AuthAuthLayoutLoginRouteRoute
   '/auth/signup': typeof AuthAuthLayoutSignupRouteRoute
+  '/cvs': typeof MainLayoutCvsIndexRouteRoute
   '/users': typeof MainLayoutUsersIndexRouteRoute
+  '/cvs/$cvId': typeof MainLayoutCvsCvIdCvsLayoutRouteRouteWithChildren
   '/users/$userId': typeof MainLayoutUsersUserIdUserLayoutRouteRouteWithChildren
+  '/cvs/$cvId/details': typeof MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute
+  '/cvs/$cvId/preview': typeof MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute
+  '/cvs/$cvId/projects': typeof MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute
+  '/cvs/$cvId/skills': typeof MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute
   '/users/$userId/languages': typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute
   '/users/$userId/profile': typeof MainLayoutUsersUserIdUserLayoutProfileRouteRoute
   '/users/$userId/skills': typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRoute
@@ -166,17 +218,23 @@ export interface FileRoutesByTo {
   '/': typeof IndexRouteRoute
   '/about': typeof AboutRouteRoute
   '/verify-email': typeof VerifyEmailRouteRoute
-  '/cvs': typeof MainLayoutCvsRouteRoute
   '/departments': typeof MainLayoutDepartmentsRouteRoute
   '/languages': typeof MainLayoutLanguagesRouteRoute
   '/positions': typeof MainLayoutPositionsRouteRoute
+  '/projects': typeof MainLayoutProjectsRouteRoute
   '/skills': typeof MainLayoutSkillsRouteRoute
   '/auth': typeof AuthAuthLayoutRouteRouteWithChildren
   '/auth/forgot-password': typeof AuthForgotPasswordRouteRoute
   '/auth/login': typeof AuthAuthLayoutLoginRouteRoute
   '/auth/signup': typeof AuthAuthLayoutSignupRouteRoute
+  '/cvs': typeof MainLayoutCvsIndexRouteRoute
   '/users': typeof MainLayoutUsersIndexRouteRoute
+  '/cvs/$cvId': typeof MainLayoutCvsCvIdCvsLayoutRouteRouteWithChildren
   '/users/$userId': typeof MainLayoutUsersUserIdUserLayoutRouteRouteWithChildren
+  '/cvs/$cvId/details': typeof MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute
+  '/cvs/$cvId/preview': typeof MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute
+  '/cvs/$cvId/projects': typeof MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute
+  '/cvs/$cvId/skills': typeof MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute
   '/users/$userId/languages': typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute
   '/users/$userId/profile': typeof MainLayoutUsersUserIdUserLayoutProfileRouteRoute
   '/users/$userId/skills': typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRoute
@@ -187,19 +245,26 @@ export interface FileRoutesById {
   '/_mainLayout': typeof MainLayoutRouteRouteWithChildren
   '/about': typeof AboutRouteRoute
   '/verify-email': typeof VerifyEmailRouteRoute
-  '/_mainLayout/cvs': typeof MainLayoutCvsRouteRoute
   '/_mainLayout/departments': typeof MainLayoutDepartmentsRouteRoute
   '/_mainLayout/languages': typeof MainLayoutLanguagesRouteRoute
   '/_mainLayout/positions': typeof MainLayoutPositionsRouteRoute
+  '/_mainLayout/projects': typeof MainLayoutProjectsRouteRoute
   '/_mainLayout/skills': typeof MainLayoutSkillsRouteRoute
   '/auth': typeof AuthRouteWithChildren
   '/auth/_authLayout': typeof AuthAuthLayoutRouteRouteWithChildren
   '/auth/forgot-password': typeof AuthForgotPasswordRouteRoute
   '/auth/_authLayout/login': typeof AuthAuthLayoutLoginRouteRoute
   '/auth/_authLayout/signup': typeof AuthAuthLayoutSignupRouteRoute
+  '/_mainLayout/cvs/': typeof MainLayoutCvsIndexRouteRoute
   '/_mainLayout/users/': typeof MainLayoutUsersIndexRouteRoute
+  '/_mainLayout/cvs/$cvId': typeof MainLayoutCvsCvIdRouteWithChildren
+  '/_mainLayout/cvs/$cvId/_cvsLayout': typeof MainLayoutCvsCvIdCvsLayoutRouteRouteWithChildren
   '/_mainLayout/users/$userId': typeof MainLayoutUsersUserIdRouteWithChildren
   '/_mainLayout/users/$userId/_userLayout': typeof MainLayoutUsersUserIdUserLayoutRouteRouteWithChildren
+  '/_mainLayout/cvs/$cvId/_cvsLayout/details': typeof MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute
+  '/_mainLayout/cvs/$cvId/_cvsLayout/preview': typeof MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute
+  '/_mainLayout/cvs/$cvId/_cvsLayout/projects': typeof MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute
+  '/_mainLayout/cvs/$cvId/_cvsLayout/skills': typeof MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute
   '/_mainLayout/users/$userId/_userLayout/languages': typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute
   '/_mainLayout/users/$userId/_userLayout/profile': typeof MainLayoutUsersUserIdUserLayoutProfileRouteRoute
   '/_mainLayout/users/$userId/_userLayout/skills': typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRoute
@@ -210,17 +275,23 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/verify-email'
-    | '/cvs'
     | '/departments'
     | '/languages'
     | '/positions'
+    | '/projects'
     | '/skills'
     | '/auth'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/signup'
+    | '/cvs'
     | '/users'
+    | '/cvs/$cvId'
     | '/users/$userId'
+    | '/cvs/$cvId/details'
+    | '/cvs/$cvId/preview'
+    | '/cvs/$cvId/projects'
+    | '/cvs/$cvId/skills'
     | '/users/$userId/languages'
     | '/users/$userId/profile'
     | '/users/$userId/skills'
@@ -229,17 +300,23 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/verify-email'
-    | '/cvs'
     | '/departments'
     | '/languages'
     | '/positions'
+    | '/projects'
     | '/skills'
     | '/auth'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/signup'
+    | '/cvs'
     | '/users'
+    | '/cvs/$cvId'
     | '/users/$userId'
+    | '/cvs/$cvId/details'
+    | '/cvs/$cvId/preview'
+    | '/cvs/$cvId/projects'
+    | '/cvs/$cvId/skills'
     | '/users/$userId/languages'
     | '/users/$userId/profile'
     | '/users/$userId/skills'
@@ -249,19 +326,26 @@ export interface FileRouteTypes {
     | '/_mainLayout'
     | '/about'
     | '/verify-email'
-    | '/_mainLayout/cvs'
     | '/_mainLayout/departments'
     | '/_mainLayout/languages'
     | '/_mainLayout/positions'
+    | '/_mainLayout/projects'
     | '/_mainLayout/skills'
     | '/auth'
     | '/auth/_authLayout'
     | '/auth/forgot-password'
     | '/auth/_authLayout/login'
     | '/auth/_authLayout/signup'
+    | '/_mainLayout/cvs/'
     | '/_mainLayout/users/'
+    | '/_mainLayout/cvs/$cvId'
+    | '/_mainLayout/cvs/$cvId/_cvsLayout'
     | '/_mainLayout/users/$userId'
     | '/_mainLayout/users/$userId/_userLayout'
+    | '/_mainLayout/cvs/$cvId/_cvsLayout/details'
+    | '/_mainLayout/cvs/$cvId/_cvsLayout/preview'
+    | '/_mainLayout/cvs/$cvId/_cvsLayout/projects'
+    | '/_mainLayout/cvs/$cvId/_cvsLayout/skills'
     | '/_mainLayout/users/$userId/_userLayout/languages'
     | '/_mainLayout/users/$userId/_userLayout/profile'
     | '/_mainLayout/users/$userId/_userLayout/skills'
@@ -333,6 +417,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainLayoutSkillsRouteRouteImport
       parentRoute: typeof MainLayoutRouteRoute
     }
+    '/_mainLayout/projects': {
+      id: '/_mainLayout/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof MainLayoutProjectsRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
     '/_mainLayout/positions': {
       id: '/_mainLayout/positions'
       path: '/positions'
@@ -354,13 +445,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainLayoutDepartmentsRouteRouteImport
       parentRoute: typeof MainLayoutRouteRoute
     }
-    '/_mainLayout/cvs': {
-      id: '/_mainLayout/cvs'
-      path: '/cvs'
-      fullPath: '/cvs'
-      preLoaderRoute: typeof MainLayoutCvsRouteRouteImport
-      parentRoute: typeof MainLayoutRouteRoute
-    }
     '/_mainLayout/users/$userId': {
       id: '/_mainLayout/users/$userId'
       path: '/users/$userId'
@@ -368,11 +452,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainLayoutUsersUserIdRouteImport
       parentRoute: typeof MainLayoutRouteRoute
     }
+    '/_mainLayout/cvs/$cvId': {
+      id: '/_mainLayout/cvs/$cvId'
+      path: '/cvs/$cvId'
+      fullPath: '/cvs/$cvId'
+      preLoaderRoute: typeof MainLayoutCvsCvIdRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
     '/_mainLayout/users/': {
       id: '/_mainLayout/users/'
       path: '/users'
       fullPath: '/users'
       preLoaderRoute: typeof MainLayoutUsersIndexRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/cvs/': {
+      id: '/_mainLayout/cvs/'
+      path: '/cvs'
+      fullPath: '/cvs'
+      preLoaderRoute: typeof MainLayoutCvsIndexRouteRouteImport
       parentRoute: typeof MainLayoutRouteRoute
     }
     '/auth/_authLayout/signup': {
@@ -396,6 +494,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainLayoutUsersUserIdUserLayoutRouteRouteImport
       parentRoute: typeof MainLayoutUsersUserIdRoute
     }
+    '/_mainLayout/cvs/$cvId/_cvsLayout': {
+      id: '/_mainLayout/cvs/$cvId/_cvsLayout'
+      path: '/cvs/$cvId'
+      fullPath: '/cvs/$cvId'
+      preLoaderRoute: typeof MainLayoutCvsCvIdCvsLayoutRouteRouteImport
+      parentRoute: typeof MainLayoutCvsCvIdRoute
+    }
     '/_mainLayout/users/$userId/_userLayout/skills': {
       id: '/_mainLayout/users/$userId/_userLayout/skills'
       path: '/skills'
@@ -417,8 +522,72 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRouteImport
       parentRoute: typeof MainLayoutUsersUserIdUserLayoutRouteRoute
     }
+    '/_mainLayout/cvs/$cvId/_cvsLayout/skills': {
+      id: '/_mainLayout/cvs/$cvId/_cvsLayout/skills'
+      path: '/skills'
+      fullPath: '/cvs/$cvId/skills'
+      preLoaderRoute: typeof MainLayoutCvsCvIdCvsLayoutSkillsRouteRouteImport
+      parentRoute: typeof MainLayoutCvsCvIdCvsLayoutRouteRoute
+    }
+    '/_mainLayout/cvs/$cvId/_cvsLayout/projects': {
+      id: '/_mainLayout/cvs/$cvId/_cvsLayout/projects'
+      path: '/projects'
+      fullPath: '/cvs/$cvId/projects'
+      preLoaderRoute: typeof MainLayoutCvsCvIdCvsLayoutProjectsRouteRouteImport
+      parentRoute: typeof MainLayoutCvsCvIdCvsLayoutRouteRoute
+    }
+    '/_mainLayout/cvs/$cvId/_cvsLayout/preview': {
+      id: '/_mainLayout/cvs/$cvId/_cvsLayout/preview'
+      path: '/preview'
+      fullPath: '/cvs/$cvId/preview'
+      preLoaderRoute: typeof MainLayoutCvsCvIdCvsLayoutPreviewRouteRouteImport
+      parentRoute: typeof MainLayoutCvsCvIdCvsLayoutRouteRoute
+    }
+    '/_mainLayout/cvs/$cvId/_cvsLayout/details': {
+      id: '/_mainLayout/cvs/$cvId/_cvsLayout/details'
+      path: '/details'
+      fullPath: '/cvs/$cvId/details'
+      preLoaderRoute: typeof MainLayoutCvsCvIdCvsLayoutDetailsRouteRouteImport
+      parentRoute: typeof MainLayoutCvsCvIdCvsLayoutRouteRoute
+    }
   }
 }
+
+interface MainLayoutCvsCvIdCvsLayoutRouteRouteChildren {
+  MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute: typeof MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute
+  MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute: typeof MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute
+  MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute: typeof MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute
+  MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute: typeof MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute
+}
+
+const MainLayoutCvsCvIdCvsLayoutRouteRouteChildren: MainLayoutCvsCvIdCvsLayoutRouteRouteChildren =
+  {
+    MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute:
+      MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute,
+    MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute:
+      MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute,
+    MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute:
+      MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute,
+    MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute:
+      MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute,
+  }
+
+const MainLayoutCvsCvIdCvsLayoutRouteRouteWithChildren =
+  MainLayoutCvsCvIdCvsLayoutRouteRoute._addFileChildren(
+    MainLayoutCvsCvIdCvsLayoutRouteRouteChildren,
+  )
+
+interface MainLayoutCvsCvIdRouteChildren {
+  MainLayoutCvsCvIdCvsLayoutRouteRoute: typeof MainLayoutCvsCvIdCvsLayoutRouteRouteWithChildren
+}
+
+const MainLayoutCvsCvIdRouteChildren: MainLayoutCvsCvIdRouteChildren = {
+  MainLayoutCvsCvIdCvsLayoutRouteRoute:
+    MainLayoutCvsCvIdCvsLayoutRouteRouteWithChildren,
+}
+
+const MainLayoutCvsCvIdRouteWithChildren =
+  MainLayoutCvsCvIdRoute._addFileChildren(MainLayoutCvsCvIdRouteChildren)
 
 interface MainLayoutUsersUserIdUserLayoutRouteRouteChildren {
   MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute: typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute
@@ -456,22 +625,26 @@ const MainLayoutUsersUserIdRouteWithChildren =
   )
 
 interface MainLayoutRouteRouteChildren {
-  MainLayoutCvsRouteRoute: typeof MainLayoutCvsRouteRoute
   MainLayoutDepartmentsRouteRoute: typeof MainLayoutDepartmentsRouteRoute
   MainLayoutLanguagesRouteRoute: typeof MainLayoutLanguagesRouteRoute
   MainLayoutPositionsRouteRoute: typeof MainLayoutPositionsRouteRoute
+  MainLayoutProjectsRouteRoute: typeof MainLayoutProjectsRouteRoute
   MainLayoutSkillsRouteRoute: typeof MainLayoutSkillsRouteRoute
+  MainLayoutCvsIndexRouteRoute: typeof MainLayoutCvsIndexRouteRoute
   MainLayoutUsersIndexRouteRoute: typeof MainLayoutUsersIndexRouteRoute
+  MainLayoutCvsCvIdRoute: typeof MainLayoutCvsCvIdRouteWithChildren
   MainLayoutUsersUserIdRoute: typeof MainLayoutUsersUserIdRouteWithChildren
 }
 
 const MainLayoutRouteRouteChildren: MainLayoutRouteRouteChildren = {
-  MainLayoutCvsRouteRoute: MainLayoutCvsRouteRoute,
   MainLayoutDepartmentsRouteRoute: MainLayoutDepartmentsRouteRoute,
   MainLayoutLanguagesRouteRoute: MainLayoutLanguagesRouteRoute,
   MainLayoutPositionsRouteRoute: MainLayoutPositionsRouteRoute,
+  MainLayoutProjectsRouteRoute: MainLayoutProjectsRouteRoute,
   MainLayoutSkillsRouteRoute: MainLayoutSkillsRouteRoute,
+  MainLayoutCvsIndexRouteRoute: MainLayoutCvsIndexRouteRoute,
   MainLayoutUsersIndexRouteRoute: MainLayoutUsersIndexRouteRoute,
+  MainLayoutCvsCvIdRoute: MainLayoutCvsCvIdRouteWithChildren,
   MainLayoutUsersUserIdRoute: MainLayoutUsersUserIdRouteWithChildren,
 }
 
