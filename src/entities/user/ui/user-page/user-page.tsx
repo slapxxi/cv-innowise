@@ -1,12 +1,12 @@
 import { type User } from '~/shared';
 import { useUserForm } from '~/entities/user/hooks/use-user-form-handlers.ts';
 import { UserFormFields } from '~/entities/user/ui/users-table/user-form-fields.tsx';
-import { useUpdateProfile, useUpdateUser, useUserFormData } from '~/entities/user/service';
+import { useFormIsChanged, useUpdateProfile, useUpdateUser, useUserFormData } from '~/entities/user/service';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useAuth } from '~/app';
 import UserMeta from '~/entities/user/ui/user-page/user-meta.tsx';
-import { useMemo } from 'react';
+import { useNavigate } from '@tanstack/react-router';
 
 type PropsType = {
   user: User;
@@ -16,25 +16,19 @@ export const UserPage = ({ user }: PropsType) => {
   const { profile, id } = user;
   const auth = useAuth();
   const isOwner = id === auth?.user.id;
+  const navigate = useNavigate();
   const { data } = useUserFormData({ accessToken: auth!.accessToken });
   const { departments, positions } = data;
 
   const { form, setForm, handleChange } = useUserForm({
     firstName: profile?.firstName || '',
-    lastName: profile.lastName || '',
+    lastName: profile?.lastName || '',
     departmentId: user.department?.id || '',
     departmentName: user.department?.name || '',
     positionId: user.position?.id || '',
     positionName: user.position?.name || '',
   });
-  const formIsChanged = useMemo(() => {
-    return (
-      form.firstName !== (profile?.firstName || '') ||
-      form.lastName !== (profile?.lastName || '') ||
-      form.departmentId !== (user.department?.id || '') ||
-      form.positionId !== (user.position?.id || '')
-    );
-  }, [form, profile, user]);
+  const formIsChanged = useFormIsChanged(form, user);
 
   const updateUserMutation = useUpdateUser();
   const updateProfileMutation = useUpdateProfile();
@@ -48,11 +42,18 @@ export const UserPage = ({ user }: PropsType) => {
       },
       {
         onSuccess: () => {
-          updateUserMutation.mutate({
-            userId: id,
-            departmentId: form.departmentId,
-            positionId: form.positionId,
-          });
+          updateUserMutation.mutate(
+            {
+              userId: id,
+              departmentId: form.departmentId,
+              positionId: form.positionId,
+            },
+            {
+              onSuccess: () => {
+                navigate({ to: '/users', search: { page: 1, limit: 10, sort: 'firstName', order: 'asc', q: '' } });
+              },
+            }
+          );
         },
       }
     );
