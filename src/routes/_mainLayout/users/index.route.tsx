@@ -1,11 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
+import { type ChangeSortHandler, Modal, type User } from '~/shared';
 import * as z from 'zod/v4';
 import { SearchContainer } from '~/app';
 import i18n from '~/app/i18n.ts';
-import { UsersTable } from '~/entities';
+import { UpdateUserForm, UsersTable } from '~/entities';
 import { usersOptions, usersSortingFields } from '~/features';
-import { type ChangeSortHandler } from '~/shared';
 
 const searchSchema = z.object({
   page: z.number().min(1).catch(1),
@@ -30,6 +31,19 @@ function RouteComponent() {
   const search = Route.useSearch();
   const nav = Route.useNavigate();
 
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+  function handleOpenDialog(user: User) {
+    setSelectedUser(user);
+    setDialogOpen(true);
+  }
+
+  function handleCloseDialog() {
+    setDialogOpen(false);
+    setSelectedUser(null);
+  }
+
   const handleSearch = (q: string) => {
     nav({ search: (prev) => ({ ...prev, q, page: 1 }) });
   };
@@ -47,14 +61,22 @@ function RouteComponent() {
   }
 
   return (
-    <SearchContainer title={t('Employees')} query={search.q} onSearch={handleSearch}>
-      <UsersTable
-        fixedHeight
-        onChangeSort={handleChangeSort}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-        {...search}
-      />
-    </SearchContainer>
+    <>
+      <SearchContainer title={t('Employees')} query={search.q} onSearch={handleSearch}>
+        <UsersTable
+          onUpdate={handleOpenDialog}
+          fixedHeight
+          onChangeSort={handleChangeSort}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+          {...search}
+        />
+      </SearchContainer>
+      {selectedUser && (
+        <Modal open={dialogOpen} onClose={handleCloseDialog} title={t('Update User')}>
+          <UpdateUserForm onClose={handleCloseDialog} user={selectedUser} />
+        </Modal>
+      )}
+    </>
   );
 }
