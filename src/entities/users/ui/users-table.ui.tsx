@@ -1,6 +1,6 @@
 import { ChevronRight as ChevronRightIcon } from '@mui/icons-material';
 import { TableRow } from '@mui/material';
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '~/app';
@@ -31,6 +31,13 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
   const auth = useAuth();
   const { users, total } = useUsers({ sort, order, page, limit, q });
   const [menuOpen, setMenuOpen] = useState<number | null>(null);
+  const navigate = useNavigate();
+
+  function handleNavigate(user: User) {
+    const userId = user.id;
+    setMenuOpen(null);
+    navigate({ to: `/users/${userId}/profile` });
+  }
 
   function handleUpdate(user: User) {
     onUpdate?.(user);
@@ -96,6 +103,7 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
           <TableCell align="center">
             {auth!.user.id === user.id ? (
               <ActionMenu open={menuOpen === i} onOpen={() => setMenuOpen(i)} onClose={() => setMenuOpen(null)}>
+                <ActionMenuItem onClick={() => handleNavigate(user)}>{t('Profile')}</ActionMenuItem>
                 <ActionMenuItem onClick={() => handleUpdate(user)}>{t('Update user')}</ActionMenuItem>
                 <ActionMenuItem onClick={() => handleDelete(user)}>{t('Delete user')}</ActionMenuItem>
               </ActionMenu>
