@@ -6,5 +6,5 @@ export default {
   moduleNameMapper: {
     '^~/(.*)$': '<rootDir>/src/$1',
   },
-  // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 };
