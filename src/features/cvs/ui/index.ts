@@ -1,2 +1,2 @@
-export * from './cv-preview.tsx';
-export * from './cv-skill-table.tsx';
+export * from './cv-preview';
+export * from './components/index';

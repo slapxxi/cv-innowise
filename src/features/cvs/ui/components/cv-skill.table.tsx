@@ -1,7 +1,8 @@
 import type { CvWithSkillsByCategories } from '~/shared';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { t } from 'i18next';
-import { useSkillStats } from '~/shared/utils/skill-stats';
+import { useSkillStats } from '~/shared/utils/skill-stats.ts';
+import { cnMarkedText, cnSubtitle } from '~/features';
 
 type Props = {
   categories: CvWithSkillsByCategories['skillsByCategories'];
@@ -32,12 +33,12 @@ export function CvSkillsTable({ categories, projects }: Props) {
     >
       <TableHead>
         <TableRow sx={{ borderBottom: 'solid 2px', borderBottomColor: 'primary.light' }}>
-          <TableCell sx={{ fontWeight: 600 }}>{t('Skills')}</TableCell>
+          <TableCell className={cnSubtitle}>{t('Skills')}</TableCell>
           <TableCell></TableCell>
-          <TableCell align={'center'} sx={{ fontWeight: 600 }}>
+          <TableCell align={'center'} className={cnSubtitle}>
             {t('Experience in years')}
           </TableCell>
-          <TableCell align={'center'} sx={{ fontWeight: 600 }}>
+          <TableCell align={'center'} className={cnSubtitle}>
             {t('Last used')}
           </TableCell>
         </TableRow>
@@ -50,7 +51,11 @@ export function CvSkillsTable({ categories, projects }: Props) {
               key={s.name}
               sx={idx === skills.length - 1 ? { borderBottom: '1px solid', borderColor: 'divider' } : undefined}
             >
-              {idx === 0 && <TableCell rowSpan={skills.length}>{category}</TableCell>}
+              {idx === 0 && (
+                <TableCell rowSpan={skills.length} className={cnMarkedText}>
+                  {category}
+                </TableCell>
+              )}
               <TableCell>{s.name}</TableCell>
               <TableCell align="center">{calcYears(s.name)}</TableCell>
               <TableCell align="center">{calcLastUsed(s.name)}</TableCell>
