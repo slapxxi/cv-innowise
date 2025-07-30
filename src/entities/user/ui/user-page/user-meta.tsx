@@ -10,7 +10,7 @@ type PropsType = {
   user: User;
   isOwner: boolean;
 };
-const UserMeta = ({ profile, user, isOwner }: PropsType) => {
+export const UserMeta = ({ profile, user, isOwner }: PropsType) => {
   const { mutate: uploadAvatar, isPending } = useUploadAvatar();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const MAX_AVATAR_SIZE_MB = 0.5;
@@ -64,5 +64,3 @@ const UserMeta = ({ profile, user, isOwner }: PropsType) => {
     </>
   );
 };
-
-export default UserMeta;

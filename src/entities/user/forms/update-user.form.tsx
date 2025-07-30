@@ -1,11 +1,10 @@
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import React, { Suspense } from 'react';
 import { useFormIsChanged, useUpdateProfile, useUpdateUser, useUserFormData } from '~/entities/user/service';
 import { useAuth } from '~/app';
 import { Box, CircularProgress } from '@mui/material';
-import { type User } from '~/shared';
+import { Button, type User } from '~/shared';
 import { useUserForm } from '~/entities/user/hooks/use-user-form-handlers.ts';
 import { UserFormFields } from '~/entities/user/ui/users-table/user-form-fields';
 
