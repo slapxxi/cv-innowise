@@ -18,18 +18,18 @@ import {
 } from '~/shared';
 
 type CvsTableProps = {
-  q: string;
+  cvs: ReturnType<typeof useCvs>['cvs'];
   sort: CvsSortKey;
   order: SortOrder;
+  isFetching?: boolean;
   onChangeSort?: ChangeSortHandler;
   onUpdate?: (cv: Cv) => void;
   onDelete?: (cv: Cv) => void;
 };
 
 export const CvsTable: React.FC<CvsTableProps> = (props) => {
-  const { q, onChangeSort, sort, order, onUpdate, onDelete, ...rest } = props;
+  const { cvs, onChangeSort, sort, order, onUpdate, onDelete, isFetching = false, ...rest } = props;
   const { t } = useTranslation();
-  const { cvs, isFetching } = useCvs({ sort, order, q });
   const [menuOpen, setMenuOpen] = useState<number | null>(null);
 
   const handleChangeSort: ChangeSortHandler = (sort, order) => {

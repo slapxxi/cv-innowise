@@ -29,11 +29,12 @@ const projectsSearchSchema = z.object({
 
 export const Route = createFileRoute('/_mainLayout/cvs/$cvId/_cvsLayout/projects')({
   component: RouteComponent,
-  beforeLoad: ({ context }) => {
+  beforeLoad: ({ context, search }) => {
     return {
       breadcrumbs: mergeBreadcrumbs(context.breadcrumbs, {
         title: 'Projects',
         to: '/cvs/$cvId/projects',
+        props: { search },
       }),
     };
   },

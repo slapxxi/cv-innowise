@@ -34,19 +34,27 @@ type CvsSearchParams = Partial<{
   order: SortOrder;
 }>;
 
-type Params = {} & CvsSearchParams & Omit<QueryOptions, 'queryKey' | 'queryFn'>;
+type Params = { userId?: string } & CvsSearchParams & Omit<QueryOptions, 'queryKey' | 'queryFn'>;
 
 export function useCvs(params: Params = {}) {
   const queryClient = useQueryClient();
-  const { sort = 'name', q = '', order = 'asc', ...restParams } = params ?? {};
+  const { userId, sort = 'name', q = '', order = 'asc', ...restParams } = params ?? {};
   const auth = useAuth();
   const { data: cvs, ...rest } = useSuspenseQuery({
     ...cvsOptions({ accessToken: auth!.accessToken }),
     ...restParams,
   });
 
+  const filteredCvs = useMemo(() => {
+    if (userId === undefined) {
+      return cvs;
+    }
+
+    return cvs.filter((cv) => cv.user?.id === userId);
+  }, [cvs, userId]);
+
   const searchedCvs = useMemo(() => {
-    const searchResults = fuzzysort.go(q, cvs, {
+    const searchResults = fuzzysort.go(q, filteredCvs, {
       all: true,
       threshold: 0,
       keys: ['name', 'description', 'education', 'user.email'],
@@ -67,7 +75,7 @@ export function useCvs(params: Params = {}) {
     });
 
     return searchedCvs;
-  }, [q, cvs]);
+  }, [q, filteredCvs]);
 
   const sortedCvs = useMemo(() => {
     return [...searchedCvs].sort(createComparator(sort, order, (position, key) => mapSortToProperty(position, key)));
