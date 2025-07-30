@@ -8,12 +8,23 @@ import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { useAuth } from '~/app';
 import { AddCvSkillForm, skillsOptions, UpdateCvSkillForm, useCv, useDeleteCvSkills } from '~/features';
-import { Button, Count, Modal, PageTitle, SkillBar, useEditingState, type SkillMastery } from '~/shared';
+import {
+  Button,
+  Count,
+  mergeBreadcrumbs,
+  Modal,
+  PageTitle,
+  SkillBar,
+  useEditingState,
+  type SkillMastery,
+} from '~/shared';
 
 export const Route = createFileRoute('/_mainLayout/cvs/$cvId/_cvsLayout/skills')({
   component: RouteComponent,
-  beforeLoad: ({ params }) => {
-    return { breadcrumb: { title: 'Skills', pathname: `/cvs/${params.cvId}/skills` } };
+  beforeLoad: ({ context, location }) => {
+    return {
+      breadcrumbs: mergeBreadcrumbs(context.breadcrumbs, { title: 'Skills', to: location.pathname }),
+    };
   },
   loader: ({ context }) => {
     const { auth, queryClient } = context;

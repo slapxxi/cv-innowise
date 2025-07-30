@@ -148,6 +148,8 @@ const resources = {
       Domain: 'Домен',
       'Start date': 'Дата начала',
       'End date': 'Дата окончания',
+      Project: 'Проект',
+      'Add cv project': 'Добавить проект',
     },
   },
 };

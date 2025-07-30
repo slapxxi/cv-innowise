@@ -8,12 +8,23 @@ import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
 import { useAuth } from '~/app';
 import { AddSkillForm, skillsOptions, UpdateSkillForm, useDeleteProfileSkills, useUser } from '~/features';
-import { Button, Count, Modal, PageTitle, SkillBar, useEditingState, type SkillMastery } from '~/shared';
+import {
+  Button,
+  Count,
+  mergeBreadcrumbs,
+  Modal,
+  PageTitle,
+  SkillBar,
+  useEditingState,
+  type SkillMastery,
+} from '~/shared';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/skills')({
   component: RouteComponent,
-  beforeLoad: ({ params }) => {
-    return { breadcrumb: { title: 'Skills', pathname: `/users/${params.userId}/skills` } };
+  beforeLoad: ({ context }) => {
+    return {
+      breadcrumbs: mergeBreadcrumbs(context.breadcrumbs, { title: 'Skills', to: '/users/$userId/skills' }),
+    };
   },
   loader: ({ context }) => {
     const { auth, queryClient } = context;

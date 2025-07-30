@@ -1,12 +1,23 @@
 import { createFileRoute, Outlet, useMatches } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { cvOptions } from '~/features';
-import { Breadcrumbs, TabLink, Tabs } from '~/shared';
+import { Breadcrumbs, mergeBreadcrumbs, TabLink, Tabs, type Cv } from '~/shared';
 
 export const Route = createFileRoute('/_mainLayout/cvs/$cvId/_cvsLayout')({
   component: RouteComponent,
-  beforeLoad: () => {
-    return { breadcrumb: { title: 'CVs', pathname: `/cvs` } };
+  beforeLoad: ({ params, context }) => {
+    const { queryClient } = context;
+    const cv = queryClient.getQueryData(['cv', params.cvId]) as Cv | undefined;
+
+    if (cv) {
+      return {
+        breadcrumbs: mergeBreadcrumbs(context.breadcrumbs, { title: 'Cvs', to: '/cvs' }, { title: cv.name }),
+      };
+    }
+
+    return {
+      breadcrumbs: mergeBreadcrumbs(context.breadcrumbs, { title: 'Cvs', to: '/cvs' }, { title: '...' }),
+    };
   },
   loader: ({ context, params }) => {
     const { auth, queryClient } = context;
@@ -44,6 +55,7 @@ function RouteComponent() {
             params={{ cvId: params.cvId }}
             value="/cvs/$cvId/projects"
             label={t('Projects')}
+            search={{ sort: 'name', order: 'asc', q: '' }}
             replace
           />
           <TabLink

@@ -1,13 +1,14 @@
 import { createFileRoute, Outlet, useMatches } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import i18n from '~/app/i18n';
 import { getUserQueryOptions } from '~/features';
-import { Breadcrumbs, TabLink, Tabs } from '~/shared';
+import { Breadcrumbs, mergeBreadcrumbs, TabLink, Tabs } from '~/shared';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout')({
   component: RouteComponent,
-  beforeLoad: () => {
-    return { breadcrumb: { title: i18n.t('Employees'), pathname: '/users' } };
+  beforeLoad: ({ context }) => {
+    return {
+      breadcrumbs: mergeBreadcrumbs(context.breadcrumbs, { title: 'Employees', to: '/users' }),
+    };
   },
   loader: ({ params, context }) => {
     const { auth, queryClient } = context;

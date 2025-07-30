@@ -36,7 +36,6 @@ export async function deleteCv(params: DeleteCvParams): Promise<DeleteCvResult> 
         Authorization: `Bearer ${params.accessToken}`,
       },
     });
-    console.log(response);
     return { ok: true, data: response.deleteCv };
   } catch (e) {
     if (e instanceof ClientError) {

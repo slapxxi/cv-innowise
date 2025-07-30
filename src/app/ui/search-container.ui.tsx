@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { PageTitle, SearchField } from '~/shared';
 
 type SearchContainerProps = {
-  title: string;
+  title?: string;
   query: string;
   children: React.ReactNode;
   onSearch?: (q: string) => void;
@@ -24,7 +24,7 @@ export const SearchContainer: React.FC<SearchContainerProps> = (props) => {
   return (
     <section className="flex flex-col gap-4 p-6 py-4">
       <header className="flex flex-col gap-2 bg-bg dark:bg-bg-dark">
-        <PageTitle>{title}</PageTitle>
+        {title && <PageTitle>{title}</PageTitle>}
 
         <div className="flex">
           <form onSubmit={handleSearch} key={query}>

@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom/client';
 // Import the generated route tree
 import { QueryClientProvider } from '@tanstack/react-query';
 import '~/app/i18n';
-import { AuthProvider, ThemeProvider, useAuth } from '~/app';
+import { AuthProvider, LocalizationProvider, ThemeProvider, useAuth } from '~/app';
 import '~/app/styles/styles.css';
 import { queryClient } from '~/shared';
 import reportWebVitals from './reportWebVitals.ts';
@@ -39,11 +39,13 @@ if (rootElement && !rootElement.innerHTML) {
       <StyledEngineProvider enableCssLayer>
         <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
         <ThemeProvider>
-          <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-              <App />
-            </AuthProvider>
-          </QueryClientProvider>
+          <LocalizationProvider>
+            <QueryClientProvider client={queryClient}>
+              <AuthProvider>
+                <App />
+              </AuthProvider>
+            </QueryClientProvider>
+          </LocalizationProvider>
         </ThemeProvider>
       </StyledEngineProvider>
     </StrictMode>

@@ -36,7 +36,6 @@ export const getSkills = async (params: GetSkillsParams): Promise<GetSkillsResul
     return { ok: true, data: response.skills };
   } catch (e) {
     if (e instanceof ClientError) {
-      console.log(e);
       if (e.response.errors?.find((e) => e.message.toLowerCase() === 'unauthorized')) {
         return { ok: false, error: { message: 'Unauthorized', status: StatusCodes.UNAUTHORIZED } };
       }

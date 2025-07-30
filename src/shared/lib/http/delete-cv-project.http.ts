@@ -1,49 +1,46 @@
-import type { Cv, HttpError, HttpResult } from '~/shared';
+import type { Cv, DeleteCvProjectInput, HttpError, HttpResult } from '~/shared';
 import { API_URL } from './const';
 import { ClientError, gql, request } from './graphql.http';
 import { Queries } from './queries';
 import { errorsSchema } from './schema';
 
 const DELETE_CV_SKILL = gql`
-  mutation DeleteCvSkill($skill: DeleteCvSkillInput!) {
-    deleteCvSkill(skill: $skill) {
+  mutation DeleteCvProject($project: RemoveCvProjectInput!) {
+    removeCvProject(project: $project) {
       ${Queries.CV_QUERY}
     }
   }
 `;
 
-type DeleteCvMutationResult = { deleteCvSkill: Cv };
+type DeleteCvMutationResult = { deleteCvProject: Cv };
 
 type DeleteCvMutationVariables = {
-  skill: {
-    cvId: string;
-    name: string[];
-  };
+  project: DeleteCvProjectInput;
 };
 
-export type DeleteCvSkillsData = Cv;
+export type DeleteCvProjectData = Cv;
 
-export type DeleteCvSkillsError = HttpError;
+export type DeleteCvProjectError = HttpError;
 
-export type DeleteCvSkillsParams = {
+export type DeleteCvProjectParams = {
   cvId: string;
-  skillNames: string[];
+  projectId: string;
   accessToken: string;
 };
 
-export type DeleteCvSkillResult = HttpResult<DeleteCvSkillsData, DeleteCvSkillsError>;
+export type DeleteCvProjectResult = HttpResult<DeleteCvProjectData, DeleteCvProjectError>;
 
-export async function deleteCvSkills(params: DeleteCvSkillsParams): Promise<DeleteCvSkillResult> {
+export async function deleteCvProject(params: DeleteCvProjectParams): Promise<DeleteCvProjectResult> {
   try {
     const response = await request<DeleteCvMutationResult, DeleteCvMutationVariables>({
       url: API_URL,
       document: DELETE_CV_SKILL,
-      variables: { skill: { cvId: params.cvId, name: params.skillNames } },
+      variables: { project: { cvId: params.cvId, projectId: params.projectId } },
       requestHeaders: {
         Authorization: `Bearer ${params.accessToken}`,
       },
     });
-    return { ok: true, data: response.deleteCvSkill };
+    return { ok: true, data: response.deleteCvProject };
   } catch (e) {
     if (e instanceof ClientError) {
       const parseResult = errorsSchema.safeParse(e.response);

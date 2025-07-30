@@ -1,12 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { cvOptions, UpdateCvForm, useCv, useUpdateCv } from '~/features';
-import { Button, Text } from '~/shared';
+import { Button, mergeBreadcrumbs, Text } from '~/shared';
 
 export const Route = createFileRoute('/_mainLayout/cvs/$cvId/_cvsLayout/details')({
   component: RouteComponent,
-  beforeLoad: ({ params }) => {
-    return { breadcrumb: { title: 'Details', pathname: `/cvs/${params.cvId}/details` } };
+  beforeLoad: ({ context, location }) => {
+    return {
+      breadcrumbs: mergeBreadcrumbs(context.breadcrumbs, { title: 'Details', to: location.pathname }),
+    };
   },
   loader: ({ context, params }) => {
     const { queryClient, auth } = context;

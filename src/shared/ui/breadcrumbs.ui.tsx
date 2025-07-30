@@ -14,18 +14,25 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = (props) => {
   return (
     <nav className={className}>
       <ul className="flex items-center gap-3">
-        {breadcrumbs.map(({ title, pathname, icon }) => (
-          <Fragment key={pathname}>
+        {breadcrumbs.map(({ title, to, icon }, i) => (
+          <Fragment key={i}>
             <li>
-              <Link
-                className="flex items-center gap-3 text-neutral-600 dark:text-neutral-400"
-                to={pathname}
-                activeProps={{ className: 'text-primary/60 dark:text-primary/60' }}
-                activeOptions={{ exact: true }}
-              >
-                {icon}
-                {title}
-              </Link>
+              {to ? (
+                <Link
+                  className="flex items-center gap-3 text-neutral-600 dark:text-neutral-400"
+                  to={to}
+                  activeProps={{ className: 'text-primary/60 dark:text-primary/60' }}
+                  activeOptions={{ exact: true }}
+                >
+                  {icon}
+                  {title}
+                </Link>
+              ) : (
+                <span className="flex items-center gap-3 text-neutral-600 dark:text-neutral-400">
+                  {icon}
+                  {title}
+                </span>
+              )}
             </li>
             <li className="last:hidden">
               <ChevronRight fontSize="small" className="text-neutral-400 dark:text-neutral-500" />

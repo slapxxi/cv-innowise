@@ -37,7 +37,6 @@ export const getProjects = async (params: GetProjectsParams): Promise<GetProject
     const parsedProjects = projectSchema.array().parse(response.projects);
     return { ok: true, data: parsedProjects };
   } catch (e) {
-    console.log(e);
     if (e instanceof ClientError) {
       if (e.response.errors?.find((e) => e.message.toLowerCase() === 'unauthorized')) {
         return { ok: false, error: { message: 'Unauthorized', status: StatusCodes.UNAUTHORIZED } };
