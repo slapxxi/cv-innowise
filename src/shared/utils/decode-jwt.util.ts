@@ -1,4 +1,3 @@
-// todo: write tests :)
 export function decodeJWT(token: string) {
   const [header, payload, signature] = token.split('.');
   return {
