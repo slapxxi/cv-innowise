@@ -1,19 +1,16 @@
-import type { Cv } from '~/shared';
+import { type CvWithSkillsByCategories } from '~/shared';
 import { useAuth } from '~/app';
 import { Box, Divider, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import { t } from 'i18next';
+import { CvSkillsTable } from '~/features/cvs/ui/cv-skill-table.tsx';
 
 type CvPreviewProps = {
-  cv: Cv;
-  cvProjects: Cv['projects'];
+  cv: CvWithSkillsByCategories;
 };
 
-export function CvPreview({ cv, cvProjects }: CvPreviewProps) {
+export function CvPreview({ cv }: CvPreviewProps) {
   const auth = useAuth();
-  // ();
-  console.log('cv', cv);
-  console.log('cvProjects', cvProjects);
   return (
     <>
       <Box className="space-y-4 p-6 border rounded-md shadow-sm ">
@@ -50,20 +47,11 @@ export function CvPreview({ cv, cvProjects }: CvPreviewProps) {
           </Box>
         </section>
 
-        {/*<div>*/}
-        {/*  <h3 className="text-lg font-medium text-gray-700">Description</h3>*/}
-        {/*  <p>{cv.description}</p>*/}
-        {/*</div>*/}
-
-        {/*<div>*/}
-        {/*  <h3 className="text-lg font-medium">Education</h3>*/}
-        {/*  <p>{cv.education}</p>*/}
-        {/*</div>*/}
         <section className={'mt-6'}>
           <Typography className="text-2xl font-semibold" component={'h3'}>
             Projects
           </Typography>
-          {cvProjects?.map((pr) => (
+          {cv.projects?.map((pr) => (
             <Box key={pr.id} className={'flex justify-between'}>
               <Box>
                 <Typography>{pr.name}</Typography>
@@ -93,6 +81,7 @@ export function CvPreview({ cv, cvProjects }: CvPreviewProps) {
           <Typography className="text-2xl font-semibold" component={'h3'}>
             Professional Skills
           </Typography>
+          <CvSkillsTable categories={cv.skillsByCategories} projects={cv.projects ?? []} />
         </section>
       </Box>
     </>
