@@ -1,4 +1,5 @@
-import type { Result, User } from '~/shared';
+import type { RemoveCvProjectInput } from 'cv-graphql';
+import type { Prettify, Result, User } from '~/shared';
 
 export type HttpError = {
   message: string;
@@ -20,3 +21,5 @@ export type AuthResponse = {
 };
 
 export type GetUsersResponse = { users: User[] };
+
+export type DeleteCvProjectInput = Prettify<RemoveCvProjectInput>;

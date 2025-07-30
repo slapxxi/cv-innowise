@@ -9,12 +9,16 @@ import {
   cvProjectsSortingFields,
   projectsOptions,
   useCvProjects,
+  useDeleteCvProject,
+  type CvProjectsSearchParams,
   type CvProjectsSortKey,
+  type UsersSearchParams,
 } from '~/features';
 import {
   ActionMenu,
   ButtonAdd,
   cn,
+  Confirm,
   Highlight,
   mergeBreadcrumbs,
   Modal,
@@ -23,7 +27,10 @@ import {
   TableCell,
   TableRow,
   Text,
+  useEditingState,
   type ChangeSortHandler,
+  type CvProject,
+  type NonUndefined,
 } from '~/shared';
 
 const projectsSearchSchema = z.object({
@@ -54,8 +61,14 @@ function RouteComponent() {
   const params = Route.useParams();
   const search = Route.useSearch();
   const nav = Route.useNavigate();
-  const { cvProjects, invalidateCvProjects } = useCvProjects({ id: params.cvId, ...search });
-  const [open, setOpen] = useState(false);
+  const { invalidateCvProjects } = useCvProjects({ id: params.cvId, ...search });
+  const { state, add, update, del, cancel } = useEditingState<{ cvProject: CvProject }>();
+  const { deleteCvProject } = useDeleteCvProject({
+    onSuccess: () => {
+      invalidateCvProjects();
+      cancel();
+    },
+  });
 
   const handleSearch = (q: string) => {
     nav({ search: (prev) => ({ ...prev, q }) });
@@ -65,94 +78,164 @@ function RouteComponent() {
     nav({ search: (prev) => ({ ...prev, sort, order }) });
   };
 
+  const handleDeleteCvProject = () => {
+    if (state.context?.cvProject) {
+      deleteCvProject({ cvId: params.cvId, projectId: state.context.cvProject.project.id });
+    }
+  };
+
+  const handleAdd = () => {
+    add();
+  };
+
+  const handleUpdate = (cvProject: CvProject) => {
+    update({ cvProject });
+  };
+
+  const handleDel = (cvProject: CvProject) => {
+    del({ cvProject });
+  };
+
+  const handleCancel = () => {
+    cancel();
+  };
+
   return (
     <SearchContainer
       query={search.q}
       onSearch={handleSearch}
-      actionSlot={<ButtonAdd onClick={() => setOpen(true)}>{t('Add project')}</ButtonAdd>}
+      actionSlot={<ButtonAdd onClick={handleAdd}>{t('Add project')}</ButtonAdd>}
     >
-      <Modal open={open} title={t('Add cv project')} onClose={() => setOpen(false)} size="lg">
+      <Confirm
+        title={t('Delete cv project')}
+        open={state.status === 'deleting'}
+        onCancel={handleCancel}
+        onConfirm={handleDeleteCvProject}
+      >
+        {`${t('Are you sure you want to delete cv project')}`}
+        <b>{` "${state.context?.cvProject.name}"`}?</b>
+      </Confirm>
+
+      <Modal open={state.status === 'adding'} title={t('Add cv project')} onClose={handleCancel} size="lg">
         <AddCvProjectForm
           onSuccess={() => {
             invalidateCvProjects();
-            setOpen(false);
+            cancel();
           }}
-          onCancel={() => setOpen(false)}
+          onCancel={handleCancel}
         />
       </Modal>
 
-      <Table
-        data={cvProjects}
-        headFields={
-          [
-            { id: 'name', title: t('Project name') },
-            { id: 'internalName', title: t('Internal name') },
-            { id: 'domain', title: t('Domain') },
-            { id: 'startDate', title: t('Start date') },
-            { id: 'endDate', title: t('End date') },
-            { id: 'action', title: '' },
-          ] satisfies Array<{ id: CvProjectsSortKey | 'action'; title: string }>
-        }
-        order={search.order}
+      <CvProjectsTable
+        cvId={params.cvId}
+        q={search.q}
         sort={search.sort}
+        order={search.order}
+        onUpdate={handleUpdate}
+        onDelete={handleDel}
         onChangeSort={handleChangeSort}
-      >
-        {(project) => (
-          <Fragment key={project.id}>
-            <TableRow>
-              <TableCell className="border-b-0">
-                <Highlight value={project.highlights.name}>
-                  <OptionalLabel>{project.name}</OptionalLabel>
-                </Highlight>
-              </TableCell>
-              <TableCell className="border-b-0">
-                <Highlight value={project.highlights.internalName}>
-                  <OptionalLabel>{project.internalName}</OptionalLabel>
-                </Highlight>
-              </TableCell>
-              <TableCell className="border-b-0">
-                <Highlight value={project.highlights.domain}>
-                  <OptionalLabel>{project.domain}</OptionalLabel>
-                </Highlight>
-              </TableCell>
-              <TableCell className="border-b-0">
-                <Highlight value={project.highlights.startDate}>
-                  <OptionalLabel>{project.startDate}</OptionalLabel>
-                </Highlight>
-              </TableCell>
-              <TableCell className="border-b-0">
-                <Highlight value={project.highlights.endDate}>
-                  <OptionalLabel text={t('Till now')}>{project.endDate}</OptionalLabel>
-                </Highlight>
-              </TableCell>
-              <TableCell className="border-b-0">
-                <ActionMenu>
-                  <MenuItem>{t('Update project')}</MenuItem>
-                  <MenuItem>{t('Delete project')}</MenuItem>
-                </ActionMenu>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell colSpan={6} className={cn('py-8', project.environment?.length !== 0 && 'border-b-0')}>
-                <Text variant="light" asChild>
-                  <Highlight value={project.highlights.description}>
-                    <OptionalLabel>{project.description}</OptionalLabel>
-                  </Highlight>
-                </Text>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell colSpan={6} className="py-8">
-                <div className="flex gap-2 flex-wrap">
-                  {project.environment?.map((env) => (
-                    <Chip key={env} label={env} className="shrink-0" variant="outlined" />
-                  ))}
-                </div>
-              </TableCell>
-            </TableRow>
-          </Fragment>
-        )}
-      </Table>
+      />
     </SearchContainer>
   );
 }
+
+type CvProjectsTableProps = {
+  cvId: string;
+  q: NonUndefined<UsersSearchParams['q']>;
+  sort: NonUndefined<CvProjectsSearchParams['sort']>;
+  onUpdate?: (cvProject: CvProject) => void;
+  onDelete?: (cvProject: CvProject) => void;
+} & Omit<React.ComponentProps<typeof Table>, 'data' | 'children' | 'headFields' | 'count' | 'sort'>;
+
+export const CvProjectsTable: React.FC<CvProjectsTableProps> = (props) => {
+  const { cvId, q, sort, order, onUpdate, onDelete, onChangeSort, ...rest } = props;
+  const { t } = useTranslation();
+  const { cvProjects } = useCvProjects({ id: cvId, q, sort, order });
+  const [menuOpen, setMenuOpen] = useState<number | null>(null);
+
+  const handleUpdate = (cvProject: CvProject) => {
+    onUpdate?.(cvProject);
+    setMenuOpen(null);
+  };
+
+  const handleDelete = (cvProject: CvProject) => {
+    onDelete?.(cvProject);
+    setMenuOpen(null);
+  };
+
+  return (
+    <Table
+      data={cvProjects}
+      headFields={
+        [
+          { id: 'name', title: t('Project name') },
+          { id: 'internalName', title: t('Internal name') },
+          { id: 'domain', title: t('Domain') },
+          { id: 'startDate', title: t('Start date') },
+          { id: 'endDate', title: t('End date') },
+          { id: 'action', title: '' },
+        ] satisfies Array<{ id: CvProjectsSortKey | 'action'; title: string }>
+      }
+      order={order}
+      sort={sort}
+      onChangeSort={onChangeSort}
+      {...rest}
+    >
+      {(cvProject, i) => (
+        <Fragment key={cvProject.id}>
+          <TableRow>
+            <TableCell className="border-b-0">
+              <Highlight value={cvProject.highlights.name}>
+                <OptionalLabel>{cvProject.name}</OptionalLabel>
+              </Highlight>
+            </TableCell>
+            <TableCell className="border-b-0">
+              <Highlight value={cvProject.highlights.internalName}>
+                <OptionalLabel>{cvProject.internalName}</OptionalLabel>
+              </Highlight>
+            </TableCell>
+            <TableCell className="border-b-0">
+              <Highlight value={cvProject.highlights.domain}>
+                <OptionalLabel>{cvProject.domain}</OptionalLabel>
+              </Highlight>
+            </TableCell>
+            <TableCell className="border-b-0">
+              <Highlight value={cvProject.highlights.startDate}>
+                <OptionalLabel>{cvProject.startDate}</OptionalLabel>
+              </Highlight>
+            </TableCell>
+            <TableCell className="border-b-0">
+              <Highlight value={cvProject.highlights.endDate}>
+                <OptionalLabel text={t('Till now')}>{cvProject.endDate}</OptionalLabel>
+              </Highlight>
+            </TableCell>
+            <TableCell className="border-b-0">
+              <ActionMenu open={menuOpen === i} onOpen={() => setMenuOpen(i)} onClose={() => setMenuOpen(null)}>
+                <MenuItem onClick={() => handleUpdate(cvProject)}>{t('Update project')}</MenuItem>
+                <MenuItem onClick={() => handleDelete(cvProject)}>{t('Delete project')}</MenuItem>
+              </ActionMenu>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell colSpan={6} className={cn('py-8', cvProject.environment?.length !== 0 && 'border-b-0')}>
+              <Text variant="light" asChild>
+                <Highlight value={cvProject.highlights.description}>
+                  <OptionalLabel>{cvProject.description}</OptionalLabel>
+                </Highlight>
+              </Text>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell colSpan={6} className="py-8">
+              <div className="flex gap-2 flex-wrap">
+                {cvProject.environment?.map((env) => (
+                  <Chip key={env} label={env} className="shrink-0" variant="outlined" />
+                ))}
+              </div>
+            </TableCell>
+          </TableRow>
+        </Fragment>
+      )}
+    </Table>
+  );
+};

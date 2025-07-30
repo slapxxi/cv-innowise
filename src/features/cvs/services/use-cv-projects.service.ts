@@ -17,7 +17,7 @@ export type CvProjectsSortKey = (typeof cvProjectsSortingFields)[number];
 
 export const cvProjectsOptions = cvOptions;
 
-type CvProjectsSearchParams = Partial<{
+export type CvProjectsSearchParams = Partial<{
   q: string;
   sort: CvProjectsSortKey;
   order: SortOrder;
