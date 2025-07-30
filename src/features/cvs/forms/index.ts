@@ -5,3 +5,4 @@ export * from './add-cv-skill.form';
 export * from './update-cv-skill.form';
 
 export * from './add-cv-project.form';
+export * from './update-cv-project.form';

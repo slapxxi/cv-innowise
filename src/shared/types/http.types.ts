@@ -1,4 +1,4 @@
-import type { RemoveCvProjectInput } from 'cv-graphql';
+import type { RemoveCvProjectInput, UpdateCvProjectInput as CvUpdateCvProjectInput } from 'cv-graphql';
 import type { Prettify, Result, User } from '~/shared';
 
 export type HttpError = {
@@ -23,3 +23,5 @@ export type AuthResponse = {
 export type GetUsersResponse = { users: User[] };
 
 export type DeleteCvProjectInput = Prettify<RemoveCvProjectInput>;
+
+export type UpdateCvProjectInput = Prettify<CvUpdateCvProjectInput>;

@@ -3,6 +3,17 @@ import { ClientError, gql, request } from './graphql.http';
 import { errorsSchema } from './schema';
 import { API_URL } from './const';
 
+const UPDATE_USER_MUTATION = gql`
+  mutation UpdateUser($user: UpdateUserInput!) {
+    updateUser(user: $user) {
+      id
+      role
+      department_name
+      position_name
+    }
+  }
+`;
+
 export type UpdateUserParams = {
   userId: string;
   positionId?: string;
@@ -21,17 +32,6 @@ export type UpdateUserData = {
 export type UpdateUserError = HttpError;
 
 export type UpdateUserResult = HttpResult<UpdateUserData, UpdateUserError>;
-
-const UPDATE_USER_MUTATION = gql`
-  mutation UpdateUser($user: UpdateUserInput!) {
-    updateUser(user: $user) {
-      id
-      role
-      department_name
-      position_name
-    }
-  }
-`;
 
 type UpdateUserMutationResult = {
   updateUser: UpdateUserData;
