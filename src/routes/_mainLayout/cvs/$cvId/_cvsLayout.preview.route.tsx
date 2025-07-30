@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { CvPreview } from '~/features/cvs/ui/preview.tsx';
+import { CvPreview } from '~/features/cvs/ui/cv-preview.tsx';
 import { cvOptions, useCv } from '~/features';
 import { mergeBreadcrumbs } from '~/shared';
 
