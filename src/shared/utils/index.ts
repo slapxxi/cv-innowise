@@ -6,3 +6,5 @@ export * from './slice-collection.util';
 export * from './switch-order.util';
 export * from './create-comparator-fn.util';
 export * from './merge-breadcrumbs.util';
+export * from './skill-stats.util';
+export * from './prepatre-html.util';
