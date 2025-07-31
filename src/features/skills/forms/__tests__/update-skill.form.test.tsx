@@ -7,6 +7,12 @@ jest.mock('~/features', () => ({
   useUpdateProfileSkill: jest.fn(),
 }));
 
+jest.mock('~/shared/lib/http/env', () => {
+  return {
+    API_URL: process.env.API_URL,
+  };
+});
+
 const mockUseUpdateProfileSkill = useUpdateProfileSkill as jest.Mock;
 
 describe('UpdateSkillForm', () => {

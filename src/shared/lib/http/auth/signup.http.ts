@@ -1,8 +1,8 @@
+import type { AuthResponse, HttpError, HttpResult, User } from '~/shared';
 import { ClientError, gql, request } from '~/shared';
-import type { HttpError, HttpResult, AuthResponse, User } from '~/shared';
 import { Queries } from '~/shared/lib/http/queries';
+import { API_URL } from '../env';
 import { errorsSchema } from '../schema';
-import { API_URL } from '../const';
 
 const SIGNUP_QUERY = gql`
   mutation Signup($auth: AuthInput!) {

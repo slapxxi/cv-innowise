@@ -8,7 +8,7 @@ import {
   type User,
   type UserWithSkillsByCategories,
 } from '~/shared';
-import { API_URL } from '../const';
+import { API_URL } from '../env';
 import { ClientError, gql, request } from '../graphql.http';
 import { Queries } from '../queries';
 import { errorsSchema, skillCategorySchema, userSchema } from '../schema';

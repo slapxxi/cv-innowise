@@ -1,5 +1,7 @@
-import { ClientError, gql, request, type HttpError, type HttpResult, type Language } from '~/shared';
-import { API_URL, StatusCodes } from './const';
+import { type HttpError, type HttpResult, type Language } from '~/shared';
+import { gql, ClientError, request } from './graphql.http';
+import { StatusCodes } from './const';
+import { API_URL } from './env';
 import { Queries } from './queries';
 
 const GET_LANGUAGES = gql`

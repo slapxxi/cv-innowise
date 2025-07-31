@@ -1,5 +1,6 @@
 import { ClientError, gql, request, type HttpError, type HttpResult, type Project } from '~/shared';
-import { API_URL, StatusCodes } from '../const';
+import { StatusCodes } from '../const';
+import { API_URL } from '../env';
 import { Queries } from '../queries';
 import { projectSchema } from '../schema';
 

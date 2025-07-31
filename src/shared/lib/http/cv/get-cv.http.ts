@@ -10,7 +10,8 @@ import {
   type HttpResult,
   type Mastery,
 } from '~/shared';
-import { API_URL, StatusCodes } from '../const';
+import { StatusCodes } from '../const';
+import { API_URL } from '../env';
 import { Queries } from '../queries';
 import { cvSchema, skillCategorySchema } from '../schema';
 
