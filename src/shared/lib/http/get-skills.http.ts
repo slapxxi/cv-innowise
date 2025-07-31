@@ -1,5 +1,5 @@
 import { ClientError, gql, request, type HttpError, type HttpResult, type Skill } from '~/shared';
-import { API_URL, StatusCodes } from '~/shared/lib/http/const';
+import { API_URL, StatusCodes } from './const';
 import { Queries } from './queries';
 
 const GET_SKILLS = gql`

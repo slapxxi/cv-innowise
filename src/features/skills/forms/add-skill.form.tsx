@@ -27,6 +27,7 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = (props) => {
   const { createProfileSkill } = useCreateProfileSkill({
     onSuccess,
   });
+
   const filteredSkills = skills.filter((s) => !user.profile.skills.find((sm) => sm.name === s.name));
   const form = useForm<CreateSkillForm>({
     resolver: zodResolver(createSkillSchema),
@@ -35,6 +36,7 @@ export const AddSkillForm: React.FC<AddSkillFormProps> = (props) => {
       masteryLevel: masteryLevels[0],
     },
   });
+
   const labelProps = {
     className: 'bg-bg dark:bg-neutral-600',
   };
