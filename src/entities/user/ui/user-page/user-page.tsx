@@ -1,12 +1,10 @@
-import { type User } from '~/shared';
-import { useUserForm } from '~/entities/user/hooks/use-user-form-handlers.ts';
-import { UserFormFields } from '~/entities/user/ui/users-table/user-form-fields.tsx';
+import { Button, type User } from '~/shared';
+import { UserFormFields, UserMeta } from '~/entities/user/ui';
 import { useFormIsChanged, useUpdateProfile, useUpdateUser, useUserFormData } from '~/entities/user/service';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useAuth } from '~/app';
-import UserMeta from '~/entities/user/ui/user-page/user-meta.tsx';
 import { useNavigate } from '@tanstack/react-router';
+import { useUserForm } from '~/entities';
 
 type PropsType = {
   user: User;
