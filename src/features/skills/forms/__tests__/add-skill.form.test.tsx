@@ -3,7 +3,11 @@ import userEvent from '@testing-library/user-event';
 import { useCreateProfileSkill, useSkills, useUser } from '~/features';
 import { AddSkillForm } from '../add-skill.form';
 
-jest.mock('~/features');
+jest.mock('~/features', () => ({
+  useCreateProfileSkill: jest.fn(),
+  useSkills: jest.fn(),
+  useUser: jest.fn(),
+}));
 
 const mockUseSkills = useSkills as jest.Mock;
 const mockUseUser = useUser as jest.Mock;

@@ -3,7 +3,9 @@ import { useUpdateProfileSkill } from '~/features';
 import { type Mastery } from '~/shared';
 import { UpdateSkillForm } from '../update-skill.form';
 
-jest.mock('~/features');
+jest.mock('~/features', () => ({
+  useUpdateProfileSkill: jest.fn(),
+}));
 
 const mockUseUpdateProfileSkill = useUpdateProfileSkill as jest.Mock;
 
