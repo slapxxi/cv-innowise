@@ -48,6 +48,14 @@ function RouteComponent() {
             label={t('Languages')}
             replace
           />
+          <TabLink
+            to="/users/$userId/cvs"
+            params={{ userId: params.userId }}
+            value="/users/$userId/cvs"
+            label={t('Cvs')}
+            search={{ order: 'name', sort: 'asc', q: '' }}
+            replace
+          />
         </Tabs>
       </header>
 

@@ -14,7 +14,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = (props) => {
   return (
     <nav className={className}>
       <ul className="flex items-center gap-3">
-        {breadcrumbs.map(({ title, to, icon }, i) => (
+        {breadcrumbs.map(({ title, to, icon, props }, i) => (
           <Fragment key={i}>
             <li>
               {to ? (
@@ -23,6 +23,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = (props) => {
                   to={to}
                   activeProps={{ className: 'text-primary/60 dark:text-primary/60' }}
                   activeOptions={{ exact: true }}
+                  {...props}
                 >
                   {icon}
                   {title}

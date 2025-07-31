@@ -9,6 +9,7 @@ export type BreadcrumbEntry = {
   title: string;
   to?: string;
   icon?: React.ReactNode;
+  props?: Record<string, unknown>;
 };
 
 export type SortOrder = 'asc' | 'desc';

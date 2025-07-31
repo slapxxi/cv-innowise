@@ -31,6 +31,7 @@ import { Route as MainLayoutCvsCvIdCvsLayoutRouteRouteImport } from './routes/_m
 import { Route as MainLayoutUsersUserIdUserLayoutSkillsRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.skills.route'
 import { Route as MainLayoutUsersUserIdUserLayoutProfileRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.profile.route'
 import { Route as MainLayoutUsersUserIdUserLayoutLanguagesRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.languages.route'
+import { Route as MainLayoutUsersUserIdUserLayoutCvsRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.cvs.route'
 import { Route as MainLayoutCvsCvIdCvsLayoutSkillsRouteRouteImport } from './routes/_mainLayout/cvs/$cvId/_cvsLayout.skills.route'
 import { Route as MainLayoutCvsCvIdCvsLayoutProjectsRouteRouteImport } from './routes/_mainLayout/cvs/$cvId/_cvsLayout.projects.route'
 import { Route as MainLayoutCvsCvIdCvsLayoutPreviewRouteRouteImport } from './routes/_mainLayout/cvs/$cvId/_cvsLayout.preview.route'
@@ -164,6 +165,12 @@ const MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute =
     path: '/languages',
     getParentRoute: () => MainLayoutUsersUserIdUserLayoutRouteRoute,
   } as any)
+const MainLayoutUsersUserIdUserLayoutCvsRouteRoute =
+  MainLayoutUsersUserIdUserLayoutCvsRouteRouteImport.update({
+    id: '/cvs',
+    path: '/cvs',
+    getParentRoute: () => MainLayoutUsersUserIdUserLayoutRouteRoute,
+  } as any)
 const MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute =
   MainLayoutCvsCvIdCvsLayoutSkillsRouteRouteImport.update({
     id: '/skills',
@@ -210,6 +217,7 @@ export interface FileRoutesByFullPath {
   '/cvs/$cvId/preview': typeof MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute
   '/cvs/$cvId/projects': typeof MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute
   '/cvs/$cvId/skills': typeof MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute
+  '/users/$userId/cvs': typeof MainLayoutUsersUserIdUserLayoutCvsRouteRoute
   '/users/$userId/languages': typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute
   '/users/$userId/profile': typeof MainLayoutUsersUserIdUserLayoutProfileRouteRoute
   '/users/$userId/skills': typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRoute
@@ -235,6 +243,7 @@ export interface FileRoutesByTo {
   '/cvs/$cvId/preview': typeof MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute
   '/cvs/$cvId/projects': typeof MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute
   '/cvs/$cvId/skills': typeof MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute
+  '/users/$userId/cvs': typeof MainLayoutUsersUserIdUserLayoutCvsRouteRoute
   '/users/$userId/languages': typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute
   '/users/$userId/profile': typeof MainLayoutUsersUserIdUserLayoutProfileRouteRoute
   '/users/$userId/skills': typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRoute
@@ -265,6 +274,7 @@ export interface FileRoutesById {
   '/_mainLayout/cvs/$cvId/_cvsLayout/preview': typeof MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute
   '/_mainLayout/cvs/$cvId/_cvsLayout/projects': typeof MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute
   '/_mainLayout/cvs/$cvId/_cvsLayout/skills': typeof MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute
+  '/_mainLayout/users/$userId/_userLayout/cvs': typeof MainLayoutUsersUserIdUserLayoutCvsRouteRoute
   '/_mainLayout/users/$userId/_userLayout/languages': typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute
   '/_mainLayout/users/$userId/_userLayout/profile': typeof MainLayoutUsersUserIdUserLayoutProfileRouteRoute
   '/_mainLayout/users/$userId/_userLayout/skills': typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRoute
@@ -292,6 +302,7 @@ export interface FileRouteTypes {
     | '/cvs/$cvId/preview'
     | '/cvs/$cvId/projects'
     | '/cvs/$cvId/skills'
+    | '/users/$userId/cvs'
     | '/users/$userId/languages'
     | '/users/$userId/profile'
     | '/users/$userId/skills'
@@ -317,6 +328,7 @@ export interface FileRouteTypes {
     | '/cvs/$cvId/preview'
     | '/cvs/$cvId/projects'
     | '/cvs/$cvId/skills'
+    | '/users/$userId/cvs'
     | '/users/$userId/languages'
     | '/users/$userId/profile'
     | '/users/$userId/skills'
@@ -346,6 +358,7 @@ export interface FileRouteTypes {
     | '/_mainLayout/cvs/$cvId/_cvsLayout/preview'
     | '/_mainLayout/cvs/$cvId/_cvsLayout/projects'
     | '/_mainLayout/cvs/$cvId/_cvsLayout/skills'
+    | '/_mainLayout/users/$userId/_userLayout/cvs'
     | '/_mainLayout/users/$userId/_userLayout/languages'
     | '/_mainLayout/users/$userId/_userLayout/profile'
     | '/_mainLayout/users/$userId/_userLayout/skills'
@@ -522,6 +535,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRouteImport
       parentRoute: typeof MainLayoutUsersUserIdUserLayoutRouteRoute
     }
+    '/_mainLayout/users/$userId/_userLayout/cvs': {
+      id: '/_mainLayout/users/$userId/_userLayout/cvs'
+      path: '/cvs'
+      fullPath: '/users/$userId/cvs'
+      preLoaderRoute: typeof MainLayoutUsersUserIdUserLayoutCvsRouteRouteImport
+      parentRoute: typeof MainLayoutUsersUserIdUserLayoutRouteRoute
+    }
     '/_mainLayout/cvs/$cvId/_cvsLayout/skills': {
       id: '/_mainLayout/cvs/$cvId/_cvsLayout/skills'
       path: '/skills'
@@ -590,6 +610,7 @@ const MainLayoutCvsCvIdRouteWithChildren =
   MainLayoutCvsCvIdRoute._addFileChildren(MainLayoutCvsCvIdRouteChildren)
 
 interface MainLayoutUsersUserIdUserLayoutRouteRouteChildren {
+  MainLayoutUsersUserIdUserLayoutCvsRouteRoute: typeof MainLayoutUsersUserIdUserLayoutCvsRouteRoute
   MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute: typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute
   MainLayoutUsersUserIdUserLayoutProfileRouteRoute: typeof MainLayoutUsersUserIdUserLayoutProfileRouteRoute
   MainLayoutUsersUserIdUserLayoutSkillsRouteRoute: typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRoute
@@ -597,6 +618,8 @@ interface MainLayoutUsersUserIdUserLayoutRouteRouteChildren {
 
 const MainLayoutUsersUserIdUserLayoutRouteRouteChildren: MainLayoutUsersUserIdUserLayoutRouteRouteChildren =
   {
+    MainLayoutUsersUserIdUserLayoutCvsRouteRoute:
+      MainLayoutUsersUserIdUserLayoutCvsRouteRoute,
     MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute:
       MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute,
     MainLayoutUsersUserIdUserLayoutProfileRouteRoute:
