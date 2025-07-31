@@ -9,9 +9,8 @@ export const cnSubtitle = 'text-xl font-semibold pt-4 pb-2';
 export const cnMarkedText = 'text-primary';
 
 export function CvPreview({ cv }: CvPreviewProps) {
-  // const cnFlex=
   return (
-    <section className={'max-w-4xl mx-auto'}>
+    <section id={'cv-preview'} className={'max-w-4xl mx-auto'}>
       <Box className="space-y-4 p-6 ">
         <CvHeader />
         <CvMain cv={cv} />

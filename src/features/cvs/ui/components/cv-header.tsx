@@ -4,6 +4,7 @@ import { cnSubtitle } from '~/features';
 import { Button } from '~/shared';
 import { useAuth } from '~/app';
 import { t } from 'i18next';
+import { handleExportPDF } from '~/shared/utils/pdf-export';
 
 export const CvHeader = () => {
   const auth = useAuth();
@@ -15,7 +16,9 @@ export const CvHeader = () => {
         </Typography>
         <Typography component={'h2'}>{auth?.user.positionName}</Typography>
       </Box>
-      <Button variant={'outlined'}>{t('Export PDF')}</Button>
+      <Button variant={'outlined'} onClick={handleExportPDF}>
+        {t('Export PDF')}
+      </Button>
     </header>
   );
 };

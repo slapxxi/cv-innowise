@@ -11,7 +11,7 @@ export const CvProjects = ({ cv }: CvPreviewProps) => {
     <article className={'mt-6'}>
       <header>
         <Typography className={cnSubtitle} variant={'h2'}>
-          t{'Projects'}
+          {t('Projects')}
         </Typography>
       </header>
       {cv.projects?.map((pr) => (
