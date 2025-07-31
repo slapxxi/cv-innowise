@@ -11,7 +11,6 @@ type Props = {
 
 export function CvSkillsTable({ categories, projects }: Props) {
   const skillStats = useSkillStats(projects ?? []);
-
   const calcYears = (name: string): string | null => {
     const years = skillStats.years(name);
     return years != null ? years.toString() : '';
@@ -49,7 +48,8 @@ export function CvSkillsTable({ categories, projects }: Props) {
           skills?.map((s, idx) => (
             <TableRow
               key={s.name}
-              sx={idx === skills.length - 1 ? { borderBottom: '1px solid', borderColor: 'divider' } : undefined}
+              data-last={idx === skills.length - 1 ? 'true' : undefined}
+              sx={idx === skills.length - 1 ? { borderBottom: 'solid 2px', borderBottomColor: 'divider' } : undefined}
             >
               {idx === 0 && (
                 <TableCell rowSpan={skills.length} className={cnMarkedText}>
