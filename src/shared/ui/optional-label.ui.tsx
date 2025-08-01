@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { cn } from '../utils';
+import { cn } from '~/shared';
 
 type OptionalFieldProps = { text?: string; children?: React.ReactNode; className?: string };
 

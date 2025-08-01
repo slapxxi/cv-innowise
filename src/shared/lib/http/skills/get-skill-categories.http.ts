@@ -1,6 +1,6 @@
 import { ClientError, gql, request, type HttpError, type HttpResult, type SkillCategory } from '~/shared';
 import { API_URL, StatusCodes } from '~/shared/lib/http/const';
-import { Queries } from './queries';
+import { Queries } from '../queries';
 
 const GET_SKILL_CATEGORIES = gql`
   query Categories {

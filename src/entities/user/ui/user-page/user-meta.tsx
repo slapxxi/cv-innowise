@@ -1,7 +1,7 @@
 import { Box, CircularProgress } from '@mui/material';
 import { type Profile, type User, UserAvatar } from '~/shared';
 import { toBase64 } from '~/shared/lib/to-base64';
-import { useUploadAvatar } from '~/entities/user/service/use-upload-avatar.service.ts';
+import { useUploadAvatar } from '~/entities';
 import { useRef, type ChangeEvent } from 'react';
 import { InputFileUpload } from '~/shared/ui/input-file-upload.tsx';
 import { t } from 'i18next';

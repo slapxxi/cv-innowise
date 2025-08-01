@@ -1,7 +1,7 @@
 import type { HttpError, HttpResult } from '~/shared';
-import { API_URL } from './const';
-import { ClientError, gql, request } from './graphql.http';
-import { errorsSchema } from './schema';
+import { API_URL } from '../const';
+import { ClientError, gql, request } from '../graphql.http';
+import { errorsSchema } from '../schema';
 
 const DELETE_gc_SKILL = gql`
   mutation DeleteCv($cv: DeleteCvInput!) {

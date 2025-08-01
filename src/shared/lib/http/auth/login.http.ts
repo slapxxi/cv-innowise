@@ -1,8 +1,8 @@
 import type { AuthResponse, HttpError, HttpResult, User } from '~/shared';
-import { ClientError, gql, request } from './graphql.http';
-import { errorsSchema } from './schema';
-import { Queries } from './queries';
-import { API_URL } from './const';
+import { ClientError, gql, request } from '../graphql.http';
+import { errorsSchema } from '../schema';
+import { Queries } from '../queries';
+import { API_URL } from '../const';
 
 const LOGIN_QUERY = gql`
   query Login($auth: AuthInput!) {

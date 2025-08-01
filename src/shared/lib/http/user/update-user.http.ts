@@ -1,7 +1,7 @@
 import type { HttpError, HttpResult } from '~/shared';
-import { ClientError, gql, request } from './graphql.http';
-import { errorsSchema } from './schema';
-import { API_URL } from './const';
+import { ClientError, gql, request } from '../graphql.http';
+import { errorsSchema } from '../schema';
+import { API_URL } from '../const';
 
 const UPDATE_USER_MUTATION = gql`
   mutation UpdateUser($user: UpdateUserInput!) {

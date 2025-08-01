@@ -1,5 +1,5 @@
 import { capitalize } from 'lodash';
-import type { HttpError } from '../types';
+import type { HttpError } from '~/shared';
 
 type FormErrorsProps = { error?: HttpError | null };
 

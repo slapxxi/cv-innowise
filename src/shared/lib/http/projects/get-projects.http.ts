@@ -1,7 +1,7 @@
 import { ClientError, gql, request, type HttpError, type HttpResult, type Project } from '~/shared';
-import { API_URL, StatusCodes } from './const';
-import { Queries } from './queries';
-import { projectSchema } from './schema';
+import { API_URL, StatusCodes } from '../const';
+import { Queries } from '../queries';
+import { projectSchema } from '../schema';
 
 const GET_PROJECTS = gql`
   query Projects {

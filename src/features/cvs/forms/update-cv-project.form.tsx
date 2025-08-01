@@ -5,9 +5,8 @@ import dayjs, { type Dayjs } from 'dayjs';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { useCvProjects, useProjects } from '~/features';
+import { useCvProjects, useProjects, useUpdateCvProject } from '~/features';
 import { Button, Select, SelectItem, TextField, type CvProject } from '~/shared';
-import { useUpdateCvProject } from '../services/use-update-cv-project.service';
 
 const addCvProjectSchema = z.object({
   startDate: z.instanceof(dayjs as unknown as typeof Dayjs),

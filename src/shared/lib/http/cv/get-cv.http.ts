@@ -10,9 +10,9 @@ import {
   type HttpResult,
   type Mastery,
 } from '~/shared';
-import { API_URL, StatusCodes } from './const';
-import { Queries } from './queries';
-import { cvSchema, skillCategorySchema } from './schema';
+import { API_URL, StatusCodes } from '../const';
+import { Queries } from '../queries';
+import { cvSchema, skillCategorySchema } from '../schema';
 
 const GET_CV = gql`
   query Cv($cvId: ID!) {

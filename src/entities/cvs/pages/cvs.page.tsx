@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { SearchContainer } from '~/app';
 import { AddCvForm, UpdateCvForm, useCvs, useDeleteCvs, type CvsSortKey } from '~/features';
 import { ButtonAdd, Confirm, Modal, useEditingState, type ChangeSortHandler, type Cv, type SortOrder } from '~/shared';
-import { CvsTable } from '../ui';
+import { CvsTable } from '~/entities';
 
 type CvsPageProps = {
   cvs: ReturnType<typeof useCvs>['cvs'];
