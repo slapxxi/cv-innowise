@@ -3,7 +3,7 @@ import { graphql, HttpResponse } from 'msw';
 import { render, screen, waitFor } from 'test-utils';
 import { server } from '~/../mocks/server';
 import type { Mastery } from '~/shared';
-import { useCreateProfileSkill } from '../use-create-profile-skill.service';
+import { useUpdateProfileSkill } from '../use-update-profile-skill.service';
 
 const testSkill = {
   userId: '1',
@@ -21,13 +21,13 @@ const TestContainer = ({
   onSuccess?: jest.Mock;
   onError?: jest.Mock;
 }) => {
-  const { createProfileSkill, error } = useCreateProfileSkill({
+  const { updateProfileSkill, error } = useUpdateProfileSkill({
     onSuccess: (data) => onSuccess?.(data),
     onError: (data) => onError?.(data),
   });
 
   const handleClick = () => {
-    createProfileSkill({ skill });
+    updateProfileSkill({ userId: skill.userId, skill: skill });
   };
 
   return (
@@ -38,7 +38,7 @@ const TestContainer = ({
   );
 };
 
-describe('useCreateProfileSkill', () => {
+describe('useUpdateProfileSkill', () => {
   it('calls on success with the result', async () => {
     const fn = jest.fn();
     render(<TestContainer skill={testSkill} onSuccess={fn} />);
@@ -53,7 +53,7 @@ describe('useCreateProfileSkill', () => {
   });
 
   it('calls on error with the result', async () => {
-    server.use(graphql.mutation('AddProfileSkill', ({}) => HttpResponse.error()));
+    server.use(graphql.mutation('UpdateProfileSkill', ({}) => HttpResponse.error()));
 
     const fn = jest.fn();
     render(<TestContainer skill={testSkill} onError={fn} />);
@@ -61,8 +61,8 @@ describe('useCreateProfileSkill', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Confirm' }));
 
     await waitFor(() => {
-      expect(screen.getByText('Signup failed')).toBeInTheDocument();
-      expect(fn).toHaveBeenCalledWith({ message: 'Signup failed' });
+      expect(screen.getByText('Updating profile skill "JavaScript" failed')).toBeInTheDocument();
+      expect(fn).toHaveBeenCalledWith({ message: 'Updating profile skill "JavaScript" failed' });
     });
   });
 });

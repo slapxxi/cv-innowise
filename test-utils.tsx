@@ -4,7 +4,13 @@ import React, { type ReactElement } from 'react';
 import { QueryClientProvider, ThemeProvider } from '~/app';
 
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
-  const testQueryClient = new QueryClient();
+  const testQueryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
 
   return (
     <ThemeProvider>
