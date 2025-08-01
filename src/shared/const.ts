@@ -1,4 +1,4 @@
-import type { Mastery, Proficiency } from '~/shared';
+import type { Mastery, Proficiency } from './types';
 
 export const masteryLevels = ['Novice', 'Advanced', 'Competent', 'Proficient', 'Expert'] as const satisfies Mastery[];
 

@@ -6,8 +6,8 @@ import ReactDOM from 'react-dom/client';
 
 // Import the generated route tree
 import { QueryClientProvider } from '@tanstack/react-query';
-import '~/app/i18n';
 import { AuthProvider, LocalizationProvider, ThemeProvider, useAuth } from '~/app';
+import '~/app/i18n';
 import '~/app/styles/styles.css';
 import { queryClient } from '~/shared';
 import reportWebVitals from './reportWebVitals.ts';

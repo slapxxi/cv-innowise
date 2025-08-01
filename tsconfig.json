@@ -1,17 +1,12 @@
 {
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "src/features/auth/services/use-categories.service.ts__oil_tmp_584992",
-    "src/features/auth/services/use-categories.service.ts__oil_tmp_203916"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", "jest.setup.js"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "target": "es5",
     "jsx": "react-jsx",
     "module": "ESNext",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["vite/client", "jest"],
+    "types": ["vite/client", "jest", "@testing-library/jest-dom"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
