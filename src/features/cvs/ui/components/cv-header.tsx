@@ -39,7 +39,7 @@ export const CvHeader = () => {
       </Box>
       <div className="flex items-center gap-4 no-print">
         <Button variant={'outlined'} onClick={handleExportClick} disabled={isPending}>
-          {isPending ? t('Exporting...') : t('Export PDF')}
+          {isPending ? t('Loading...') : t('Export PDF')}
         </Button>
       </div>
     </header>

@@ -33,6 +33,7 @@ export * from './delete-cv-skills.http';
 export * from './add-cv-project.http';
 export * from './update-cv-project.http';
 export * from './delete-cv-project.http';
+export * from './export-pdf.http';
 
 export * from './graphql.http';
 

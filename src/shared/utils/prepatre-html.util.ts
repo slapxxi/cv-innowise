@@ -60,7 +60,7 @@ export const prepareHtml = (content: HTMLElement): string => {
   page.append(content.cloneNode(true), prepareStyles());
   return `
       <!DOCTYPE html>
-      <html>
+      <html lang="en">
         <head>
           <meta charset="utf-8">
           <title>CV Export</title>

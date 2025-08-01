@@ -1,7 +1,6 @@
-import type { CvWithSkillsByCategories } from '~/shared';
+import { type CvWithSkillsByCategories, useSkillStats } from '~/shared';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { t } from 'i18next';
-import { useSkillStats } from '~/shared/utils/skill-stats.ts';
 import { cnMarkedText, cnSubtitle } from '~/features';
 
 type Props = {

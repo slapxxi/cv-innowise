@@ -36,7 +36,7 @@ export function Sidebar() {
   function handleToggleOpen() {
     setOpen((o) => !o);
   }
-  if (!user) return <p>Loading....</p>;
+  if (!user) return <p>{t('Loading...')}</p>;
 
   return (
     <aside

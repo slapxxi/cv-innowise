@@ -4,6 +4,7 @@ import { toBase64 } from '~/shared/lib/to-base64';
 import { useUploadAvatar } from '~/entities/user/service/use-upload-avatar.service.ts';
 import { useRef, type ChangeEvent } from 'react';
 import { InputFileUpload } from '~/shared/ui/input-file-upload.tsx';
+import { t } from 'i18next';
 
 type PropsType = {
   profile: Profile;
@@ -45,7 +46,7 @@ export const UserMeta = ({ profile, user, isOwner }: PropsType) => {
             {isPending ? (
               <>
                 <CircularProgress />
-                Uploading...
+                {t('Loading...')}
               </>
             ) : (
               <InputFileUpload onChange={handleAvatarUpload} ref={fileInputRef}>

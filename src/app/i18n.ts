@@ -155,8 +155,10 @@ const resources = {
       Period: 'Период',
       Responsibilities: 'Обязанности',
       Environments: 'Среды',
+      'Professional Skills': 'Профессиональные навыки',
       'Experience in years': 'Лет опыта',
       'Last used': 'Последнее использование',
+      'Loading...': 'Загрузка...',
     },
   },
 };

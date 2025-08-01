@@ -2,6 +2,8 @@ import { type CvWithSkillsByCategories } from '~/shared';
 import { Box, Typography } from '@mui/material';
 import { CvHeader, CvMain, CvProjects, CvSkillsTable } from '~/features';
 import { styled } from '@mui/material/styles';
+import { t } from 'i18next';
+
 export type CvPreviewProps = {
   cv: CvWithSkillsByCategories;
 };
@@ -22,7 +24,7 @@ export function CvPreview({ cv }: CvPreviewProps) {
         <PageBreak />
         <section className={'mt-6'}>
           <Typography className={cnSubtitle} component={'h3'}>
-            Professional Skills
+            {t('Professional Skills')}
           </Typography>
           <CvSkillsTable categories={cv.skillsByCategories} projects={cv.projects ?? []} />
         </section>
