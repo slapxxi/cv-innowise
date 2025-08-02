@@ -1,6 +1,7 @@
-import { ClientError, gql, request, type Cv, type HttpError, type HttpResult } from '~/shared';
+import { type Cv, type HttpError, type HttpResult } from '~/shared';
 import { StatusCodes } from '../const';
 import { API_URL } from '../env';
+import { ClientError, gql, request } from '../graphql.http';
 
 const GET_CVS = gql`
   query Cvs {

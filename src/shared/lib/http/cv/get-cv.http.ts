@@ -1,17 +1,9 @@
 import { groupBy } from 'lodash';
 import z from 'zod/v4';
-import {
-  ClientError,
-  gql,
-  request,
-  type Cv,
-  type CvWithSkillsByCategories,
-  type HttpError,
-  type HttpResult,
-  type Mastery,
-} from '~/shared';
+import { type Cv, type CvWithSkillsByCategories, type HttpError, type HttpResult, type Mastery } from '~/shared';
 import { StatusCodes } from '../const';
 import { API_URL } from '../env';
+import { ClientError, gql, request } from '../graphql.http';
 import { Queries } from '../queries';
 import { cvSchema, skillCategorySchema } from '../schema';
 

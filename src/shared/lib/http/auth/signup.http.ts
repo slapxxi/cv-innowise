@@ -1,7 +1,7 @@
 import type { AuthResponse, HttpError, HttpResult, User } from '~/shared';
-import { ClientError, gql, request } from '~/shared';
-import { Queries } from '~/shared/lib/http/queries';
 import { API_URL } from '../env';
+import { ClientError, gql, request } from '../graphql.http';
+import { Queries } from '../queries';
 import { errorsSchema } from '../schema';
 
 const SIGNUP_QUERY = gql`
