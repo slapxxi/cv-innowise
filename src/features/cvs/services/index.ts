@@ -11,5 +11,6 @@ export * from './use-delete-cv-skills.service';
 export * from './use-cv-projects.service';
 export * from './use-add-cv-project.service';
 export * from './use-delete-cv-project.service';
+export * from './use-update-cv-project.service';
 
 export * from './use-export-pdf.service';

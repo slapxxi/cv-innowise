@@ -8,10 +8,10 @@ import {
   type User,
   type UserWithSkillsByCategories,
 } from '~/shared';
-import { API_URL } from './const';
-import { ClientError, gql, request } from './graphql.http';
-import { Queries } from './queries';
-import { errorsSchema, skillCategorySchema, userSchema } from './schema';
+import { API_URL } from '../const';
+import { ClientError, gql, request } from '../graphql.http';
+import { Queries } from '../queries';
+import { errorsSchema, skillCategorySchema, userSchema } from '../schema';
 
 const GET_USER_QUERY = gql`
   query User($userId: ID!) {

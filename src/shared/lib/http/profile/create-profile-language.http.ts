@@ -1,8 +1,8 @@
 import type { HttpError, HttpResult, Proficiency, Profile } from '~/shared';
-import { API_URL } from './const';
-import { ClientError, gql, request } from './graphql.http';
-import { Queries } from './queries';
-import { errorsSchema } from './schema';
+import { API_URL } from '../const';
+import { ClientError, gql, request } from '../graphql.http';
+import { Queries } from '../queries';
+import { errorsSchema } from '../schema';
 
 const CREATE_PROFILE_LANGUAGE = gql`
   mutation AddProfileLanguage($language: AddProfileLanguageInput!) {

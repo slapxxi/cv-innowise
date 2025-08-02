@@ -1,5 +1,5 @@
 import { ClientError, gql, request, type Cv, type HttpError, type HttpResult } from '~/shared';
-import { API_URL, StatusCodes } from './const';
+import { API_URL, StatusCodes } from '../const';
 
 const GET_CVS = gql`
   query Cvs {

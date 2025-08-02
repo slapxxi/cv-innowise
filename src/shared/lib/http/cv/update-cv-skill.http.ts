@@ -1,8 +1,8 @@
 import type { Cv, HttpError, HttpResult, Mastery } from '~/shared';
-import { API_URL } from './const';
-import { ClientError, gql, request } from './graphql.http';
-import { Queries } from './queries';
-import { errorsSchema } from './schema';
+import { API_URL } from '../const';
+import { ClientError, gql, request } from '../graphql.http';
+import { Queries } from '../queries';
+import { errorsSchema } from '../schema';
 
 const UPDATE_CV_SKILL = gql`
   mutation UpdateCvSkill($skill: UpdateCvSkillInput!) {

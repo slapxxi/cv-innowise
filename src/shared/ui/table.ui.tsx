@@ -9,8 +9,7 @@ import {
   TableSortLabel,
 } from '@mui/material';
 import { createLink } from '@tanstack/react-router';
-import type { SortOrder } from '../types';
-import { cn, switchOrder } from '../utils';
+import { cn, type SortOrder, switchOrder } from '~/shared';
 
 export { TableCell, TableRow } from '@mui/material';
 

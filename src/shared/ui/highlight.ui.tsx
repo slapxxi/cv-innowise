@@ -1,4 +1,4 @@
-import { cn } from '../utils';
+import { cn } from '~/shared';
 
 type HighlightProps = { value?: string | null; children?: React.ReactNode; className?: string };
 

@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { fetchUserFormData } from '~/shared/lib/http/fetch-user-form-data.http.ts';
+import { fetchUserFormData } from '~/shared';
 import type { Department, Position } from '~/shared';
 
 type FormData = {
