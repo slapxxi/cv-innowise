@@ -1,8 +1,8 @@
-import { type Department, gql, type HttpError, type HttpResult, type Position } from '~/shared';
-import { ClientError } from 'graphql-request';
-import { API_URL, StatusCodes } from '~/shared/lib/http/const.ts';
-import { request } from '~/shared';
-import { Queries } from '~/shared/lib/http/queries.ts';
+import { type Department, type HttpError, type HttpResult, type Position } from '~/shared';
+import { StatusCodes } from '../const';
+import { API_URL } from '../env';
+import { ClientError, gql, request } from '../graphql.http';
+import { Queries } from '../queries';
 
 type FormDataError = HttpError;
 type FormDataResult = HttpResult<{ departments: Department[]; positions: Position[] }, FormDataError>;

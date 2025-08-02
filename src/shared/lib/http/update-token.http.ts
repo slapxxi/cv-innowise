@@ -1,9 +1,8 @@
-import { ClientError, request } from 'graphql-request';
 import type { HttpError, HttpResult, UpdateTokenResponse } from '~/shared';
-import { Queries } from './queries';
 import { StatusCodes } from './const';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from './env';
+import { ClientError, request } from './graphql.http';
+import { Queries } from './queries';
 
 const REFRESH_TOKEN_MUTATION = `
   mutation {

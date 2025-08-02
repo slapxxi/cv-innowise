@@ -1,5 +1,6 @@
 import type { Skill, SkillMastery } from '~/shared';
 
+// todo: move and test
 export function groupUserSkillsByParent(allSkills: Skill[], userSkills: SkillMastery[]): Record<string, Skill[]> {
   const userSkillNames = new Set(userSkills.map((s) => s.name));
 

@@ -1,9 +1,8 @@
 import type { UploadAvatarInput } from 'cv-graphql';
 import type { HttpError, HttpResult } from '~/shared';
-import { API_URL } from './const';
-import { ClientError, request } from './graphql.http';
+import { API_URL } from './env';
+import { ClientError, gql, request } from './graphql.http';
 import { errorsSchema } from './schema';
-import { gql } from 'graphql-request';
 
 export type UploadAvatarParams = UploadAvatarInput & { accessToken?: string };
 

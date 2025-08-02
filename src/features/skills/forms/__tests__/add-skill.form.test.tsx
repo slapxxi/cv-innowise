@@ -9,6 +9,12 @@ jest.mock('~/features', () => ({
   useUser: jest.fn(),
 }));
 
+jest.mock('~/shared/lib/http/env', () => {
+  return {
+    API_URL: process.env.API_URL,
+  };
+});
+
 const mockUseSkills = useSkills as jest.Mock;
 const mockUseUser = useUser as jest.Mock;
 const mockUseCreateProfileSkill = useCreateProfileSkill as jest.Mock;

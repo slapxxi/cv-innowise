@@ -1,5 +1,5 @@
 import type { HttpError, HttpResult, Mastery, Profile } from '~/shared';
-import { API_URL } from '../const';
+import { API_URL } from '../env';
 import { ClientError, gql, request } from '../graphql.http';
 import { Queries } from '../queries';
 import { errorsSchema } from '../schema';
@@ -12,7 +12,7 @@ const UPDATE_PROFILE_SKILL = gql`
   }
 `;
 
-type UpdateProfileMutationResult = { addProfileSkill: Profile };
+type UpdateProfileMutationResult = { updateProfileSkill: Profile };
 
 export type UpdateProfileSkillData = Profile;
 
@@ -40,7 +40,7 @@ export async function updateProfileSkill(params: UpdateProfileSkillParams): Prom
         Authorization: `Bearer ${params.accessToken}`,
       },
     });
-    return { ok: true, data: response.addProfileSkill };
+    return { ok: true, data: response.updateProfileSkill };
   } catch (e) {
     if (e instanceof ClientError) {
       const parseResult = errorsSchema.safeParse(e.response);

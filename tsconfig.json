@@ -1,5 +1,5 @@
 {
-  "include": ["**/*.ts", "**/*.tsx", "jest.setup.js"],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "target": "es5",

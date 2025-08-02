@@ -1,5 +1,5 @@
 import type { HttpError, HttpResult } from '~/shared';
-import { API_URL } from '../const';
+import { API_URL } from '../env';
 import { ClientError, gql, request } from '../graphql.http';
 import { errorsSchema } from '../schema';
 

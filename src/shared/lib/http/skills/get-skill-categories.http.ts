@@ -1,5 +1,7 @@
-import { ClientError, gql, request, type HttpError, type HttpResult, type SkillCategory } from '~/shared';
-import { API_URL, StatusCodes } from '~/shared/lib/http/const';
+import { type HttpError, type HttpResult, type SkillCategory } from '~/shared';
+import { StatusCodes } from '../const';
+import { API_URL } from '../env';
+import { ClientError, gql, request } from '../graphql.http';
 import { Queries } from '../queries';
 
 const GET_SKILL_CATEGORIES = gql`
