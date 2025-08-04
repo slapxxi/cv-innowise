@@ -1,7 +1,7 @@
 import { useQueryClient, useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import fuzzysort from 'fuzzysort';
 import { useMemo } from 'react';
-import { useAuth } from '~/app';
+import { useAuth } from '~/features';
 import {
   createComparator,
   getDepartments,
@@ -46,7 +46,7 @@ export function useDepartments(params: Params = {}) {
   const { sort = 'name', q = '', order = 'asc', ...restParams } = params ?? {};
   const auth = useAuth();
   const { data: departments, ...rest } = useSuspenseQuery({
-    ...departmentsOptions({ accessToken: auth!.accessToken }),
+    ...departmentsOptions({ accessToken: auth.accessToken! }),
     ...restParams,
   });
 

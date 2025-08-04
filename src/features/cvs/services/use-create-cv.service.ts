@@ -1,5 +1,5 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import { useAuth } from '~/app';
+import { useAuth } from '~/features';
 import { createCv, type CreateCvData, type CreateCvError, type CreateCvParams } from '~/shared';
 
 type Params = {} & Omit<
@@ -13,7 +13,7 @@ export function useCreateCv(params: Params = {}) {
     mutationFn: async (params) => {
       const createCvResult = await createCv({
         ...params,
-        accessToken: auth!.accessToken,
+        accessToken: auth.accessToken!,
       });
 
       if (createCvResult.ok) {

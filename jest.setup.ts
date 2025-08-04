@@ -19,7 +19,7 @@ jest.mock('react-i18next', () => {
   };
 });
 
-jest.mock('~/app/hooks', () => ({
+jest.mock('~/features/auth', () => ({
   useAuth: jest.fn(() => ({})),
 }));
 

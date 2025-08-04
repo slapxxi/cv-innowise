@@ -6,8 +6,7 @@ import { Fragment } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { useAuth } from '~/app';
-import { AddCvSkillForm, skillsOptions, UpdateCvSkillForm, useCv, useDeleteCvSkills } from '~/features';
+import { AddCvSkillForm, skillsOptions, UpdateCvSkillForm, useAuth, useCv, useDeleteCvSkills } from '~/features';
 import {
   Button,
   Count,
@@ -28,7 +27,7 @@ export const Route = createFileRoute('/_mainLayout/cvs/$cvId/_cvsLayout/skills')
   },
   loader: ({ context }) => {
     const { auth, queryClient } = context;
-    queryClient.prefetchQuery(skillsOptions({ accessToken: auth!.accessToken }));
+    queryClient.prefetchQuery(skillsOptions({ accessToken: auth.accessToken! }));
   },
 });
 
@@ -52,7 +51,7 @@ function RouteComponent() {
     },
   });
 
-  const isOwner = cv.user?.id === auth!.user.id;
+  const isOwner = cv.user?.id === auth.user!.id;
   const selectedSkills = deleteMultipleForm.watch('skills');
 
   function handleUpdate(skill: SkillMastery) {

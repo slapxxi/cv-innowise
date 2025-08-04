@@ -1,5 +1,5 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import { useAuth } from '~/app';
+import { useAuth } from '~/features';
 import { addCvProject, type AddCvProjectData, type AddCvProjectError, type AddCvProjectParams } from '~/shared';
 
 type Params = { cvId: string } & Omit<
@@ -15,7 +15,7 @@ export function useAddCvProject(params: Params) {
       const addCvProjectResult = await addCvProject({
         ...params,
         cvId,
-        accessToken: auth!.accessToken,
+        accessToken: auth.accessToken!,
       });
 
       if (addCvProjectResult.ok) {

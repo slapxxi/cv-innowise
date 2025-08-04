@@ -1,18 +1,18 @@
 import {
+  Business as BusinessIcon,
   ChevronLeft,
   ChevronRight,
   ContactPageOutlined,
+  FolderCopyOutlined as FolderIcon,
   Group,
   GTranslate,
   TrendingUp,
   WorkOutline as WorkIcon,
-  Business as BusinessIcon,
-  FolderCopyOutlined as FolderIcon,
 } from '@mui/icons-material';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '~/app';
+import { useAuth } from '~/features';
 import { cn, UserAvatar } from '~/shared';
 
 // todo: move this file to the relevant subdir

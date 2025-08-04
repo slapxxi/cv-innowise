@@ -1,7 +1,7 @@
 import { useQueryClient, useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import fuzzysort from 'fuzzysort';
 import { useMemo } from 'react';
-import { useAuth } from '~/app';
+import { useAuth } from '~/features';
 import { createComparator, getLanguages, type GetLanguagesData, type GetLanguagesError } from '~/shared';
 
 type QueryOptions = UseSuspenseQueryOptions<GetLanguagesData, GetLanguagesError>;
@@ -38,7 +38,7 @@ export function useLanguages(params: Params = {}) {
   const { sort = 'name', q = '', order = 'asc', ...restParams } = params ?? {};
   const auth = useAuth();
   const { data: languages, ...rest } = useSuspenseQuery({
-    ...languagesOptions({ accessToken: auth!.accessToken }),
+    ...languagesOptions({ accessToken: auth.accessToken! }),
     ...restParams,
   });
 

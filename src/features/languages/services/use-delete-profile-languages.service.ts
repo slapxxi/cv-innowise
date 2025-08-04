@@ -1,5 +1,5 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import { useAuth } from '~/app';
+import { useAuth } from '~/features';
 import {
   deleteProfileLanguages,
   type DeleteProfileLanguagesData,
@@ -22,7 +22,7 @@ export function useDeleteProfileLanguages(params: Params = {}) {
     mutationFn: async (params) => {
       const deleteProfileLanguagesResult = await deleteProfileLanguages({
         ...params,
-        accessToken: auth!.accessToken,
+        accessToken: auth.accessToken!,
       });
 
       if (deleteProfileLanguagesResult.ok) {

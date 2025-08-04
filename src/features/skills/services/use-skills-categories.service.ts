@@ -1,5 +1,5 @@
 import { useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
-import { useAuth } from '~/app';
+import { useAuth } from '~/features';
 import { getSkillCategories, type GetSkillCategoriesData, type GetSkillCategoriesError } from '~/shared';
 
 type QueryOptions = UseSuspenseQueryOptions<GetSkillCategoriesData, GetSkillCategoriesError>;
@@ -27,7 +27,7 @@ export function useSkillCategories(params: Params = {}) {
   const { ...restParams } = params ?? {};
   const auth = useAuth();
   const { data, ...rest } = useSuspenseQuery({
-    ...getSkillCategoriesQueryOptions({ accessToken: auth!.accessToken }),
+    ...getSkillCategoriesQueryOptions({ accessToken: auth.accessToken! }),
     ...restParams,
   });
   return { categories: data, ...rest };

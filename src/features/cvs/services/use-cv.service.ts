@@ -1,5 +1,5 @@
 import { useQueryClient, useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
-import { useAuth } from '~/app';
+import { useAuth } from '~/features';
 import { getCv, type GetCvData, type GetCvError } from '~/shared';
 
 type QueryOptions = UseSuspenseQueryOptions<GetCvData, GetCvError>;
@@ -27,7 +27,7 @@ export function useCv(params: Params) {
   const { ...restParams } = params ?? {};
   const auth = useAuth();
   const { data: cv, ...rest } = useSuspenseQuery({
-    ...cvOptions({ id: params.id, accessToken: auth!.accessToken }),
+    ...cvOptions({ id: params.id, accessToken: auth.accessToken! }),
     ...restParams,
   });
 

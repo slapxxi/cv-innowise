@@ -3,7 +3,7 @@ import { Sidebar } from './-nav.ui';
 
 export const Route = createFileRoute('/_mainLayout')({
   beforeLoad: ({ context, location }) => {
-    if (!context.auth) {
+    if (!context.auth.user) {
       throw redirect({ to: '/auth/login', search: { redirect: location.pathname } });
     }
   },

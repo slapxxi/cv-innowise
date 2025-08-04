@@ -1,5 +1,5 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import { useAuth } from '~/app';
+import { useAuth } from '~/features';
 import { deleteCvSkills, type DeleteCvSkillsData, type DeleteCvSkillsError, type DeleteCvSkillsParams } from '~/shared';
 
 type Params = {} & Omit<
@@ -13,7 +13,7 @@ export function useDeleteCvSkills(params: Params = {}) {
     mutationFn: async (params) => {
       const deleteCvSkillsResult = await deleteCvSkills({
         ...params,
-        accessToken: auth!.accessToken,
+        accessToken: auth.accessToken!,
       });
 
       if (deleteCvSkillsResult.ok) {

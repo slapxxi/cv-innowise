@@ -22,7 +22,7 @@ export const Route = createFileRoute('/_mainLayout/users/')({
   component: RouteComponent,
   loader: ({ context }) => {
     const { queryClient } = context;
-    queryClient.prefetchQuery(usersOptions({ accessToken: context.auth!.accessToken }));
+    queryClient.prefetchQuery(usersOptions());
   },
 });
 

@@ -1,5 +1,5 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import { useAuth } from '~/app';
+import { useAuth } from '~/features';
 import {
   deleteProfileSkills,
   type DeleteProfileSkillsData,
@@ -18,7 +18,7 @@ export function useDeleteProfileSkills(params: Params = {}) {
     mutationFn: async (params) => {
       const deleteProfileSkillsResult = await deleteProfileSkills({
         ...params,
-        accessToken: auth!.accessToken,
+        accessToken: auth.accessToken!,
       });
 
       if (deleteProfileSkillsResult.ok) {

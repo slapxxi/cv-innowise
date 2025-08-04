@@ -40,7 +40,7 @@ export const Route = createFileRoute('/_mainLayout/cvs/$cvId/_cvsLayout/projects
   },
   loader: ({ context }) => {
     const { auth, queryClient } = context;
-    queryClient.prefetchQuery(projectsOptions({ accessToken: auth!.accessToken }));
+    queryClient.prefetchQuery(projectsOptions({ accessToken: auth.accessToken! }));
   },
   validateSearch: projectsSearchSchema,
 });

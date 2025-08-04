@@ -1,11 +1,6 @@
 import { useMutation, type UseMutationOptions, useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '~/app';
-import {
-  updateProfile,
-  type UpdateProfileData,
-  type UpdateProfileError,
-  type UpdateProfileParams,
-} from '~/shared/lib/http';
+import { useAuth } from '~/features';
+import { updateProfile, type UpdateProfileData, type UpdateProfileError, type UpdateProfileParams } from '~/shared';
 
 export type UpdateProfileVariables = Omit<UpdateProfileParams, 'accessToken'>;
 

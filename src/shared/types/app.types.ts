@@ -14,10 +14,13 @@ export type BreadcrumbEntry = {
 
 export type SortOrder = 'asc' | 'desc';
 
-export type Auth = Nullable<{
-  accessToken: string;
-  user: User;
-}>;
+export type Auth = {
+  accessToken: string | null;
+  user: User | null;
+  isLoading: boolean;
+  isFetching: boolean;
+  isAuthenticated: boolean;
+};
 
 export type Proficiency = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2' | 'Native';
 

@@ -1,10 +1,8 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { cnSubtitle } from '~/features';
-import { Button } from '~/shared';
-import { useAuth } from '~/app';
 import { t } from 'i18next';
-import { useExportPdf } from '~/features';
+import { cnSubtitle, useAuth, useExportPdf } from '~/features';
+import { Button } from '~/shared';
 
 export const CvHeader = () => {
   const auth = useAuth();
@@ -33,9 +31,9 @@ export const CvHeader = () => {
     <header className={'flex justify-between items-center mb-6'}>
       <Box className={'flex flex-col max-w-sm gap-2'}>
         <Typography component={'h1'} className={cnSubtitle}>
-          {auth?.user.profile.fullName}
+          {auth.user?.profile.fullName}
         </Typography>
-        <Typography component={'h2'}>{auth?.user.positionName}</Typography>
+        <Typography component={'h2'}>{auth.user?.positionName}</Typography>
       </Box>
       <div className="flex items-center gap-4 no-print">
         <Button variant={'outlined'} onClick={handleExportClick} disabled={isPending}>

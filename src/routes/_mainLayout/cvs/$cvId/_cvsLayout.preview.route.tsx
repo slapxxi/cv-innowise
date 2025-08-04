@@ -12,7 +12,7 @@ export const Route = createFileRoute('/_mainLayout/cvs/$cvId/_cvsLayout/preview'
   },
   loader: ({ context, params }) => {
     const { queryClient, auth } = context;
-    queryClient.prefetchQuery(cvOptions({ id: params.cvId, accessToken: auth!.accessToken }));
+    queryClient.prefetchQuery(cvOptions({ id: params.cvId, accessToken: auth.accessToken! }));
   },
 });
 

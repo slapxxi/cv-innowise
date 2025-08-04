@@ -1,5 +1,5 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import { useAuth } from '~/app';
+import { useAuth } from '~/features';
 import {
   updateCvProject,
   type UpdateCvProjectData,
@@ -25,7 +25,7 @@ export function useUpdateCvProject(params: Params) {
         ...params,
         cvId,
         projectId,
-        accessToken: auth!.accessToken,
+        accessToken: auth.accessToken!,
       });
 
       if (updateCvProjectResult.ok) {

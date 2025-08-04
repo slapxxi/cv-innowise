@@ -10,8 +10,8 @@ export function useSignup(params: UseMutationOptions<SignupData, SignupError, Si
 
       if (signupResult.ok) {
         const { user, accessToken, refreshToken } = signupResult.data;
-        queryClient.setQueryData(['auth'], { user, accessToken });
         localStorage.setItem('refreshToken', refreshToken);
+        queryClient.setQueryData(['auth'], { user, accessToken });
         return { user, accessToken, refreshToken };
       }
 

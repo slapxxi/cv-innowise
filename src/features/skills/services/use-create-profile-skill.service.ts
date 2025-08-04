@@ -1,5 +1,5 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import { useAuth } from '~/app';
+import { useAuth } from '~/features/auth';
 import {
   createProfileSkill,
   type CreateProfileSkillData,
@@ -18,7 +18,7 @@ export function useCreateProfileSkill(params: Params = {}) {
     mutationFn: async (params) => {
       const createProfileSkillResult = await createProfileSkill({
         ...params,
-        accessToken: auth!.accessToken,
+        accessToken: auth.accessToken!,
       });
 
       if (createProfileSkillResult.ok) {

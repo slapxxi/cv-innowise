@@ -1,9 +1,9 @@
 import { useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import fuzzysort from 'fuzzysort';
 import { useMemo } from 'react';
-import { useAuth } from '~/app';
-import { createComparator, getSkills, queryClient } from '~/shared';
+import { useAuth } from '~/features';
 import type { GetSkillsData, GetSkillsError } from '~/shared';
+import { createComparator, getSkills, queryClient } from '~/shared';
 
 export const skillsSortingFields = ['name', 'categoryName'] as const;
 
@@ -38,7 +38,7 @@ export function useSkills(params: Params = {}) {
   const { sort = 'name', order = 'asc', q = '', ...restParams } = params ?? {};
   const auth = useAuth();
   const { data: skills, ...rest } = useSuspenseQuery({
-    ...skillsOptions({ accessToken: auth!.accessToken }),
+    ...skillsOptions({ accessToken: auth.accessToken! }),
     ...restParams,
   });
 

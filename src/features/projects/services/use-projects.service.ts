@@ -1,7 +1,7 @@
 import { useQueryClient, useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import fuzzysort from 'fuzzysort';
 import { useMemo } from 'react';
-import { useAuth } from '~/app';
+import { useAuth } from '~/features';
 import { createComparator, getProjects, type GetProjectsData, type GetProjectsError, type SortOrder } from '~/shared';
 
 type QueryOptions = UseSuspenseQueryOptions<GetProjectsData, GetProjectsError>;
@@ -41,7 +41,7 @@ export function useProjects(params: Params = {}) {
   const { sort = 'name', q = '', order = 'asc', ...restParams } = params ?? {};
   const auth = useAuth();
   const { data: projects, ...rest } = useSuspenseQuery({
-    ...projectsOptions({ accessToken: auth!.accessToken }),
+    ...projectsOptions({ accessToken: auth.accessToken! }),
     ...restParams,
   });
 

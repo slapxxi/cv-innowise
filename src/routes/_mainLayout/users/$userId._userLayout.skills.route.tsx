@@ -6,8 +6,7 @@ import { Fragment } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { useAuth } from '~/app';
-import { AddSkillForm, skillsOptions, UpdateSkillForm, useDeleteProfileSkills, useUser } from '~/features';
+import { AddSkillForm, skillsOptions, UpdateSkillForm, useAuth, useDeleteProfileSkills, useUser } from '~/features';
 import {
   Button,
   Count,
@@ -28,7 +27,7 @@ export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/ski
   },
   loader: ({ context }) => {
     const { auth, queryClient } = context;
-    queryClient.prefetchQuery(skillsOptions({ accessToken: auth!.accessToken }));
+    queryClient.prefetchQuery(skillsOptions({ accessToken: auth.accessToken! }));
   },
 });
 
@@ -52,7 +51,7 @@ function RouteComponent() {
     },
   });
 
-  const isOwner = user.id === auth!.user.id;
+  const isOwner = user.id === auth.user!.id;
   const selectedSkills = deleteMultipleForm.watch('skills');
 
   function handleUpdate(skill: SkillMastery) {

@@ -1,4 +1,4 @@
-import type { Cv, HttpError, HttpResult } from '~/shared';
+import type { Cv, HttpError, HttpResult, UpdateCvInput } from '~/shared';
 import { API_URL } from '../env';
 import { ClientError, gql, request } from '../graphql.http';
 import { Queries } from '../queries';
@@ -15,7 +15,7 @@ const UPDATE_CV = gql`
 type UpdateCvMutationResult = { updateCv: Cv };
 
 type UpdateCvMutationVariables = {
-  cv: { cvId: string; name: string; education?: string; description: string };
+  cv: UpdateCvInput;
 };
 
 export type UpdateCvData = Cv;
