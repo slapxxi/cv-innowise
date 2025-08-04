@@ -58,8 +58,10 @@ function App() {
   const auth = useAuth();
 
   useEffect(() => {
-    router.invalidate();
-  }, [auth.accessToken]);
+    if (!auth.isLoading) {
+      router.invalidate();
+    }
+  }, [auth.accessToken, auth.isLoading]);
 
   if (auth.isLoading) {
     return null;

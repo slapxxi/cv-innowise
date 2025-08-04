@@ -1,7 +1,6 @@
 import { type Department, type HttpError, type HttpResult } from '~/shared';
 import { StatusCodes } from './const';
-import { API_URL } from './env';
-import { ClientError, gql, request } from './graphql.http';
+import { ClientError, gql, graphQlClient } from './graphql.http';
 import { Queries } from './queries';
 
 const GET_Departments = gql`
@@ -20,20 +19,12 @@ export type GetDepartmentsData = Department[];
 
 export type GetDepartmentsError = HttpError;
 
-export type GetDepartmentsParams = {
-  accessToken: string;
-};
-
 export type GetDepartmentsResult = HttpResult<GetDepartmentsData, GetDepartmentsError>;
 
-export const getDepartments = async (params: GetDepartmentsParams): Promise<GetDepartmentsResult> => {
+export const getDepartments = async (): Promise<GetDepartmentsResult> => {
   try {
-    const response = await request<GetDepartmentsQueryResult>({
-      url: API_URL,
+    const response = await graphQlClient.request<GetDepartmentsQueryResult>({
       document: GET_Departments,
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
-      },
     });
     return { ok: true, data: response.departments };
   } catch (e) {

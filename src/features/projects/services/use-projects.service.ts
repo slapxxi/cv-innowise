@@ -1,7 +1,6 @@
 import { useQueryClient, useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import fuzzysort from 'fuzzysort';
 import { useMemo } from 'react';
-import { useAuth } from '~/features';
 import { createComparator, getProjects, type GetProjectsData, type GetProjectsError, type SortOrder } from '~/shared';
 
 type QueryOptions = UseSuspenseQueryOptions<GetProjectsData, GetProjectsError>;
@@ -10,12 +9,11 @@ export const projectsSortingFields = ['name', 'description', 'internalName', 'do
 
 const queryKey = ['projects'];
 
-export const projectsOptions = (params: { accessToken: string }) => {
-  const { accessToken } = params;
+export const projectsOptions = () => {
   return {
     queryKey,
     queryFn: async () => {
-      const projectsResult = await getProjects({ accessToken });
+      const projectsResult = await getProjects();
 
       if (projectsResult.ok) {
         return projectsResult.data;
@@ -39,9 +37,8 @@ type Params = {} & ProjectsSearchParams & Omit<QueryOptions, 'queryKey' | 'query
 export function useProjects(params: Params = {}) {
   const queryClient = useQueryClient();
   const { sort = 'name', q = '', order = 'asc', ...restParams } = params ?? {};
-  const auth = useAuth();
   const { data: projects, ...rest } = useSuspenseQuery({
-    ...projectsOptions({ accessToken: auth.accessToken! }),
+    ...projectsOptions(),
     ...restParams,
   });
 

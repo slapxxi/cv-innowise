@@ -1,6 +1,5 @@
 import type { Cv, HttpError, HttpResult, Mastery } from '~/shared';
-import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { ClientError, gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { errorsSchema } from '../schema';
 
@@ -29,20 +28,15 @@ export type UpdateCvSkillParams = {
     mastery: Mastery;
     categoryId?: string | null;
   };
-  accessToken: string;
 };
 
 export type UpdateCvSkillResult = HttpResult<UpdateCvSkillData, UpdateCvSkillError>;
 
 export async function updateCvSkill(params: UpdateCvSkillParams): Promise<UpdateCvSkillResult> {
   try {
-    const response = await request<UpdateCvMutationResult, UpdateCvMutationVariables>({
-      url: API_URL,
+    const response = await graphQlClient.request<UpdateCvMutationResult, UpdateCvMutationVariables>({
       document: UPDATE_CV_SKILL,
       variables: { skill: { cvId: params.cvId, ...params.skill } },
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
-      },
     });
     return { ok: true, data: response.updateCvSkill };
   } catch (e) {

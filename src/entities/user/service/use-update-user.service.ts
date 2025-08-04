@@ -9,7 +9,7 @@ const useUpdateUserMutation = (options?: UseMutationOptions<UpdateUserData, Upda
     if (!auth?.accessToken) {
       throw new Error('Not authenticated');
     }
-    const result = await updateUser({ ...params, accessToken: auth.accessToken });
+    const result = await updateUser({ ...params });
     if (result.ok) {
       return result.data;
     }

@@ -1,6 +1,5 @@
 import type { HttpError, HttpResult } from '~/shared';
-import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { ClientError, gql, graphQlClient } from '../graphql.http';
 import { errorsSchema } from '../schema';
 
 const DELETE_gc_SKILL = gql`
@@ -21,20 +20,15 @@ export type DeleteCvError = HttpError;
 
 export type DeleteCvParams = {
   cvId: string;
-  accessToken: string;
 };
 
 export type DeleteCvResult = HttpResult<DeleteCvData, DeleteCvError>;
 
 export async function deleteCv(params: DeleteCvParams): Promise<DeleteCvResult> {
   try {
-    const response = await request<DeleteCvsMutationResult, DeleteCvsMutationVariables>({
-      url: API_URL,
+    const response = await graphQlClient.request<DeleteCvsMutationResult, DeleteCvsMutationVariables>({
       document: DELETE_gc_SKILL,
       variables: { cv: { cvId: params.cvId } },
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
-      },
     });
     return { ok: true, data: response.deleteCv };
   } catch (e) {

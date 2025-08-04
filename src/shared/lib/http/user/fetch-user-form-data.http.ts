@@ -1,7 +1,6 @@
 import { type Department, type HttpError, type HttpResult, type Position } from '~/shared';
 import { StatusCodes } from '../const';
-import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { ClientError, gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 
 type FormDataError = HttpError;
@@ -27,15 +26,12 @@ const FORM_DATA_QUERY = gql`
   }
 `;
 
-export async function fetchUserFormData(params: FormDataParams): Promise<FormDataResult> {
+export async function fetchUserFormData(): Promise<FormDataResult> {
   try {
-    const response = await request<GetFormDataQueryResult>({
-      url: API_URL,
+    const response = await graphQlClient.request<GetFormDataQueryResult>({
       document: FORM_DATA_QUERY,
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
-      },
     });
+
     return {
       ok: true,
       data: {

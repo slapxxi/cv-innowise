@@ -1,6 +1,5 @@
 import type { Cv, HttpError, HttpResult } from '~/shared';
-import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { ClientError, gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { errorsSchema } from '../schema';
 
@@ -29,21 +28,16 @@ export type CreateCvParams = {
     description: string;
     education?: string;
   };
-  accessToken: string;
 };
 
 export type CreateCvResult = HttpResult<CreateCvData, CreateCvError>;
 
 export async function createCv(params: CreateCvParams): Promise<CreateCvResult> {
   try {
-    const response = await request<CreateCvMutationResult, CreateCvMutationVariables>({
-      url: API_URL,
+    const response = await graphQlClient.request<CreateCvMutationResult, CreateCvMutationVariables>({
       document: CREATE_CV,
       variables: {
         cv: { userId: params.userId, ...params.cv },
-      },
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
       },
     });
     return { ok: true, data: response.createCv };

@@ -27,8 +27,8 @@ export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/lan
     };
   },
   loader: ({ context }) => {
-    const { queryClient, auth } = context;
-    queryClient.prefetchQuery(languagesOptions({ accessToken: auth.accessToken! }));
+    const { queryClient } = context;
+    queryClient.prefetchQuery(languagesOptions());
   },
 });
 

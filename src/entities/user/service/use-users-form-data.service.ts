@@ -7,12 +7,11 @@ type FormData = {
   positions: Position[];
 };
 
-export function useUserFormData(params: { accessToken: string }) {
-  const { accessToken } = params;
+export function useUserFormData() {
   return useSuspenseQuery<FormData, Error>({
     queryKey: ['user-form-data'],
     queryFn: async () => {
-      const formDataResult = await fetchUserFormData({ accessToken });
+      const formDataResult = await fetchUserFormData();
       if (formDataResult.ok) {
         return formDataResult.data;
       }

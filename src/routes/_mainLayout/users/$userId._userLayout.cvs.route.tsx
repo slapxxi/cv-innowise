@@ -19,7 +19,7 @@ export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/cvs
   },
   loader: ({ context }) => {
     const { queryClient } = context;
-    queryClient.prefetchQuery(cvsOptions({ accessToken: context.auth.accessToken! }));
+    queryClient.prefetchQuery(cvsOptions());
   },
   validateSearch: cvsSearchSchema,
 });

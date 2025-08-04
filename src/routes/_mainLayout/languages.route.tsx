@@ -24,7 +24,7 @@ export const Route = createFileRoute('/_mainLayout/languages')({
   component: RouteComponent,
   loader: ({ context }) => {
     const { queryClient } = context;
-    queryClient.prefetchQuery(languagesOptions({ accessToken: context.auth.accessToken! }));
+    queryClient.prefetchQuery(languagesOptions());
   },
   validateSearch: languagesSearchSchema,
 });

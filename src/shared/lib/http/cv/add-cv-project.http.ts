@@ -1,7 +1,6 @@
 import type { AddCvProjectInput } from 'cv-graphql';
 import type { Cv, HttpError, HttpResult } from '~/shared';
-import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { ClientError, gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { errorsSchema } from '../schema';
 
@@ -26,7 +25,6 @@ export type AddCvProjectParams = {
   projectId: string;
   roles: string[];
   responsibilities: string[];
-  accessToken: string;
   startDate: string;
   endDate?: string;
 };
@@ -35,8 +33,7 @@ export type AddCvProjectResult = HttpResult<AddCvProjectData, AddCvProjectError>
 
 export async function addCvProject(params: AddCvProjectParams): Promise<AddCvProjectResult> {
   try {
-    const response = await request<AddCvMutationResult, AddCvMutationVariables>({
-      url: API_URL,
+    const response = await graphQlClient.request<AddCvMutationResult, AddCvMutationVariables>({
       document: ADD_CV_PROJECT,
       variables: {
         project: {
@@ -47,9 +44,6 @@ export async function addCvProject(params: AddCvProjectParams): Promise<AddCvPro
           start_date: params.startDate,
           end_date: params.endDate,
         },
-      },
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
       },
     });
     return { ok: true, data: response.addCvProject };

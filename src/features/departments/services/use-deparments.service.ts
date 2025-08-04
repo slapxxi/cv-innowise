@@ -1,7 +1,6 @@
 import { useQueryClient, useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import fuzzysort from 'fuzzysort';
 import { useMemo } from 'react';
-import { useAuth } from '~/features';
 import {
   createComparator,
   getDepartments,
@@ -16,12 +15,11 @@ export const departmentsSortingFields = ['name'] as const;
 
 const queryKey = ['departments'];
 
-export const departmentsOptions = (params: { accessToken: string }) => {
-  const { accessToken } = params;
+export const departmentsOptions = () => {
   return {
     queryKey,
     queryFn: async () => {
-      const departmentsResult = await getDepartments({ accessToken });
+      const departmentsResult = await getDepartments();
 
       if (departmentsResult.ok) {
         return departmentsResult.data;
@@ -44,9 +42,8 @@ type Params = {} & DepartmentsSearchParams & Omit<QueryOptions, 'queryKey' | 'qu
 export function useDepartments(params: Params = {}) {
   const queryClient = useQueryClient();
   const { sort = 'name', q = '', order = 'asc', ...restParams } = params ?? {};
-  const auth = useAuth();
   const { data: departments, ...rest } = useSuspenseQuery({
-    ...departmentsOptions({ accessToken: auth.accessToken! }),
+    ...departmentsOptions(),
     ...restParams,
   });
 

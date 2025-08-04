@@ -1,5 +1,4 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import { useAuth } from '~/features';
 import { updateCv, type UpdateCvData, type UpdateCvError, type UpdateCvParams } from '~/shared';
 
 type Params = {} & Omit<
@@ -8,12 +7,10 @@ type Params = {} & Omit<
 >;
 
 export function useUpdateCv(params: Params = {}) {
-  const auth = useAuth();
   const { mutate, ...mutation } = useMutation({
     mutationFn: async (params) => {
       const updateCvResult = await updateCv({
         ...params,
-        accessToken: auth.accessToken!,
       });
 
       if (updateCvResult.ok) {

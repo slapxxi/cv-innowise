@@ -1,7 +1,6 @@
 import { useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import fuzzysort from 'fuzzysort';
 import { useMemo } from 'react';
-import { useAuth } from '~/features';
 import type { GetSkillsData, GetSkillsError } from '~/shared';
 import { createComparator, getSkills, queryClient } from '~/shared';
 
@@ -9,12 +8,11 @@ export const skillsSortingFields = ['name', 'categoryName'] as const;
 
 type QueryOptions = UseSuspenseQueryOptions<GetSkillsData, GetSkillsError>;
 
-export const skillsOptions = (params: { accessToken: string }) => {
-  const { accessToken } = params;
+export const skillsOptions = () => {
   return {
     queryKey: ['skills'],
     queryFn: async () => {
-      const categoriesResult = await getSkills({ accessToken });
+      const categoriesResult = await getSkills();
 
       if (categoriesResult.ok) {
         return categoriesResult.data;
@@ -36,9 +34,8 @@ type Params = {} & SkillsSearchParams & Omit<QueryOptions, 'queryKey' | 'queryFn
 
 export function useSkills(params: Params = {}) {
   const { sort = 'name', order = 'asc', q = '', ...restParams } = params ?? {};
-  const auth = useAuth();
   const { data: skills, ...rest } = useSuspenseQuery({
-    ...skillsOptions({ accessToken: auth.accessToken! }),
+    ...skillsOptions(),
     ...restParams,
   });
 

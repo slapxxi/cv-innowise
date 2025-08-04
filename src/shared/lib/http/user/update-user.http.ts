@@ -1,6 +1,5 @@
 import type { HttpError, HttpResult } from '~/shared';
-import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { ClientError, gql, graphQlClient } from '../graphql.http';
 import { errorsSchema } from '../schema';
 
 const UPDATE_USER_MUTATION = gql`
@@ -19,7 +18,6 @@ export type UpdateUserParams = {
   positionId?: string;
   departmentId?: string;
   role?: string;
-  accessToken?: string;
 };
 
 export type UpdateUserData = {
@@ -39,14 +37,10 @@ type UpdateUserMutationResult = {
 
 export async function updateUser(params: UpdateUserParams): Promise<UpdateUserResult> {
   try {
-    const { accessToken, ...userData } = params;
-    const response = await request<UpdateUserMutationResult>({
-      url: API_URL,
+    const { ...userData } = params;
+    const response = await graphQlClient.request<UpdateUserMutationResult>({
       document: UPDATE_USER_MUTATION,
       variables: { user: userData },
-      requestHeaders: {
-        Authorization: `Bearer ${accessToken}`,
-      },
     });
 
     return { ok: true, data: response.updateUser };

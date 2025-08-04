@@ -1,7 +1,6 @@
 import { type HttpError, type HttpResult, type Skill } from '~/shared';
 import { StatusCodes } from '../const';
-import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { ClientError, gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 
 const GET_SKILLS = gql`
@@ -20,20 +19,12 @@ export type GetSkillsData = Skill[];
 
 export type GetSkillsError = HttpError;
 
-export type GetSkillsParams = {
-  accessToken: string;
-};
-
 export type GetSkillsResult = HttpResult<GetSkillsData, GetSkillsError>;
 
-export const getSkills = async (params: GetSkillsParams): Promise<GetSkillsResult> => {
+export const getSkills = async (): Promise<GetSkillsResult> => {
   try {
-    const response = await request<GetSkillsQueryResult>({
-      url: API_URL,
+    const response = await graphQlClient.request<GetSkillsQueryResult>({
       document: GET_SKILLS,
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
-      },
     });
     return { ok: true, data: response.skills };
   } catch (e) {

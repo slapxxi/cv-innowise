@@ -10,10 +10,10 @@ const useUpdateProfileMutation = (
   const auth = useAuth();
 
   const mutationFn = async (params: UpdateProfileVariables) => {
-    if (!auth?.accessToken) {
+    if (!auth.accessToken) {
       throw new Error('Not authenticated');
     }
-    const result = await updateProfile({ ...params, accessToken: auth.accessToken });
+    const result = await updateProfile({ ...params });
     if (result.ok) {
       return result.data;
     }

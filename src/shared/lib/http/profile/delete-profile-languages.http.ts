@@ -1,6 +1,5 @@
 import type { HttpError, HttpResult, Profile } from '~/shared';
-import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { ClientError, gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { errorsSchema } from '../schema';
 
@@ -28,7 +27,6 @@ export type DeleteProfileLanguagesError = HttpError;
 export type DeleteProfileLanguagesParams = {
   userId: string;
   languageNames: string[];
-  accessToken: string;
 };
 
 export type DeleteProfileLanguagesResult = HttpResult<DeleteProfileLanguagesData, DeleteProfileLanguagesError>;
@@ -37,13 +35,9 @@ export async function deleteProfileLanguages(
   params: DeleteProfileLanguagesParams
 ): Promise<DeleteProfileLanguagesResult> {
   try {
-    const response = await request<DeleteProfileMutationResult, QueryVariables>({
-      url: API_URL,
+    const response = await graphQlClient.request<DeleteProfileMutationResult, QueryVariables>({
       document: DELETE_PROFILE_LANGS,
       variables: { language: { userId: params.userId, name: params.languageNames } },
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
-      },
     });
     return { ok: true, data: response.deleteProfileLanguage };
   } catch (e) {

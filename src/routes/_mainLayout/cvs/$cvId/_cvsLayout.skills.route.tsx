@@ -26,8 +26,8 @@ export const Route = createFileRoute('/_mainLayout/cvs/$cvId/_cvsLayout/skills')
     };
   },
   loader: ({ context }) => {
-    const { auth, queryClient } = context;
-    queryClient.prefetchQuery(skillsOptions({ accessToken: auth.accessToken! }));
+    const { queryClient } = context;
+    queryClient.prefetchQuery(skillsOptions());
   },
 });
 

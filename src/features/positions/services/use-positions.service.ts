@@ -1,7 +1,6 @@
 import { useQueryClient, useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import fuzzysort from 'fuzzysort';
 import { useMemo } from 'react';
-import { useAuth } from '~/features';
 import {
   createComparator,
   getPositions,
@@ -16,12 +15,11 @@ export const positionsSortingFields = ['name'] as const;
 
 const queryKey = ['positions'];
 
-export const positionsOptions = (params: { accessToken: string }) => {
-  const { accessToken } = params;
+export const positionsOptions = () => {
   return {
     queryKey,
     queryFn: async () => {
-      const positionsResult = await getPositions({ accessToken });
+      const positionsResult = await getPositions();
 
       if (positionsResult.ok) {
         return positionsResult.data;
@@ -44,9 +42,8 @@ type Params = {} & PositionsSearchParams & Omit<QueryOptions, 'queryKey' | 'quer
 export function usePositions(params: Params = {}) {
   const queryClient = useQueryClient();
   const { sort = 'name', q = '', order = 'asc', ...restParams } = params ?? {};
-  const auth = useAuth();
   const { data: positions, ...rest } = useSuspenseQuery({
-    ...positionsOptions({ accessToken: auth.accessToken! }),
+    ...positionsOptions(),
     ...restParams,
   });
 

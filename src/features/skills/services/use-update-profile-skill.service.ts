@@ -1,5 +1,4 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import { useAuth } from '~/features';
 import {
   updateProfileSkill,
   type UpdateProfileSkillData,
@@ -13,12 +12,10 @@ type Params = {} & Omit<
 >;
 
 export function useUpdateProfileSkill(params: Params = {}) {
-  const auth = useAuth();
   const { mutate, ...mutation } = useMutation({
     mutationFn: async (params) => {
       const updateProfileSkillResult = await updateProfileSkill({
         ...params,
-        accessToken: auth.accessToken!,
       });
 
       if (updateProfileSkillResult.ok) {

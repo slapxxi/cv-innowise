@@ -24,7 +24,7 @@ export const Route = createFileRoute('/_mainLayout/positions')({
   component: RouteComponent,
   loader: ({ context }) => {
     const { queryClient } = context;
-    queryClient.prefetchQuery(positionsOptions({ accessToken: context.auth.accessToken! }));
+    queryClient.prefetchQuery(positionsOptions());
   },
   validateSearch: positionsSearchSchema,
 });

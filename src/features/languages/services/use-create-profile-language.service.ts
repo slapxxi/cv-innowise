@@ -1,5 +1,4 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import { useAuth } from '~/features';
 import {
   createProfileLanguage,
   type CreateProfileLanguageData,
@@ -17,12 +16,10 @@ type Params = {} & Omit<
 >;
 
 export function useCreateProfileLanguage(params: Params = {}) {
-  const auth = useAuth();
   const { mutate, ...mutation } = useMutation({
     mutationFn: async (params) => {
       const createProfileLanguageResult = await createProfileLanguage({
         ...params,
-        accessToken: auth.accessToken!,
       });
 
       if (createProfileLanguageResult.ok) {

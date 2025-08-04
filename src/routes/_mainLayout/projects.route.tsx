@@ -28,7 +28,7 @@ export const Route = createFileRoute('/_mainLayout/projects')({
   component: RouteComponent,
   loader: ({ context }) => {
     const { queryClient } = context;
-    queryClient.prefetchQuery(projectsOptions({ accessToken: context.auth.accessToken! }));
+    queryClient.prefetchQuery(projectsOptions());
   },
   validateSearch: projectsSearchSchema,
 });

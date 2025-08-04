@@ -1,7 +1,6 @@
 import { useQueryClient, useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import fuzzysort from 'fuzzysort';
 import { useMemo } from 'react';
-import { useAuth } from '~/features';
 import { createComparator, getCvs, type Cv, type GetCvsData, type GetCvsError, type SortOrder } from '~/shared';
 
 type QueryOptions = UseSuspenseQueryOptions<GetCvsData, GetCvsError>;
@@ -12,12 +11,11 @@ export type CvsSortKey = (typeof cvsSortingFields)[number];
 
 const queryKey = ['cvs'];
 
-export const cvsOptions = (params: { accessToken: string }) => {
-  const { accessToken } = params;
+export const cvsOptions = () => {
   return {
     queryKey,
     queryFn: async () => {
-      const cvsResult = await getCvs({ accessToken });
+      const cvsResult = await getCvs();
 
       if (cvsResult.ok) {
         return cvsResult.data;
@@ -39,9 +37,8 @@ type Params = { userId?: string } & CvsSearchParams & Omit<QueryOptions, 'queryK
 export function useCvs(params: Params = {}) {
   const queryClient = useQueryClient();
   const { userId, sort = 'name', q = '', order = 'asc', ...restParams } = params ?? {};
-  const auth = useAuth();
   const { data: cvs, ...rest } = useSuspenseQuery({
-    ...cvsOptions({ accessToken: auth.accessToken! }),
+    ...cvsOptions(),
     ...restParams,
   });
 

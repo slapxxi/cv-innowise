@@ -1,5 +1,4 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import { useAuth } from '~/features';
 import {
   deleteCvProject,
   type DeleteCvProjectData,
@@ -13,12 +12,10 @@ type Params = {} & Omit<
 >;
 
 export function useDeleteCvProject(params: Params = {}) {
-  const auth = useAuth();
   const { mutate, ...mutation } = useMutation({
     mutationFn: async (params) => {
       const deleteCvProjectsResult = await deleteCvProject({
         ...params,
-        accessToken: auth.accessToken!,
       });
 
       if (deleteCvProjectsResult.ok) {

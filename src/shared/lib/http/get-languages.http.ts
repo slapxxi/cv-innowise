@@ -1,7 +1,6 @@
 import { type HttpError, type HttpResult, type Language } from '~/shared';
 import { StatusCodes } from './const';
-import { API_URL } from './env';
-import { ClientError, gql, request } from './graphql.http';
+import { ClientError, gql, graphQlClient } from './graphql.http';
 import { Queries } from './queries';
 
 const GET_LANGUAGES = gql`
@@ -20,20 +19,12 @@ export type GetLanguagesData = Language[];
 
 export type GetLanguagesError = HttpError;
 
-export type GetLanguagesParams = {
-  accessToken: string;
-};
-
 export type GetLanguagesResult = HttpResult<GetLanguagesData, GetLanguagesError>;
 
-export const getLanguages = async (params: GetLanguagesParams): Promise<GetLanguagesResult> => {
+export const getLanguages = async (): Promise<GetLanguagesResult> => {
   try {
-    const response = await request<GetLanguagesQueryResult>({
-      url: API_URL,
+    const response = await graphQlClient.request<GetLanguagesQueryResult>({
       document: GET_LANGUAGES,
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
-      },
     });
     return { ok: true, data: response.languages };
   } catch (e) {

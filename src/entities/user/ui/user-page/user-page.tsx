@@ -15,7 +15,7 @@ export const UserPage = ({ user }: PropsType) => {
   const auth = useAuth();
   const isOwner = id === auth.user?.id;
   const navigate = useNavigate();
-  const { data } = useUserFormData({ accessToken: auth.accessToken! });
+  const { data } = useUserFormData();
   const { departments, positions } = data;
 
   const { form, setForm, handleChange } = useUserForm({

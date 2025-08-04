@@ -37,7 +37,6 @@ export const useExportPdf = () => {
           html: htmlWithStyles,
           margin: input.margin,
         },
-        accessToken: auth.accessToken,
       });
       if (!result.ok) {
         throw new Error(result.error.message || 'Failed to export PDF');
