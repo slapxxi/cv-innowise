@@ -1,6 +1,5 @@
 import type { HttpError, HttpResult, Mastery, Profile } from '~/shared';
-import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { ClientError, gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { errorsSchema } from '../schema';
 
@@ -25,20 +24,15 @@ export type CreateProfileSkillParams = {
     mastery: Mastery;
     categoryId?: string;
   };
-  accessToken: string;
 };
 
 export type CreateProfileSkillResult = HttpResult<CreateProfileSkillData, CreateProfileSkillError>;
 
 export async function createProfileSkill(params: CreateProfileSkillParams): Promise<CreateProfileSkillResult> {
   try {
-    const response = await request<CreateProfileMutationResult>({
-      url: API_URL,
+    const response = await graphQlClient.request<CreateProfileMutationResult>({
       document: CREATE_PROFILE_SKILL,
       variables: { skill: params.skill },
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
-      },
     });
     return { ok: true, data: response.addProfileSkill };
   } catch (e) {

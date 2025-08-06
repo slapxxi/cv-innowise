@@ -168,6 +168,7 @@ const resources = {
       'theme.light': 'Светлая',
       'theme.dark': 'Темная',
       'theme.system': 'Системная',
+      'Log out': 'Выход',
     },
   },
 };

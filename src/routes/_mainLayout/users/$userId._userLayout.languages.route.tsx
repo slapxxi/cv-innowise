@@ -6,8 +6,7 @@ import { sortBy } from 'lodash';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { useAuth } from '~/app';
-import { AddLanguageForm, languagesOptions, useDeleteProfileLanguages, useUser } from '~/features';
+import { AddLanguageForm, languagesOptions, useAuth, useDeleteProfileLanguages, useUser } from '~/features';
 import { UpdateLanguageForm } from '~/features/languages/forms/update-language.form';
 import {
   Button,
@@ -28,8 +27,8 @@ export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/lan
     };
   },
   loader: ({ context }) => {
-    const { queryClient, auth } = context;
-    queryClient.prefetchQuery(languagesOptions({ accessToken: auth!.accessToken }));
+    const { queryClient } = context;
+    queryClient.prefetchQuery(languagesOptions());
   },
 });
 
@@ -53,7 +52,7 @@ function RouteComponent() {
     },
   });
 
-  const isOwner = user.id === auth!.user.id;
+  const isOwner = user.id === auth.user!.id;
   const selectedLanguages = deleteMultipleForm.watch('languages');
 
   function handleUpdate(lp: LanguageProficiency) {

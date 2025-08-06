@@ -24,7 +24,7 @@ export const Route = createFileRoute('/_mainLayout/skills')({
   component: RouteComponent,
   loader: ({ context }) => {
     const { queryClient } = context;
-    queryClient.prefetchQuery(skillsOptions({ accessToken: context.auth!.accessToken }));
+    queryClient.prefetchQuery(skillsOptions());
   },
   validateSearch: skillsSearchSchema,
 });

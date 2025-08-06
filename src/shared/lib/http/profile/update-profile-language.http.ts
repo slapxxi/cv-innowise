@@ -1,6 +1,5 @@
 import type { HttpError, HttpResult, Proficiency, Profile } from '~/shared';
-import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { ClientError, gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { errorsSchema } from '../schema';
 
@@ -24,21 +23,16 @@ export type UpdateProfileLanguageParams = {
     name: string;
     proficiency: Proficiency;
   };
-  accessToken: string;
 };
 
 export type UpdateProfileLanguageResult = HttpResult<UpdateProfileLanguageData, UpdateProfileLanguageError>;
 
 export async function updateProfileLanguage(params: UpdateProfileLanguageParams): Promise<UpdateProfileLanguageResult> {
   try {
-    const response = await request<UpdateProfileMutationResult>({
-      url: API_URL,
+    const response = await graphQlClient.request<UpdateProfileMutationResult>({
       document: UPDATE_PROFILE_LANGUAGE,
       variables: {
         language: { userId: params.userId, ...params.language },
-      },
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
       },
     });
     return { ok: true, data: response.updateProfileLanguage };

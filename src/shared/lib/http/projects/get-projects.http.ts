@@ -1,7 +1,6 @@
 import { type HttpError, type HttpResult, type Project } from '~/shared';
 import { StatusCodes } from '../const';
-import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { ClientError, gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { projectSchema } from '../schema';
 
@@ -21,20 +20,12 @@ export type GetProjectsData = Project[];
 
 export type GetProjectsError = HttpError;
 
-export type GetProjectsParams = {
-  accessToken: string;
-};
-
 export type GetProjectsResult = HttpResult<GetProjectsData, GetProjectsError>;
 
-export const getProjects = async (params: GetProjectsParams): Promise<GetProjectsResult> => {
+export const getProjects = async (): Promise<GetProjectsResult> => {
   try {
-    const response = await request<GetProjectsQueryResult>({
-      url: API_URL,
+    const response = await graphQlClient.request<GetProjectsQueryResult>({
       document: GET_PROJECTS,
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
-      },
     });
     const parsedProjects = projectSchema.array().parse(response.projects);
     return { ok: true, data: parsedProjects };

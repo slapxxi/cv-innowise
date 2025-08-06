@@ -1,13 +1,44 @@
 import { Box, CardContent, Typography, useColorScheme } from '@mui/material';
-import { Select, SelectItem } from '~/shared/ui/select.ui';
-import { t } from 'i18next';
 import type { ChangeEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLanguageQuery } from '~/app';
+import { Select, SelectItem } from '~/shared/ui/select.ui';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 
+const themeOptions = [
+  {
+    value: 'light',
+    label: 'theme.light',
+  },
+  {
+    value: 'dark',
+    label: 'theme.dark',
+  },
+  {
+    value: 'system',
+    label: 'theme.system',
+  },
+];
+
+const languageOptions = [
+  {
+    value: 'en',
+    label: 'English',
+  },
+  {
+    value: 'ru',
+    label: 'Russian',
+  },
+];
+
+const labelProps = {
+  className: 'bg-bg dark:bg-bg-dark',
+};
+
 export const Settings = () => {
   const { mode, setMode } = useColorScheme();
+  const { t } = useTranslation();
   const { language, setLanguage } = useLanguageQuery();
 
   const handleThemeChange = (
@@ -24,34 +55,6 @@ export const Settings = () => {
     setLanguage(newLanguage);
   };
 
-  const themeOptions = [
-    {
-      value: 'light',
-      label: t('theme.light'),
-    },
-    {
-      value: 'dark',
-      label: t('theme.dark'),
-    },
-    {
-      value: 'system',
-      label: t('theme.system'),
-    },
-  ];
-
-  const languageOptions = [
-    {
-      value: 'en',
-      label: t('English'),
-    },
-    {
-      value: 'ru',
-      label: t('Russian'),
-    },
-  ];
-  const labelProps = {
-    className: 'bg-bg dark:bg-bg-dark',
-  };
   return (
     <Box sx={{ maxWidth: 600, mx: 'auto', p: 6 }}>
       <CardContent>
@@ -66,13 +69,14 @@ export const Settings = () => {
             {themeOptions.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 <Box>
-                  <Typography variant="body1">{option.label}</Typography>
+                  <Typography variant="body1">{t(option.label)}</Typography>
                 </Box>
               </SelectItem>
             ))}
           </Select>
         </Box>
       </CardContent>
+
       <CardContent>
         <Box sx={{ mb: 2 }}>
           <Select
@@ -85,7 +89,7 @@ export const Settings = () => {
             {languageOptions.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Typography variant="body1">{option.label}</Typography>
+                  <Typography variant="body1">{t(option.label)}</Typography>
                 </Box>
               </SelectItem>
             ))}

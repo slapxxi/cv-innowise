@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from '@tanstack/react-router';
 import { identity } from 'lodash';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -11,12 +10,7 @@ export const LoginForm = () => {
   const { register, formState, handleSubmit } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   });
-  const router = useRouter();
-  const { login, isPending, error } = useLogin({
-    onSuccess: () => {
-      router.invalidate();
-    },
-  });
+  const { login, isPending, error } = useLogin({});
 
   const onSubmit = (data: LoginFormValues) => {
     login(data);

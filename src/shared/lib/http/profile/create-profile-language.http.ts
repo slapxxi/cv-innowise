@@ -1,6 +1,5 @@
 import type { HttpError, HttpResult, Proficiency, Profile } from '~/shared';
-import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { ClientError, gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { errorsSchema } from '../schema';
 
@@ -24,21 +23,16 @@ export type CreateProfileLanguageParams = {
     name: string;
     proficiency: Proficiency;
   };
-  accessToken: string;
 };
 
 export type CreateProfileLanguageResult = HttpResult<CreateProfileLanguageData, CreateProfileLanguageError>;
 
 export async function createProfileLanguage(params: CreateProfileLanguageParams): Promise<CreateProfileLanguageResult> {
   try {
-    const response = await request<CreateProfileMutationResult>({
-      url: API_URL,
+    const response = await graphQlClient.request<CreateProfileMutationResult>({
       document: CREATE_PROFILE_LANGUAGE,
       variables: {
         language: { userId: params.userId, ...params.language },
-      },
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
       },
     });
     return { ok: true, data: response.addProfileLanguage };

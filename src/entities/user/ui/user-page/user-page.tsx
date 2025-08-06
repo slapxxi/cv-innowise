@@ -1,10 +1,10 @@
-import { Button, type User } from '~/shared';
-import { UserFormFields, UserMeta } from '~/entities/user/ui';
-import { useFormIsChanged, useUpdateProfile, useUpdateUser, useUserFormData } from '~/entities/user/service';
 import Box from '@mui/material/Box';
-import { useAuth } from '~/app';
 import { useNavigate } from '@tanstack/react-router';
 import { useUserForm } from '~/entities';
+import { useFormIsChanged, useUpdateProfile, useUpdateUser, useUserFormData } from '~/entities/user/service';
+import { UserFormFields, UserMeta } from '~/entities/user/ui';
+import { useAuth } from '~/features';
+import { Button, type User } from '~/shared';
 
 type PropsType = {
   user: User;
@@ -13,9 +13,9 @@ type PropsType = {
 export const UserPage = ({ user }: PropsType) => {
   const { profile, id } = user;
   const auth = useAuth();
-  const isOwner = id === auth?.user.id;
+  const isOwner = id === auth.user?.id;
   const navigate = useNavigate();
-  const { data } = useUserFormData({ accessToken: auth!.accessToken });
+  const { data } = useUserFormData();
   const { departments, positions } = data;
 
   const { form, setForm, handleChange } = useUserForm({

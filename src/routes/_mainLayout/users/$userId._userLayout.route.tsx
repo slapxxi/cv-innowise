@@ -12,7 +12,7 @@ export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout')({
   },
   loader: ({ params, context }) => {
     const { auth, queryClient } = context;
-    queryClient.prefetchQuery(getUserQueryOptions({ id: params.userId, accessToken: auth!.accessToken }));
+    queryClient.prefetchQuery(getUserQueryOptions({ id: params.userId, accessToken: auth.accessToken! }));
   },
 });
 

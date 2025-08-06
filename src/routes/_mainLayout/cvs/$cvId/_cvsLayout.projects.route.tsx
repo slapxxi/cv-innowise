@@ -39,8 +39,8 @@ export const Route = createFileRoute('/_mainLayout/cvs/$cvId/_cvsLayout/projects
     };
   },
   loader: ({ context }) => {
-    const { auth, queryClient } = context;
-    queryClient.prefetchQuery(projectsOptions({ accessToken: auth!.accessToken }));
+    const { queryClient } = context;
+    queryClient.prefetchQuery(projectsOptions());
   },
   validateSearch: projectsSearchSchema,
 });

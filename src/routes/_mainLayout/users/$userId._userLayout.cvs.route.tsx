@@ -1,8 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import * as z from 'zod/v4';
-import { useAuth } from '~/app';
 import { CvsPage } from '~/entities';
-import { cvsOptions, cvsSortingFields, useCvs } from '~/features';
+import { cvsOptions, cvsSortingFields, useAuth, useCvs } from '~/features';
 import { mergeBreadcrumbs, type ChangeSortHandler } from '~/shared';
 
 const cvsSearchSchema = z.object({
@@ -20,7 +19,7 @@ export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/cvs
   },
   loader: ({ context }) => {
     const { queryClient } = context;
-    queryClient.prefetchQuery(cvsOptions({ accessToken: context.auth!.accessToken }));
+    queryClient.prefetchQuery(cvsOptions());
   },
   validateSearch: cvsSearchSchema,
 });
@@ -32,7 +31,7 @@ function RouteComponent() {
   const auth = useAuth();
   const { cvs } = useCvs({ userId: params.userId, ...search });
 
-  const isOwner = params.userId === auth!.user.id;
+  const isOwner = params.userId === auth.user!.id;
 
   const handleSearch = (q: string) => {
     nav({ search: (prev) => ({ ...prev, q }) });

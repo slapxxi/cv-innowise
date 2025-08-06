@@ -1,10 +1,9 @@
 import type { UploadAvatarInput } from 'cv-graphql';
 import type { HttpError, HttpResult } from '~/shared';
-import { API_URL } from './env';
-import { ClientError, gql, request } from './graphql.http';
+import { ClientError, gql, graphQlClient } from './graphql.http';
 import { errorsSchema } from './schema';
 
-export type UploadAvatarParams = UploadAvatarInput & { accessToken?: string };
+export type UploadAvatarParams = UploadAvatarInput;
 
 export type UploadAvatarResult = HttpResult<string, HttpError>;
 
@@ -19,15 +18,11 @@ const UPLOAD_AVATAR = gql`
 
 export async function uploadAvatar(params: UploadAvatarParams): Promise<UploadAvatarResult> {
   try {
-    const { accessToken, ...avatar } = params;
+    const { ...avatar } = params;
 
-    const response = await request<UploadAvatarResponse>({
-      url: API_URL,
+    const response = await graphQlClient.request<UploadAvatarResponse>({
       document: UPLOAD_AVATAR,
       variables: { avatar },
-      requestHeaders: {
-        Authorization: `Bearer ${accessToken}`,
-      },
     });
 
     return { ok: true, data: response.uploadAvatar };

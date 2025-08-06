@@ -1,6 +1,5 @@
 import type { HttpError, HttpResult, Profile } from '~/shared';
-import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { ClientError, gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { errorsSchema } from '../schema';
 
@@ -21,20 +20,15 @@ export type DeleteProfileSkillsError = HttpError;
 export type DeleteProfileSkillsParams = {
   userId: string;
   skillNames: string[];
-  accessToken: string;
 };
 
 export type DeleteProfileSkillResult = HttpResult<DeleteProfileSkillsData, DeleteProfileSkillsError>;
 
 export async function deleteProfileSkills(params: DeleteProfileSkillsParams): Promise<DeleteProfileSkillResult> {
   try {
-    const response = await request<DeleteProfileMutationResult>({
-      url: API_URL,
+    const response = await graphQlClient.request<DeleteProfileMutationResult>({
       document: DELETE_PROFILE_SKILL,
       variables: { skill: { userId: params.userId, name: params.skillNames } },
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
-      },
     });
     return { ok: true, data: response.deleteProfileSkill };
   } catch (e) {

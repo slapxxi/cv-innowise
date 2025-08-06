@@ -1,7 +1,6 @@
 import { type HttpError, type HttpResult } from '~/shared';
 import { StatusCodes } from './const';
-import { API_URL } from './env';
-import { ClientError, gql, request } from './graphql.http';
+import { ClientError, gql, graphQlClient } from './graphql.http';
 
 export type MarginInput = {
   top?: string;
@@ -21,7 +20,6 @@ export type ExportPdfError = HttpError;
 
 export type ExportPdfParams = {
   input: ExportPdfInput;
-  accessToken: string;
 };
 
 export type ExportPdfResult = HttpResult<ExportPdfData, ExportPdfError>;
@@ -34,12 +32,10 @@ const EXPORT_PDF = gql`
 
 export const exportPdf = async (params: ExportPdfParams): Promise<ExportPdfResult> => {
   try {
-    const response = await request<{ exportPdf: string }>({
-      url: API_URL,
+    const response = await graphQlClient.request<{ exportPdf: string }>({
       document: EXPORT_PDF,
       requestHeaders: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${params.accessToken}`,
       },
       variables: {
         pdf: params.input,

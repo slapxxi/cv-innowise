@@ -2,8 +2,7 @@ import { groupBy } from 'lodash';
 import z from 'zod/v4';
 import { type Cv, type CvWithSkillsByCategories, type HttpError, type HttpResult, type Mastery } from '~/shared';
 import { StatusCodes } from '../const';
-import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { ClientError, gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { cvSchema, skillCategorySchema } from '../schema';
 
@@ -32,7 +31,6 @@ export type GetCvError = HttpError;
 
 export type GetCvParams = {
   id: string;
-  accessToken: string;
 };
 
 export type GetCvResult = HttpResult<GetCvData, GetCvError>;
@@ -55,12 +53,8 @@ const groupByCategoriesSchema = z
 
 export const getCv = async (params: GetCvParams): Promise<GetCvResult> => {
   try {
-    const response = await request<GetCvQueryResult, GetCvQueryVariables>({
-      url: API_URL,
+    const response = await graphQlClient.request<GetCvQueryResult, GetCvQueryVariables>({
       document: GET_CV,
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
-      },
       variables: { cvId: params.id },
     });
     const { data, success } = groupByCategoriesSchema.safeParse(response);

@@ -1,5 +1,5 @@
 import { useMutation, type UseMutationOptions, useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '~/app';
+import { useAuth } from '~/features';
 import { updateUser, type UpdateUserData, type UpdateUserError, type UpdateUserParams } from '~/shared/lib/http';
 
 const useUpdateUserMutation = (options?: UseMutationOptions<UpdateUserData, UpdateUserError, UpdateUserParams>) => {
@@ -9,7 +9,7 @@ const useUpdateUserMutation = (options?: UseMutationOptions<UpdateUserData, Upda
     if (!auth?.accessToken) {
       throw new Error('Not authenticated');
     }
-    const result = await updateUser({ ...params, accessToken: auth.accessToken });
+    const result = await updateUser({ ...params });
     if (result.ok) {
       return result.data;
     }

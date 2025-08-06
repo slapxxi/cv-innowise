@@ -1,18 +1,16 @@
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import React, { Suspense } from 'react';
-import { useFormIsChanged, useUpdateProfile, useUpdateUser, useUserFormData } from '~/entities/user/service';
-import { useAuth } from '~/app';
 import { Box, CircularProgress } from '@mui/material';
-import { Button, type User } from '~/shared';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import React, { Suspense } from 'react';
 import { useUserForm } from '~/entities/user/hooks/use-user-form-handlers.ts';
+import { useFormIsChanged, useUpdateProfile, useUpdateUser, useUserFormData } from '~/entities/user/service';
 import { UserFormFields } from '~/entities/user/ui/users-table/user-form-fields';
+import { Button, type User } from '~/shared';
 
 type Props = { user: User; onClose: () => void };
 
 const UpdateUseFormSuspended: React.FC<Props> = ({ user, onClose }) => {
-  const auth = useAuth();
-  const { data } = useUserFormData({ accessToken: auth!.accessToken });
+  const { data } = useUserFormData();
   const { departments, positions } = data;
 
   const { form, setForm, handleChange } = useUserForm({

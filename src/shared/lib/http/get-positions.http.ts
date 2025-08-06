@@ -1,7 +1,6 @@
 import { type HttpError, type HttpResult, type Position } from '~/shared';
 import { StatusCodes } from './const';
-import { API_URL } from './env';
-import { ClientError, gql, request } from './graphql.http';
+import { ClientError, gql, graphQlClient } from './graphql.http';
 import { Queries } from './queries';
 
 const GET_POSITIONS = gql`
@@ -20,20 +19,12 @@ export type GetPositionsData = Position[];
 
 export type GetPositionsError = HttpError;
 
-export type GetPositionsParams = {
-  accessToken: string;
-};
-
 export type GetPositionsResult = HttpResult<GetPositionsData, GetPositionsError>;
 
-export const getPositions = async (params: GetPositionsParams): Promise<GetPositionsResult> => {
+export const getPositions = async (): Promise<GetPositionsResult> => {
   try {
-    const response = await request<GetPositionsQueryResult>({
-      url: API_URL,
+    const response = await graphQlClient.request<GetPositionsQueryResult>({
       document: GET_POSITIONS,
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
-      },
     });
     return { ok: true, data: response.positions };
   } catch (e) {

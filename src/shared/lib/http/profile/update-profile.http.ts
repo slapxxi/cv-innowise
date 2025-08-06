@@ -1,10 +1,8 @@
 import type { HttpError, HttpResult } from '~/shared';
-import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { ClientError, gql, graphQlClient } from '../graphql.http';
 import { errorsSchema } from '../schema';
 
 export type UpdateProfileParams = {
-  accessToken: string;
   userId: string;
   firstName?: string;
   lastName?: string;
@@ -36,14 +34,10 @@ type UpdateProfileMutationResult = {
 
 export async function updateProfile(params: UpdateProfileParams): Promise<UpdateProfileResult> {
   try {
-    const { accessToken, userId, firstName, lastName } = params;
-    const response = await request<UpdateProfileMutationResult>({
-      url: API_URL,
+    const { userId, firstName, lastName } = params;
+    const response = await graphQlClient.request<UpdateProfileMutationResult>({
       document: UPDATE_PROFILE_MUTATION,
       variables: { profile: { userId, first_name: firstName, last_name: lastName } },
-      requestHeaders: {
-        Authorization: `Bearer ${accessToken}`,
-      },
     });
 
     return { ok: true, data: response.updateProfile };

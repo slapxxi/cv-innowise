@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { PageTitle } from '~/shared';
 import { t } from 'i18next';
-import { Settings } from '~/entities/user';
+import { Settings } from '~/entities';
+import { PageTitle } from '~/shared';
 
 export const Route = createFileRoute('/_mainLayout/settings')({
   component: RouteComponent,
@@ -13,6 +13,7 @@ function RouteComponent() {
       <header className="flex flex-col gap-2">
         <PageTitle>{t('Settings')}</PageTitle>
       </header>
+
       <Settings />
     </section>
   );

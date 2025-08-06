@@ -1,6 +1,5 @@
 import type { Cv, HttpError, HttpResult, UpdateCvProjectInput } from '~/shared';
-import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { ClientError, gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { errorsSchema } from '../schema';
 
@@ -29,7 +28,6 @@ export type UpdateCvProjectParams = {
   responsibilities: string[];
   startDate: string;
   endDate?: string;
-  accessToken: string;
 };
 
 export type UpdateCvProjectResult = HttpResult<UpdateCvProjectData, UpdateCvProjectError>;
@@ -37,8 +35,7 @@ export type UpdateCvProjectResult = HttpResult<UpdateCvProjectData, UpdateCvProj
 export async function updateCvProject(params: UpdateCvProjectParams): Promise<UpdateCvProjectResult> {
   try {
     console.log(params);
-    const response = await request<UpdateCvMutationResult, UpdateCvMutationVariables>({
-      url: API_URL,
+    const response = await graphQlClient.request<UpdateCvMutationResult, UpdateCvMutationVariables>({
       document: DELETE_CV_SKILL,
       variables: {
         project: {
@@ -49,9 +46,6 @@ export async function updateCvProject(params: UpdateCvProjectParams): Promise<Up
           start_date: params.startDate,
           end_date: params.endDate,
         },
-      },
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
       },
     });
     return { ok: true, data: response.updateCvProject };

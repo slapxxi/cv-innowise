@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { useAuth } from '~/app';
+import { useAuth } from '~/features';
 import { exportPdf, prepareHtml } from '~/shared';
 
 type ExportPdfInput = {
@@ -37,7 +37,6 @@ export const useExportPdf = () => {
           html: htmlWithStyles,
           margin: input.margin,
         },
-        accessToken: auth.accessToken,
       });
       if (!result.ok) {
         throw new Error(result.error.message || 'Failed to export PDF');

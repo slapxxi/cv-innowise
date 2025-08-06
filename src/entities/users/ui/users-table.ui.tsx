@@ -3,8 +3,7 @@ import { TableRow } from '@mui/material';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '~/app';
-import { useUsers, type UsersSearchParams } from '~/features';
+import { useAuth, useUsers, type UsersSearchParams } from '~/features';
 import {
   ActionMenu,
   ActionMenuItem,
@@ -101,7 +100,7 @@ export const UsersTable: React.FC<UsersTableProps> = (props) => {
             </Highlight>
           </TableCell>
           <TableCell align="center">
-            {auth!.user.id === user.id ? (
+            {auth.user!.id === user.id ? (
               <ActionMenu open={menuOpen === i} onOpen={() => setMenuOpen(i)} onClose={() => setMenuOpen(null)}>
                 <ActionMenuItem onClick={() => handleNavigate(user)}>{t('Profile')}</ActionMenuItem>
                 <ActionMenuItem onClick={() => handleUpdate(user)}>{t('Update user')}</ActionMenuItem>

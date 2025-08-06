@@ -1,7 +1,6 @@
 import { useQueryClient, useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import fuzzysort from 'fuzzysort';
 import { useMemo } from 'react';
-import { useAuth } from '~/app';
 import {
   createComparator,
   getUsers,
@@ -18,12 +17,11 @@ export const usersSortingFields = ['firstName', 'lastName', 'email', 'positionNa
 
 export type UsersSortKey = (typeof usersSortingFields)[number];
 
-export const usersOptions = (params: { accessToken: string }) => {
-  const { accessToken } = params;
+export const usersOptions = () => {
   return {
     queryKey: ['users'],
     queryFn: async () => {
-      const userResult = await getUsers({ accessToken });
+      const userResult = await getUsers();
 
       if (userResult.ok) {
         return userResult.data;
@@ -47,9 +45,8 @@ export type UseUsersParams = {} & UsersSearchParams & Omit<QueryOptions, 'queryK
 export function useUsers(params: UseUsersParams) {
   const { q = '', sort = 'firstName', order = 'asc', page = 1, limit = 10, ...restParams } = params;
   const queryClient = useQueryClient();
-  const auth = useAuth();
   const { data: users, ...rest } = useSuspenseQuery({
-    ...usersOptions({ accessToken: auth!.accessToken }),
+    ...usersOptions(),
     ...restParams,
   });
   const searchedUsers = useMemo(() => {

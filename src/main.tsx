@@ -1,22 +1,26 @@
 import GlobalStyles from '@mui/material/GlobalStyles';
 import { StyledEngineProvider } from '@mui/material/styles';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
-import { StrictMode } from 'react';
+import { StrictMode, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 
 // Import the generated route tree
 import { QueryClientProvider } from '@tanstack/react-query';
-import { AuthProvider, LocalizationProvider, ThemeProvider, useAuth } from '~/app';
+import { LocalizationProvider, ThemeProvider } from '~/app';
 import '~/app/i18n';
 import '~/app/styles/styles.css';
+import { useAuth } from '~/features';
 import { queryClient } from '~/shared';
 import reportWebVitals from './reportWebVitals.ts';
 import { routeTree } from './routeTree.gen';
 
 // Create a new router instance
-const router = createRouter({
+export const router = createRouter({
   routeTree,
-  context: { queryClient, auth: null },
+  context: {
+    queryClient,
+    auth: { accessToken: null, user: null },
+  },
   defaultPreload: 'intent',
   scrollRestoration: true,
   defaultStructuralSharing: true,
@@ -41,9 +45,7 @@ if (rootElement && !rootElement.innerHTML) {
         <ThemeProvider>
           <LocalizationProvider>
             <QueryClientProvider client={queryClient}>
-              <AuthProvider>
-                <App />
-              </AuthProvider>
+              <App />
             </QueryClientProvider>
           </LocalizationProvider>
         </ThemeProvider>
@@ -54,7 +56,18 @@ if (rootElement && !rootElement.innerHTML) {
 
 function App() {
   const auth = useAuth();
-  return <RouterProvider router={router} context={{ auth }} />;
+
+  useEffect(() => {
+    if (!auth.isLoading) {
+      router.invalidate();
+    }
+  }, [auth.accessToken, auth.isLoading]);
+
+  if (auth.isLoading) {
+    return null;
+  }
+
+  return <RouterProvider router={router} context={{ auth: { accessToken: auth.accessToken, user: auth.user } }} />;
 }
 
 // If you want to start measuring performance in your app, pass a function
