@@ -22,9 +22,15 @@ const navItems = [
   { to: '/users', name: 'Employees', icon: <Group />, props: { className: 'xl:mt-12' } },
   { to: '/skills', name: 'Skills', icon: <TrendingUp /> },
   { to: '/languages', name: 'Languages', icon: <GTranslate /> },
-  { to: '/projects', name: 'Projects', icon: <FolderIcon /> },
-  { to: '/positions', name: 'Positions', icon: <WorkIcon />, admin: true },
-  { to: '/departments', name: 'Departments', icon: <BusinessIcon />, admin: true },
+  { to: '/projects', name: 'Projects', icon: <FolderIcon />, props: { className: 'hidden xl:flex' } },
+  { to: '/positions', name: 'Positions', icon: <WorkIcon />, admin: true, props: { className: 'hidden xl:flex' } },
+  {
+    to: '/departments',
+    name: 'Departments',
+    icon: <BusinessIcon />,
+    admin: true,
+    props: { className: 'hidden xl:flex' },
+  },
   { to: '/cvs', name: 'CVs', icon: <ContactPageOutlined />, props: { className: 'hidden xl:flex' } },
 ];
 
