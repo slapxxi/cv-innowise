@@ -8,7 +8,6 @@ export type ThemeMode = 'light' | 'dark' | 'system';
 
 export const Settings = () => {
   const { mode, setMode } = useColorScheme();
-  // const [theme, setTheme] = useTheme();
   const { language, setLanguage } = useLanguageQuery();
 
   const handleThemeChange = (
@@ -16,7 +15,6 @@ export const Settings = () => {
   ) => {
     const newTheme = event.target.value as ThemeMode;
     setMode(newTheme);
-    // setTheme(newTheme);
   };
 
   const handleLanguageChange = (
