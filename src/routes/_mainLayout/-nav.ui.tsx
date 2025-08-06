@@ -1,19 +1,20 @@
 import {
+  Business as BusinessIcon,
   ChevronLeft,
   ChevronRight,
   ContactPageOutlined,
+  FolderCopyOutlined as FolderIcon,
   Group,
   GTranslate,
   TrendingUp,
   WorkOutline as WorkIcon,
-  Business as BusinessIcon,
-  FolderCopyOutlined as FolderIcon,
 } from '@mui/icons-material';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '~/app';
-import { cn, UserAvatar } from '~/shared';
+import { ActionMenu, ActionMenuItem, ActionMenuItemLink, cn, UserAvatar } from '~/shared';
+import { Box } from '@mui/material';
 
 // todo: move this file to the relevant subdir
 
@@ -36,6 +37,7 @@ export function Sidebar() {
   function handleToggleOpen() {
     setOpen((o) => !o);
   }
+
   if (!user) return <p>{t('Loading...')}</p>;
 
   return (
@@ -56,26 +58,33 @@ export function Sidebar() {
           {navItems.map(({ to, name, icon, props }) => (
             <SidebarItem open={open} key={to} to={to} icon={icon} label={t(name)} {...props} />
           ))}
+          <ActionMenu
+            trigger={
+              <Box className="overflow-hidden xl:mt-auto">
+                <Box
+                  className={cn(
+                    'flex items-center gap-4 rounded-full p-1 pr-6 text-base hover:bg-neutral-200',
+                    'dark:text-neutral-300 dark:hover:bg-neutral-600 dark:hover:text-white',
+                    'xl:rounded-none xl:rounded-r-full'
+                  )}
+                >
+                  <UserAvatar user={user} className="size-10 bg-primary text-white dark:text-neutral-600" />
 
-          <li className="overflow-hidden xl:mt-auto">
-            <Link
-              to="/users/$userId/profile"
-              params={{ userId: user.id }}
-              className={cn(
-                'flex items-center gap-4 rounded-full p-1 pr-6 text-base hover:bg-neutral-200',
-                'dark:text-neutral-300 dark:hover:bg-neutral-600 dark:hover:text-white',
-                'xl:rounded-none xl:rounded-r-full'
-              )}
-            >
-              <UserAvatar user={user} className="size-10 bg-primary text-white dark:text-neutral-600" />
-
-              {
-                <span className={cn('overflow-hidden text-nowrap text-ellipsis', !open && 'xl:hidden')}>
-                  {user.email}
-                </span>
-              }
-            </Link>
-          </li>
+                  {
+                    <span className={cn('overflow-hidden text-nowrap text-ellipsis', !open && 'xl:hidden')}>
+                      {user.email}
+                    </span>
+                  }
+                </Box>
+              </Box>
+            }
+          >
+            <ActionMenuItemLink to="/users/$userId/profile" params={{ userId: user.id }}>
+              {t('Profile')}
+            </ActionMenuItemLink>
+            <ActionMenuItemLink to="/settings">{t('Settings')}</ActionMenuItemLink>
+            <ActionMenuItem>{t('Log out')}</ActionMenuItem>
+          </ActionMenu>
         </ul>
       </nav>
 
