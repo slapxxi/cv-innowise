@@ -48,12 +48,16 @@ const resources = {
       'Remove languages': 'Remove Languages',
       'Not specified': 'Not Specified',
       'No category': 'No Category',
-      'Position name': 'Position Name',
       iso2: 'ISO2',
       'Cv name': 'CV Name',
       'Create cv': 'Create CV',
       'Update cv': 'Update CV',
       'Delete cv': 'Delete CV',
+      Settings: 'Settings',
+      Appearance: 'Appearance',
+      'theme.light': 'Light',
+      'theme.dark': 'Dark',
+      'theme.system': 'System',
     },
   },
   ru: {
@@ -159,6 +163,11 @@ const resources = {
       'Experience in years': 'Лет опыта',
       'Last used': 'Последнее использование',
       'Loading...': 'Загрузка...',
+      Settings: 'Настройки',
+      Appearance: 'Внешний вид',
+      'theme.light': 'Светлая',
+      'theme.dark': 'Темная',
+      'theme.system': 'Системная',
     },
   },
 };
@@ -167,7 +176,7 @@ i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     resources,
-    lng: 'en', // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources
+    lng: localStorage.getItem('app-language') || 'en',
     // you can use the i18n.changeLanguage function to change the language manually: https://www.i18next.com/overview/api#changelanguage
     // if you're using a language detector, do not define the lng option
 

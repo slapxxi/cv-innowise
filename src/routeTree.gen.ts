@@ -18,6 +18,7 @@ import { Route as IndexRouteRouteImport } from './routes/index.route'
 import { Route as AuthForgotPasswordRouteRouteImport } from './routes/auth/forgot-password.route'
 import { Route as AuthAuthLayoutRouteRouteImport } from './routes/auth/_authLayout.route'
 import { Route as MainLayoutSkillsRouteRouteImport } from './routes/_mainLayout/skills.route'
+import { Route as MainLayoutSettingsRouteRouteImport } from './routes/_mainLayout/settings.route'
 import { Route as MainLayoutProjectsRouteRouteImport } from './routes/_mainLayout/projects.route'
 import { Route as MainLayoutPositionsRouteRouteImport } from './routes/_mainLayout/positions.route'
 import { Route as MainLayoutLanguagesRouteRouteImport } from './routes/_mainLayout/languages.route'
@@ -79,6 +80,11 @@ const AuthAuthLayoutRouteRoute = AuthAuthLayoutRouteRouteImport.update({
 const MainLayoutSkillsRouteRoute = MainLayoutSkillsRouteRouteImport.update({
   id: '/skills',
   path: '/skills',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
+const MainLayoutSettingsRouteRoute = MainLayoutSettingsRouteRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => MainLayoutRouteRoute,
 } as any)
 const MainLayoutProjectsRouteRoute = MainLayoutProjectsRouteRouteImport.update({
@@ -204,6 +210,7 @@ export interface FileRoutesByFullPath {
   '/languages': typeof MainLayoutLanguagesRouteRoute
   '/positions': typeof MainLayoutPositionsRouteRoute
   '/projects': typeof MainLayoutProjectsRouteRoute
+  '/settings': typeof MainLayoutSettingsRouteRoute
   '/skills': typeof MainLayoutSkillsRouteRoute
   '/auth': typeof AuthAuthLayoutRouteRouteWithChildren
   '/auth/forgot-password': typeof AuthForgotPasswordRouteRoute
@@ -230,6 +237,7 @@ export interface FileRoutesByTo {
   '/languages': typeof MainLayoutLanguagesRouteRoute
   '/positions': typeof MainLayoutPositionsRouteRoute
   '/projects': typeof MainLayoutProjectsRouteRoute
+  '/settings': typeof MainLayoutSettingsRouteRoute
   '/skills': typeof MainLayoutSkillsRouteRoute
   '/auth': typeof AuthAuthLayoutRouteRouteWithChildren
   '/auth/forgot-password': typeof AuthForgotPasswordRouteRoute
@@ -258,6 +266,7 @@ export interface FileRoutesById {
   '/_mainLayout/languages': typeof MainLayoutLanguagesRouteRoute
   '/_mainLayout/positions': typeof MainLayoutPositionsRouteRoute
   '/_mainLayout/projects': typeof MainLayoutProjectsRouteRoute
+  '/_mainLayout/settings': typeof MainLayoutSettingsRouteRoute
   '/_mainLayout/skills': typeof MainLayoutSkillsRouteRoute
   '/auth': typeof AuthRouteWithChildren
   '/auth/_authLayout': typeof AuthAuthLayoutRouteRouteWithChildren
@@ -289,6 +298,7 @@ export interface FileRouteTypes {
     | '/languages'
     | '/positions'
     | '/projects'
+    | '/settings'
     | '/skills'
     | '/auth'
     | '/auth/forgot-password'
@@ -315,6 +325,7 @@ export interface FileRouteTypes {
     | '/languages'
     | '/positions'
     | '/projects'
+    | '/settings'
     | '/skills'
     | '/auth'
     | '/auth/forgot-password'
@@ -342,6 +353,7 @@ export interface FileRouteTypes {
     | '/_mainLayout/languages'
     | '/_mainLayout/positions'
     | '/_mainLayout/projects'
+    | '/_mainLayout/settings'
     | '/_mainLayout/skills'
     | '/auth'
     | '/auth/_authLayout'
@@ -428,6 +440,13 @@ declare module '@tanstack/react-router' {
       path: '/skills'
       fullPath: '/skills'
       preLoaderRoute: typeof MainLayoutSkillsRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/settings': {
+      id: '/_mainLayout/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof MainLayoutSettingsRouteRouteImport
       parentRoute: typeof MainLayoutRouteRoute
     }
     '/_mainLayout/projects': {
@@ -652,6 +671,7 @@ interface MainLayoutRouteRouteChildren {
   MainLayoutLanguagesRouteRoute: typeof MainLayoutLanguagesRouteRoute
   MainLayoutPositionsRouteRoute: typeof MainLayoutPositionsRouteRoute
   MainLayoutProjectsRouteRoute: typeof MainLayoutProjectsRouteRoute
+  MainLayoutSettingsRouteRoute: typeof MainLayoutSettingsRouteRoute
   MainLayoutSkillsRouteRoute: typeof MainLayoutSkillsRouteRoute
   MainLayoutCvsIndexRouteRoute: typeof MainLayoutCvsIndexRouteRoute
   MainLayoutUsersIndexRouteRoute: typeof MainLayoutUsersIndexRouteRoute
@@ -664,6 +684,7 @@ const MainLayoutRouteRouteChildren: MainLayoutRouteRouteChildren = {
   MainLayoutLanguagesRouteRoute: MainLayoutLanguagesRouteRoute,
   MainLayoutPositionsRouteRoute: MainLayoutPositionsRouteRoute,
   MainLayoutProjectsRouteRoute: MainLayoutProjectsRouteRoute,
+  MainLayoutSettingsRouteRoute: MainLayoutSettingsRouteRoute,
   MainLayoutSkillsRouteRoute: MainLayoutSkillsRouteRoute,
   MainLayoutCvsIndexRouteRoute: MainLayoutCvsIndexRouteRoute,
   MainLayoutUsersIndexRouteRoute: MainLayoutUsersIndexRouteRoute,
