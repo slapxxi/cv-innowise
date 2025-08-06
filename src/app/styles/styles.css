@@ -5,3 +5,5 @@
 @import './theme.css';
 @import './utilities.css';
 @import './base.css';
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));

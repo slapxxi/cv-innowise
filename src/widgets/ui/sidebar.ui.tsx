@@ -9,21 +9,26 @@ import {
   TrendingUp,
   WorkOutline as WorkIcon,
 } from '@mui/icons-material';
+import { Box } from '@mui/material';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '~/features';
-import { cn, UserAvatar } from '~/shared';
-
-// todo: move this file to the relevant subdir
+import { ActionMenu, ActionMenuItem, ActionMenuItemLink, cn, UserAvatar } from '~/shared';
 
 const navItems = [
   { to: '/users', name: 'Employees', icon: <Group />, props: { className: 'xl:mt-12' } },
   { to: '/skills', name: 'Skills', icon: <TrendingUp /> },
   { to: '/languages', name: 'Languages', icon: <GTranslate /> },
-  { to: '/projects', name: 'Projects', icon: <FolderIcon /> },
-  { to: '/positions', name: 'Positions', icon: <WorkIcon />, admin: true },
-  { to: '/departments', name: 'Departments', icon: <BusinessIcon />, admin: true },
+  { to: '/projects', name: 'Projects', icon: <FolderIcon />, props: { className: 'hidden xl:flex' } },
+  { to: '/positions', name: 'Positions', icon: <WorkIcon />, admin: true, props: { className: 'hidden xl:flex' } },
+  {
+    to: '/departments',
+    name: 'Departments',
+    icon: <BusinessIcon />,
+    admin: true,
+    props: { className: 'hidden xl:flex' },
+  },
   { to: '/cvs', name: 'CVs', icon: <ContactPageOutlined />, props: { className: 'hidden xl:flex' } },
 ];
 
@@ -31,11 +36,13 @@ export function Sidebar() {
   const { t } = useTranslation();
   const auth = useAuth();
   const [open, setOpen] = useState(true);
+  const [actionMenuOpen, setActionMenuOpen] = useState(false);
   const user = auth?.user;
 
   function handleToggleOpen() {
     setOpen((o) => !o);
   }
+
   if (!user) return <p>{t('Loading...')}</p>;
 
   return (
@@ -57,25 +64,42 @@ export function Sidebar() {
             <SidebarItem open={open} key={to} to={to} icon={icon} label={t(name)} {...props} />
           ))}
 
-          <li className="overflow-hidden xl:mt-auto">
-            <Link
+          <ActionMenu
+            open={actionMenuOpen}
+            onOpen={() => setActionMenuOpen(true)}
+            onClose={() => setActionMenuOpen(false)}
+            trigger={
+              <Box className="overflow-hidden xl:mt-auto cursor-pointer">
+                <Box
+                  className={cn(
+                    'flex items-center gap-4 rounded-full p-1 pr-6 text-base hover:bg-neutral-200',
+                    'dark:text-neutral-300 dark:hover:bg-neutral-600 dark:hover:text-white',
+                    'xl:rounded-none xl:rounded-r-full'
+                  )}
+                >
+                  <UserAvatar user={user} className="size-10 bg-primary text-white dark:text-neutral-600" />
+
+                  {
+                    <span className={cn('overflow-hidden text-nowrap text-ellipsis', !open && 'xl:hidden')}>
+                      {user.email}
+                    </span>
+                  }
+                </Box>
+              </Box>
+            }
+          >
+            <ActionMenuItemLink
               to="/users/$userId/profile"
               params={{ userId: user.id }}
-              className={cn(
-                'flex items-center gap-4 rounded-full p-1 pr-6 text-base hover:bg-neutral-200',
-                'dark:text-neutral-300 dark:hover:bg-neutral-600 dark:hover:text-white',
-                'xl:rounded-none xl:rounded-r-full'
-              )}
+              onClick={() => setActionMenuOpen(false)}
             >
-              <UserAvatar user={user} className="size-10 bg-primary text-white dark:text-neutral-600" />
-
-              {
-                <span className={cn('overflow-hidden text-nowrap text-ellipsis', !open && 'xl:hidden')}>
-                  {user.email}
-                </span>
-              }
-            </Link>
-          </li>
+              {t('Profile')}
+            </ActionMenuItemLink>
+            <ActionMenuItemLink to="/settings" onClick={() => setActionMenuOpen(false)}>
+              {t('Settings')}
+            </ActionMenuItemLink>
+            <ActionMenuItem>{t('Log out')}</ActionMenuItem>
+          </ActionMenu>
         </ul>
       </nav>
 
