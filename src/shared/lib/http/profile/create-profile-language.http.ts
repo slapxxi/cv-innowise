@@ -1,7 +1,7 @@
 import type { HttpError, HttpResult, Proficiency, Profile } from '~/shared';
-import { ClientError, gql, graphQlClient } from '../graphql.http';
+import { gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
-import { errorsSchema } from '../schema';
+import { getHandleException, getHandleResult, handleAuthError } from '../utils';
 
 const CREATE_PROFILE_LANGUAGE = gql`
   mutation AddProfileLanguage($language: AddProfileLanguageInput!) {
@@ -28,23 +28,15 @@ export type CreateProfileLanguageParams = {
 export type CreateProfileLanguageResult = HttpResult<CreateProfileLanguageData, CreateProfileLanguageError>;
 
 export async function createProfileLanguage(params: CreateProfileLanguageParams): Promise<CreateProfileLanguageResult> {
-  try {
-    const response = await graphQlClient.request<CreateProfileMutationResult>({
+  const result = await graphQlClient
+    .request<CreateProfileMutationResult>({
       document: CREATE_PROFILE_LANGUAGE,
       variables: {
         language: { userId: params.userId, ...params.language },
       },
-    });
-    return { ok: true, data: response.addProfileLanguage };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      const parseResult = errorsSchema.safeParse(e.response);
-
-      if (parseResult.success) {
-        return { ok: false, error: { message: e.message, errors: parseResult.data.errors } };
-      }
-    }
-
-    return { ok: false, error: { message: 'Signup failed' } };
-  }
+    })
+    .then(getHandleResult('addProfileLanguage'))
+    .catch(handleAuthError)
+    .catch(getHandleException('Add profile language failed'));
+  return result;
 }

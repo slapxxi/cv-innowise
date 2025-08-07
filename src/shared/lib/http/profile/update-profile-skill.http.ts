@@ -1,7 +1,7 @@
 import type { HttpError, HttpResult, Mastery, Profile } from '~/shared';
-import { ClientError, gql, graphQlClient } from '../graphql.http';
+import { gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
-import { errorsSchema } from '../schema';
+import { getHandleException, getHandleResult, handleAuthError } from '../utils';
 
 const UPDATE_PROFILE_SKILL = gql`
   mutation UpdateProfileSkill($skill: UpdateProfileSkillInput!) {
@@ -29,21 +29,13 @@ export type UpdateProfileSkillParams = {
 export type UpdateProfileSkillResult = HttpResult<UpdateProfileSkillData, UpdateProfileSkillError>;
 
 export async function updateProfileSkill(params: UpdateProfileSkillParams): Promise<UpdateProfileSkillResult> {
-  try {
-    const response = await graphQlClient.request<UpdateProfileMutationResult>({
+  const result = await graphQlClient
+    .request<UpdateProfileMutationResult>({
       document: UPDATE_PROFILE_SKILL,
       variables: { skill: { userId: params.userId, ...params.skill } },
-    });
-    return { ok: true, data: response.updateProfileSkill };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      const parseResult = errorsSchema.safeParse(e.response);
-
-      if (parseResult.success) {
-        return { ok: false, error: { message: e.message, errors: parseResult.data.errors } };
-      }
-    }
-
-    return { ok: false, error: { message: `Updating profile skill "${params.skill.name}" failed` } };
-  }
+    })
+    .then(getHandleResult('updateProfileSkill'))
+    .catch(handleAuthError)
+    .catch(getHandleException(`Updating profile skill "${params.skill.name}" failed`));
+  return result;
 }

@@ -1,7 +1,7 @@
 import type { HttpError, HttpResult, Profile } from '~/shared';
-import { ClientError, gql, graphQlClient } from '../graphql.http';
+import { gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
-import { errorsSchema } from '../schema';
+import { getHandleException, getHandleResult, handleAuthError } from '../utils';
 
 const DELETE_PROFILE_LANGS = gql`
   mutation DeleteProfileLanguage($language: DeleteProfileLanguageInput!) {
@@ -34,21 +34,13 @@ export type DeleteProfileLanguagesResult = HttpResult<DeleteProfileLanguagesData
 export async function deleteProfileLanguages(
   params: DeleteProfileLanguagesParams
 ): Promise<DeleteProfileLanguagesResult> {
-  try {
-    const response = await graphQlClient.request<DeleteProfileMutationResult, QueryVariables>({
+  const response = await graphQlClient
+    .request<DeleteProfileMutationResult, QueryVariables>({
       document: DELETE_PROFILE_LANGS,
       variables: { language: { userId: params.userId, name: params.languageNames } },
-    });
-    return { ok: true, data: response.deleteProfileLanguage };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      const parseResult = errorsSchema.safeParse(e.response);
-
-      if (parseResult.success) {
-        return { ok: false, error: { message: e.message, errors: parseResult.data.errors } };
-      }
-    }
-
-    return { ok: false, error: { message: 'Deleting profile languages failed' } };
-  }
+    })
+    .then(getHandleResult('deleteProfileLanguage'))
+    .catch(handleAuthError)
+    .catch(getHandleException('Delete profile languages failed'));
+  return response;
 }

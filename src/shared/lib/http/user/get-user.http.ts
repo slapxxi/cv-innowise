@@ -9,9 +9,10 @@ import {
   type UserWithSkillsByCategories,
 } from '~/shared';
 import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { gql, request } from '../graphql.http';
 import { Queries } from '../queries';
-import { errorsSchema, skillCategorySchema, userSchema } from '../schema';
+import { skillCategorySchema, userSchema } from '../schema';
+import { getHandleException, handleAuthError } from '../utils';
 
 const GET_USER_QUERY = gql`
   query User($userId: ID!) {
@@ -59,30 +60,25 @@ const groupByCategoriesSchema = z
   });
 
 export async function getUser(params: GetUserParams): Promise<GetUserResult> {
-  try {
-    const response = await request<GetUserQueryResult>({
-      url: API_URL,
-      document: GET_USER_QUERY,
-      variables: { userId: params.id },
-      requestHeaders: {
-        Authorization: `Bearer ${params.accessToken}`,
-      },
-    });
+  const response = await request<GetUserQueryResult>({
+    url: API_URL,
+    document: GET_USER_QUERY,
+    variables: { userId: params.id },
+    requestHeaders: {
+      Authorization: `Bearer ${params.accessToken}`,
+    },
+  })
+    .catch(handleAuthError)
+    .catch(getHandleException('Get CV failed'));
+
+  if ('user' in response) {
     const { data, success } = groupByCategoriesSchema.safeParse(response);
     const result = {
       ...response.user,
       skillsByCategories: success ? data : null,
     };
     return { ok: true, data: result };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      const parseResult = errorsSchema.safeParse(e.response);
-
-      if (parseResult.success) {
-        return { ok: false, error: { message: e.message, errors: parseResult.data.errors } };
-      }
-    }
-
-    return { ok: false, error: { message: 'Get user failed' } };
   }
+
+  return response;
 }

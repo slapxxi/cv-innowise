@@ -1,8 +1,8 @@
 import type { AuthResponse, HttpError, HttpResult, User } from '~/shared';
 import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { gql, request } from '../graphql.http';
 import { Queries } from '../queries';
-import { errorsSchema } from '../schema';
+import { getHandleException, getHandleResult, handleAuthError } from '../utils';
 
 const SIGNUP_QUERY = gql`
   mutation Signup($auth: AuthInput!) {
@@ -34,23 +34,13 @@ export type SignupParams = {
 export type SignupResult = HttpResult<SignupData, SignupError>;
 
 export async function signup(params: SignupParams): Promise<SignupResult> {
-  try {
-    const response = await request<SignupQueryResult>({
-      url: API_URL,
-      document: SIGNUP_QUERY,
-      variables: { auth: params },
-    });
-    const { accessToken, refreshToken, user } = response.signup;
-    return { ok: true, data: { accessToken, refreshToken, user } };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      const parseResult = errorsSchema.safeParse(e.response);
-
-      if (parseResult.success) {
-        return { ok: false, error: { message: e.message, errors: parseResult.data.errors } };
-      }
-    }
-
-    return { ok: false, error: { message: 'Signup failed' } };
-  }
+  const result = await request<SignupQueryResult>({
+    url: API_URL,
+    document: SIGNUP_QUERY,
+    variables: { auth: params },
+  })
+    .then(getHandleResult('signup'))
+    .catch(handleAuthError)
+    .catch(getHandleException('Signup failed'));
+  return result;
 }

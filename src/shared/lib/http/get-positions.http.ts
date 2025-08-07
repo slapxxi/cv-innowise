@@ -1,7 +1,7 @@
 import { type HttpError, type HttpResult, type Position } from '~/shared';
-import { StatusCodes } from './const';
-import { ClientError, gql, graphQlClient } from './graphql.http';
+import { gql, graphQlClient } from './graphql.http';
 import { Queries } from './queries';
+import { getHandleException, getHandleResult, handleAuthError } from './utils';
 
 const GET_POSITIONS = gql`
   query Positions {
@@ -22,17 +22,12 @@ export type GetPositionsError = HttpError;
 export type GetPositionsResult = HttpResult<GetPositionsData, GetPositionsError>;
 
 export const getPositions = async (): Promise<GetPositionsResult> => {
-  try {
-    const response = await graphQlClient.request<GetPositionsQueryResult>({
+  const result = await graphQlClient
+    .request<GetPositionsQueryResult>({
       document: GET_POSITIONS,
-    });
-    return { ok: true, data: response.positions };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      if (e.response.errors?.find((e) => e.message.toLowerCase() === 'unauthorized')) {
-        return { ok: false, error: { message: 'Unauthorized', status: StatusCodes.UNAUTHORIZED } };
-      }
-    }
-    return { ok: false, error: { message: 'Get positions failed' } };
-  }
+    })
+    .then(getHandleResult('positions'))
+    .catch(handleAuthError)
+    .catch(getHandleException('Get positions failed'));
+  return result;
 };

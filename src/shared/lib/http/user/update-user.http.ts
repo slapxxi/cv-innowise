@@ -1,6 +1,6 @@
 import type { HttpError, HttpResult } from '~/shared';
-import { ClientError, gql, graphQlClient } from '../graphql.http';
-import { errorsSchema } from '../schema';
+import { gql, graphQlClient } from '../graphql.http';
+import { getHandleException, getHandleResult, handleAuthError } from '../utils';
 
 const UPDATE_USER_MUTATION = gql`
   mutation UpdateUser($user: UpdateUserInput!) {
@@ -36,23 +36,14 @@ type UpdateUserMutationResult = {
 };
 
 export async function updateUser(params: UpdateUserParams): Promise<UpdateUserResult> {
-  try {
-    const { ...userData } = params;
-    const response = await graphQlClient.request<UpdateUserMutationResult>({
+  const { ...userData } = params;
+  const result = await graphQlClient
+    .request<UpdateUserMutationResult>({
       document: UPDATE_USER_MUTATION,
       variables: { user: userData },
-    });
-
-    return { ok: true, data: response.updateUser };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      const parseResult = errorsSchema.safeParse(e.response);
-
-      if (parseResult.success) {
-        return { ok: false, error: { message: e.message, errors: parseResult.data.errors } };
-      }
-    }
-
-    return { ok: false, error: { message: 'User update failed' } };
-  }
+    })
+    .then(getHandleResult('updateUser'))
+    .catch(handleAuthError)
+    .catch(getHandleException('User update failed'));
+  return result;
 }

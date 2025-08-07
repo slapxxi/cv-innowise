@@ -1,8 +1,8 @@
 import { type HttpError, type HttpResult, type Project } from '~/shared';
-import { StatusCodes } from '../const';
-import { ClientError, gql, graphQlClient } from '../graphql.http';
+import { gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { projectSchema } from '../schema';
+import { getHandleException, handleAuthError } from '../utils';
 
 const GET_PROJECTS = gql`
   query Projects {
@@ -23,18 +23,17 @@ export type GetProjectsError = HttpError;
 export type GetProjectsResult = HttpResult<GetProjectsData, GetProjectsError>;
 
 export const getProjects = async (): Promise<GetProjectsResult> => {
-  try {
-    const response = await graphQlClient.request<GetProjectsQueryResult>({
+  const result = await graphQlClient
+    .request<GetProjectsQueryResult>({
       document: GET_PROJECTS,
-    });
-    const parsedProjects = projectSchema.array().parse(response.projects);
+    })
+    .catch(handleAuthError)
+    .catch(getHandleException('Get CV failed'));
+
+  if ('projects' in result) {
+    const parsedProjects = projectSchema.array().parse(result.projects);
     return { ok: true, data: parsedProjects };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      if (e.response.errors?.find((e) => e.message.toLowerCase() === 'unauthorized')) {
-        return { ok: false, error: { message: 'Unauthorized', status: StatusCodes.UNAUTHORIZED } };
-      }
-    }
-    return { ok: false, error: { message: 'Get Projects failed' } };
   }
+
+  return result;
 };
