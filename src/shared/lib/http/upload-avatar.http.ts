@@ -1,9 +1,12 @@
-import type { UploadAvatarInput } from 'cv-graphql';
-import type { HttpError, HttpResult } from '~/shared';
-import { ClientError, gql, graphQlClient } from './graphql.http';
-import { errorsSchema } from './schema';
+import type { HttpError, HttpResult, UploadAvatarInput } from '~/shared';
+import { gql, graphQlClient } from './graphql.http';
+import { getHandleException, getHandleResult, handleAuthError } from './utils';
 
 export type UploadAvatarParams = UploadAvatarInput;
+
+type UploadAvatarVariables = {
+  avatar: UploadAvatarInput;
+};
 
 export type UploadAvatarResult = HttpResult<string, HttpError>;
 
@@ -17,24 +20,13 @@ const UPLOAD_AVATAR = gql`
 `;
 
 export async function uploadAvatar(params: UploadAvatarParams): Promise<UploadAvatarResult> {
-  try {
-    const { ...avatar } = params;
-
-    const response = await graphQlClient.request<UploadAvatarResponse>({
+  const response = await graphQlClient
+    .request<UploadAvatarResponse, UploadAvatarVariables>({
       document: UPLOAD_AVATAR,
-      variables: { avatar },
-    });
-
-    return { ok: true, data: response.uploadAvatar };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      const parseResult = errorsSchema.safeParse(e.response);
-
-      if (parseResult.success) {
-        return { ok: false, error: { message: e.message, errors: parseResult.data.errors } };
-      }
-    }
-
-    return { ok: false, error: { message: 'Avatar upload failed' } };
-  }
+      variables: { avatar: params },
+    })
+    .then(getHandleResult('uploadAvatar'))
+    .catch(handleAuthError)
+    .catch(getHandleException('Avatar upload failed'));
+  return response;
 }

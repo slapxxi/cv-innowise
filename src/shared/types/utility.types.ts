@@ -4,12 +4,16 @@ export type Prettify<T> = {
 
 export type Nullable<T> = T | null;
 
-export type Result<TData, TErr> =
-  | {
-      ok: true;
-      data: TData;
-    }
-  | { ok: false; error: TErr };
+export type Result<TData, TErr> = TData extends null
+  ? { ok: false; error: TErr }
+  : TErr extends null
+    ? { ok: true; data: TData }
+    :
+        | {
+            ok: true;
+            data: TData;
+          }
+        | { ok: false; error: TErr };
 
 export type SnakeToCamelCase<S extends string> = S extends `${infer T}_${infer U}`
   ? `${T}${Capitalize<SnakeToCamelCase<U>>}`

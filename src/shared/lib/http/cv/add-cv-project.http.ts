@@ -1,8 +1,8 @@
 import type { AddCvProjectInput } from 'cv-graphql';
 import type { Cv, HttpError, HttpResult } from '~/shared';
-import { ClientError, gql, graphQlClient } from '../graphql.http';
+import { gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
-import { errorsSchema } from '../schema';
+import { getHandleException, getHandleResult, handleAuthError } from '../utils';
 
 const ADD_CV_PROJECT = gql`
   mutation AddCvProject($project: AddCvProjectInput!) {
@@ -32,8 +32,8 @@ export type AddCvProjectParams = {
 export type AddCvProjectResult = HttpResult<AddCvProjectData, AddCvProjectError>;
 
 export async function addCvProject(params: AddCvProjectParams): Promise<AddCvProjectResult> {
-  try {
-    const response = await graphQlClient.request<AddCvMutationResult, AddCvMutationVariables>({
+  const result = await graphQlClient
+    .request<AddCvMutationResult, AddCvMutationVariables>({
       document: ADD_CV_PROJECT,
       variables: {
         project: {
@@ -45,17 +45,9 @@ export async function addCvProject(params: AddCvProjectParams): Promise<AddCvPro
           end_date: params.endDate,
         },
       },
-    });
-    return { ok: true, data: response.addCvProject };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      const parseResult = errorsSchema.safeParse(e.response);
-
-      if (parseResult.success) {
-        return { ok: false, error: { message: e.message, errors: parseResult.data.errors } };
-      }
-    }
-
-    return { ok: false, error: { message: 'Add cv project failed' } };
-  }
+    })
+    .then(getHandleResult('addCvProject'))
+    .catch(handleAuthError)
+    .catch(getHandleException('Add CV project failed'));
+  return result;
 }

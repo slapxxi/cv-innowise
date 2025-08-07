@@ -1,7 +1,7 @@
 import type { HttpError, HttpResult, Proficiency, Profile } from '~/shared';
-import { ClientError, gql, graphQlClient } from '../graphql.http';
+import { gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
-import { errorsSchema } from '../schema';
+import { getHandleException, getHandleResult, handleAuthError } from '../utils';
 
 const UPDATE_PROFILE_LANGUAGE = gql`
   mutation UpdateProfileLanguage($language: UpdateProfileLanguageInput!) {
@@ -28,23 +28,15 @@ export type UpdateProfileLanguageParams = {
 export type UpdateProfileLanguageResult = HttpResult<UpdateProfileLanguageData, UpdateProfileLanguageError>;
 
 export async function updateProfileLanguage(params: UpdateProfileLanguageParams): Promise<UpdateProfileLanguageResult> {
-  try {
-    const response = await graphQlClient.request<UpdateProfileMutationResult>({
+  const result = await graphQlClient
+    .request<UpdateProfileMutationResult>({
       document: UPDATE_PROFILE_LANGUAGE,
       variables: {
         language: { userId: params.userId, ...params.language },
       },
-    });
-    return { ok: true, data: response.updateProfileLanguage };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      const parseResult = errorsSchema.safeParse(e.response);
-
-      if (parseResult.success) {
-        return { ok: false, error: { message: e.message, errors: parseResult.data.errors } };
-      }
-    }
-
-    return { ok: false, error: { message: 'Updating profile language failed' } };
-  }
+    })
+    .then(getHandleResult('updateProfileLanguage'))
+    .catch(handleAuthError)
+    .catch(getHandleException('Update profile language failed'));
+  return result;
 }

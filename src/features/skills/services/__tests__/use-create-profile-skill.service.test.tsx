@@ -61,8 +61,8 @@ describe('useCreateProfileSkill', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Confirm' }));
 
     await waitFor(() => {
-      expect(screen.getByText('Signup failed')).toBeInTheDocument();
-      expect(fn).toHaveBeenCalledWith({ message: 'Signup failed' });
+      expect(screen.getByText('Add profile skill failed')).toBeInTheDocument();
+      expect(fn).toHaveBeenCalledWith({ message: 'Add profile skill failed' });
     });
   });
 });

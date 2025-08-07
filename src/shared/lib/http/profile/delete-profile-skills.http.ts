@@ -1,7 +1,7 @@
 import type { HttpError, HttpResult, Profile } from '~/shared';
-import { ClientError, gql, graphQlClient } from '../graphql.http';
+import { gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
-import { errorsSchema } from '../schema';
+import { getHandleException, getHandleResult, handleAuthError } from '../utils';
 
 const DELETE_PROFILE_SKILL = gql`
   mutation DeleteProfileSkill($skill: DeleteProfileSkillInput!) {
@@ -25,21 +25,13 @@ export type DeleteProfileSkillsParams = {
 export type DeleteProfileSkillResult = HttpResult<DeleteProfileSkillsData, DeleteProfileSkillsError>;
 
 export async function deleteProfileSkills(params: DeleteProfileSkillsParams): Promise<DeleteProfileSkillResult> {
-  try {
-    const response = await graphQlClient.request<DeleteProfileMutationResult>({
+  const result = await graphQlClient
+    .request<DeleteProfileMutationResult>({
       document: DELETE_PROFILE_SKILL,
       variables: { skill: { userId: params.userId, name: params.skillNames } },
-    });
-    return { ok: true, data: response.deleteProfileSkill };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      const parseResult = errorsSchema.safeParse(e.response);
-
-      if (parseResult.success) {
-        return { ok: false, error: { message: e.message, errors: parseResult.data.errors } };
-      }
-    }
-
-    return { ok: false, error: { message: 'Deleting profile skills failed' } };
-  }
+    })
+    .then(getHandleResult('deleteProfileSkill'))
+    .catch(handleAuthError)
+    .catch(getHandleException('Delete profile skills failed'));
+  return result;
 }

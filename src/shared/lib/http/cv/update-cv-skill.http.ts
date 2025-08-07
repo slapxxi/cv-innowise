@@ -1,7 +1,7 @@
 import type { Cv, HttpError, HttpResult, Mastery } from '~/shared';
-import { ClientError, gql, graphQlClient } from '../graphql.http';
+import { gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
-import { errorsSchema } from '../schema';
+import { getHandleException, getHandleResult, handleAuthError } from '../utils';
 
 const UPDATE_CV_SKILL = gql`
   mutation UpdateCvSkill($skill: UpdateCvSkillInput!) {
@@ -33,21 +33,13 @@ export type UpdateCvSkillParams = {
 export type UpdateCvSkillResult = HttpResult<UpdateCvSkillData, UpdateCvSkillError>;
 
 export async function updateCvSkill(params: UpdateCvSkillParams): Promise<UpdateCvSkillResult> {
-  try {
-    const response = await graphQlClient.request<UpdateCvMutationResult, UpdateCvMutationVariables>({
+  const result = await graphQlClient
+    .request<UpdateCvMutationResult, UpdateCvMutationVariables>({
       document: UPDATE_CV_SKILL,
       variables: { skill: { cvId: params.cvId, ...params.skill } },
-    });
-    return { ok: true, data: response.updateCvSkill };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      const parseResult = errorsSchema.safeParse(e.response);
-
-      if (parseResult.success) {
-        return { ok: false, error: { message: e.message, errors: parseResult.data.errors } };
-      }
-    }
-
-    return { ok: false, error: { message: `Updating Cv skill "${params.skill.name}" failed` } };
-  }
+    })
+    .then(getHandleResult('updateCvSkill'))
+    .catch(handleAuthError)
+    .catch(getHandleException(`Update CV skill ${params.skill.name} failed`));
+  return result;
 }

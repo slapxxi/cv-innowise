@@ -1,9 +1,10 @@
 import { type Department, type HttpError, type HttpResult, type Position } from '~/shared';
-import { StatusCodes } from '../const';
-import { ClientError, gql, graphQlClient } from '../graphql.http';
+import { gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
+import { getHandleException, handleAuthError } from '../utils';
 
 type FormDataError = HttpError;
+
 type FormDataResult = HttpResult<{ departments: Department[]; positions: Position[] }, FormDataError>;
 
 type GetFormDataQueryResult = {
@@ -27,11 +28,14 @@ const FORM_DATA_QUERY = gql`
 `;
 
 export async function fetchUserFormData(): Promise<FormDataResult> {
-  try {
-    const response = await graphQlClient.request<GetFormDataQueryResult>({
+  const response = await graphQlClient
+    .request<GetFormDataQueryResult>({
       document: FORM_DATA_QUERY,
-    });
+    })
+    .catch(handleAuthError)
+    .catch(getHandleException('Fetch user form data failed'));
 
+  if ('positions' in response) {
     return {
       ok: true,
       data: {
@@ -39,12 +43,7 @@ export async function fetchUserFormData(): Promise<FormDataResult> {
         positions: response.positions,
       },
     };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      if (e.response.errors?.find((e) => e.message.toLowerCase() === 'unauthorized')) {
-        return { ok: false, error: { message: 'Unauthorized', status: StatusCodes.UNAUTHORIZED } };
-      }
-    }
-    return { ok: false, error: { message: 'form data fetch error' } };
   }
+
+  return response;
 }

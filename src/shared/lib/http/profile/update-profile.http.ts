@@ -1,6 +1,6 @@
-import type { HttpError, HttpResult } from '~/shared';
-import { ClientError, gql, graphQlClient } from '../graphql.http';
-import { errorsSchema } from '../schema';
+import type { HttpError, HttpResult, UpdateProfileInput } from '~/shared';
+import { gql, graphQlClient } from '../graphql.http';
+import { getHandleException, getHandleResult, handleAuthError } from '../utils';
 
 export type UpdateProfileParams = {
   userId: string;
@@ -12,6 +12,10 @@ export type UpdateProfileData = {
   id: string;
   first_name: string;
   last_name: string;
+};
+
+type UpdateProfileVars = {
+  profile: UpdateProfileInput;
 };
 
 export type UpdateProfileError = HttpError;
@@ -33,23 +37,14 @@ type UpdateProfileMutationResult = {
 };
 
 export async function updateProfile(params: UpdateProfileParams): Promise<UpdateProfileResult> {
-  try {
-    const { userId, firstName, lastName } = params;
-    const response = await graphQlClient.request<UpdateProfileMutationResult>({
+  const { userId, firstName, lastName } = params;
+  const result = await graphQlClient
+    .request<UpdateProfileMutationResult, UpdateProfileVars>({
       document: UPDATE_PROFILE_MUTATION,
       variables: { profile: { userId, first_name: firstName, last_name: lastName } },
-    });
-
-    return { ok: true, data: response.updateProfile };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      const parseResult = errorsSchema.safeParse(e.response);
-
-      if (parseResult.success) {
-        return { ok: false, error: { message: e.message, errors: parseResult.data.errors } };
-      }
-    }
-
-    return { ok: false, error: { message: 'Profile update failed' } };
-  }
+    })
+    .then(getHandleResult('updateProfile'))
+    .catch(handleAuthError)
+    .catch(getHandleException('Profile update failed'));
+  return result;
 }

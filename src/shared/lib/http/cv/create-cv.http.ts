@@ -1,7 +1,7 @@
 import type { Cv, HttpError, HttpResult } from '~/shared';
-import { ClientError, gql, graphQlClient } from '../graphql.http';
+import { gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
-import { errorsSchema } from '../schema';
+import { getHandleException, getHandleResult, handleAuthError } from '../utils';
 
 const CREATE_CV = gql`
   mutation AddCv($cv: CreateCvInput!) {
@@ -33,23 +33,15 @@ export type CreateCvParams = {
 export type CreateCvResult = HttpResult<CreateCvData, CreateCvError>;
 
 export async function createCv(params: CreateCvParams): Promise<CreateCvResult> {
-  try {
-    const response = await graphQlClient.request<CreateCvMutationResult, CreateCvMutationVariables>({
+  const result = await graphQlClient
+    .request<CreateCvMutationResult, CreateCvMutationVariables>({
       document: CREATE_CV,
       variables: {
         cv: { userId: params.userId, ...params.cv },
       },
-    });
-    return { ok: true, data: response.createCv };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      const parseResult = errorsSchema.safeParse(e.response);
-
-      if (parseResult.success) {
-        return { ok: false, error: { message: e.message, errors: parseResult.data.errors } };
-      }
-    }
-
-    return { ok: false, error: { message: 'CV creating failed' } };
-  }
+    })
+    .then(getHandleResult('createCv'))
+    .catch(handleAuthError)
+    .catch(getHandleException('Creating CV failed'));
+  return result;
 }

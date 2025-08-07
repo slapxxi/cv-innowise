@@ -1,7 +1,7 @@
 import type { Cv, HttpError, HttpResult } from '~/shared';
-import { ClientError, gql, graphQlClient } from '../graphql.http';
+import { gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
-import { errorsSchema } from '../schema';
+import { getHandleException, getHandleResult, handleAuthError } from '../utils';
 
 const DELETE_CV_SKILL = gql`
   mutation DeleteCvSkill($skill: DeleteCvSkillInput!) {
@@ -32,21 +32,13 @@ export type DeleteCvSkillsParams = {
 export type DeleteCvSkillResult = HttpResult<DeleteCvSkillsData, DeleteCvSkillsError>;
 
 export async function deleteCvSkills(params: DeleteCvSkillsParams): Promise<DeleteCvSkillResult> {
-  try {
-    const response = await graphQlClient.request<DeleteCvMutationResult, DeleteCvMutationVariables>({
+  const result = await graphQlClient
+    .request<DeleteCvMutationResult, DeleteCvMutationVariables>({
       document: DELETE_CV_SKILL,
       variables: { skill: { cvId: params.cvId, name: params.skillNames } },
-    });
-    return { ok: true, data: response.deleteCvSkill };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      const parseResult = errorsSchema.safeParse(e.response);
-
-      if (parseResult.success) {
-        return { ok: false, error: { message: e.message, errors: parseResult.data.errors } };
-      }
-    }
-
-    return { ok: false, error: { message: 'Deleting Cv skills failed' } };
-  }
+    })
+    .then(getHandleResult('deleteCvSkill'))
+    .catch(handleAuthError)
+    .catch(getHandleException('Delete CV skill failed'));
+  return result;
 }

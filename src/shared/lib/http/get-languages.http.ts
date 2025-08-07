@@ -1,7 +1,7 @@
 import { type HttpError, type HttpResult, type Language } from '~/shared';
-import { StatusCodes } from './const';
-import { ClientError, gql, graphQlClient } from './graphql.http';
+import { gql, graphQlClient } from './graphql.http';
 import { Queries } from './queries';
+import { getHandleException, getHandleResult, handleAuthError } from './utils';
 
 const GET_LANGUAGES = gql`
   query Languages {
@@ -22,17 +22,12 @@ export type GetLanguagesError = HttpError;
 export type GetLanguagesResult = HttpResult<GetLanguagesData, GetLanguagesError>;
 
 export const getLanguages = async (): Promise<GetLanguagesResult> => {
-  try {
-    const response = await graphQlClient.request<GetLanguagesQueryResult>({
+  const result = await graphQlClient
+    .request<GetLanguagesQueryResult>({
       document: GET_LANGUAGES,
-    });
-    return { ok: true, data: response.languages };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      if (e.response.errors?.find((e) => e.message.toLowerCase() === 'unauthorized')) {
-        return { ok: false, error: { message: 'Unauthorized', status: StatusCodes.UNAUTHORIZED } };
-      }
-    }
-    return { ok: false, error: { message: 'Get languages failed' } };
-  }
+    })
+    .then(getHandleResult('languages'))
+    .catch(handleAuthError)
+    .catch(getHandleException('Get languages failed'));
+  return result;
 };

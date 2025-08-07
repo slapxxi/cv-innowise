@@ -1,8 +1,8 @@
 import type { AuthResponse, HttpError, HttpResult, User } from '~/shared';
 import { API_URL } from '../env';
-import { ClientError, gql, request } from '../graphql.http';
+import { gql, request } from '../graphql.http';
 import { Queries } from '../queries';
-import { errorsSchema } from '../schema';
+import { getHandleException, getHandleResult, handleAuthError } from '../utils';
 
 const LOGIN_QUERY = gql`
   query Login($auth: AuthInput!) {
@@ -36,23 +36,13 @@ export type LoginParams = {
 export type LoginResult = HttpResult<LoginData, LoginError>;
 
 export async function login(params: LoginParams): Promise<LoginResult> {
-  try {
-    const response = await request<LoginQueryResult>({
-      url: API_URL,
-      document: LOGIN_QUERY,
-      variables: { auth: params },
-    });
-    const { accessToken, refreshToken, user } = response.login;
-    return { ok: true, data: { accessToken, refreshToken, user } };
-  } catch (e) {
-    if (e instanceof ClientError) {
-      const parseResult = errorsSchema.safeParse(e.response);
-
-      if (parseResult.success) {
-        return { ok: false, error: { message: e.message, errors: parseResult.data.errors } };
-      }
-    }
-
-    return { ok: false, error: { message: 'Login failed' } };
-  }
+  const result = await request<LoginQueryResult>({
+    url: API_URL,
+    document: LOGIN_QUERY,
+    variables: { auth: params },
+  })
+    .then(getHandleResult('login'))
+    .catch(handleAuthError)
+    .catch(getHandleException('Login failed'));
+  return result;
 }
