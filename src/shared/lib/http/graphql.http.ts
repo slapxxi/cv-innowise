@@ -1,14 +1,15 @@
 import { GraphQLClient, type RequestMiddleware } from 'graphql-request';
-import { API_URL } from './env';
+import type { AuthData } from '~/app';
+import { isAuthExpired, refreshAuth } from '~/features';
 import { queryClient } from '../tanstack-query.lib';
-import { authOptions, isAuthExpired, refreshAuth, type AuthData } from '~/features';
+import { API_URL } from './env';
 
 export { ClientError, gql, request } from 'graphql-request';
 
 const requestMiddleware: RequestMiddleware = async (req) => {
   // @ts-expect-error Type 'Request' is not assignable to type 'RequestInit'.
   const headers = Object.fromEntries(req.headers);
-  const auth: AuthData = queryClient.getQueryData(authOptions().queryKey) as AuthData;
+  const auth: AuthData = queryClient.getQueryData(['auth']) as AuthData;
 
   if (auth) {
     let freshAuth = auth;
@@ -18,7 +19,7 @@ const requestMiddleware: RequestMiddleware = async (req) => {
 
       if (result) {
         freshAuth = result;
-        queryClient.setQueryData(authOptions().queryKey, freshAuth);
+        queryClient.setQueryData(['auth'], freshAuth);
       }
     }
 

@@ -1,12 +1,12 @@
 import { useQueryClient, useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
+import { useAuth } from '~/app';
 import { getUser, type GetUserData, type GetUserError } from '~/shared';
-import { useAuth } from './use-auth.service';
 
 type QueryOptions = UseSuspenseQueryOptions<GetUserData, GetUserError>;
 
 type Params = { id: string } & Omit<QueryOptions, 'queryKey' | 'queryFn'>;
 
-export const getUserQueryOptions = (params: { id: string; accessToken: string }) => {
+export const userOptions = (params: { id: string; accessToken: string }) => {
   const { id, accessToken } = params;
   return {
     queryKey: ['user', id],
@@ -27,7 +27,7 @@ export function useUser(params: Params) {
   const queryClient = useQueryClient();
   const auth = useAuth();
   const { data, ...rest } = useSuspenseQuery({
-    ...getUserQueryOptions({ id, accessToken: auth.accessToken! }),
+    ...userOptions({ id, accessToken: auth.accessToken! }),
     ...restParams,
   });
 

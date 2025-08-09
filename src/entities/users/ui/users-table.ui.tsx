@@ -3,7 +3,8 @@ import { TableRow } from '@mui/material';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuth, useUsers, type UsersSearchParams } from '~/features';
+import { useAuth } from '~/app';
+import { useUsers, type UsersSearchParams } from '~/features';
 import {
   ActionMenu,
   ActionMenuItem,

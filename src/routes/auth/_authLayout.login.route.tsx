@@ -7,7 +7,7 @@ import { Title } from '~/shared';
 export const Route = createFileRoute('/auth/_authLayout/login')({
   head: () => ({ meta: [{ title: i18n.t('Login') }] }),
   beforeLoad: ({ context, search }) => {
-    if (context.auth.user) {
+    if (context.auth.isAuthenticated()) {
       throw redirect({ to: search.redirect });
     }
   },

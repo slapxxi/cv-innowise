@@ -1,7 +1,8 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { t } from 'i18next';
-import { cnSubtitle, useAuth, useExportPdf } from '~/features';
+import { useAuth } from '~/app';
+import { cnSubtitle, useExportPdf } from '~/features';
 import { Button } from '~/shared';
 
 export const CvHeader = () => {
