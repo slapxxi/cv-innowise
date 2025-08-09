@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, useMatches } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { getUserQueryOptions } from '~/features';
+import { userOptions } from '~/features';
 import { Breadcrumbs, mergeBreadcrumbs, TabLink, Tabs } from '~/shared';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout')({
@@ -12,7 +12,7 @@ export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout')({
   },
   loader: ({ params, context }) => {
     const { auth, queryClient } = context;
-    queryClient.prefetchQuery(getUserQueryOptions({ id: params.userId, accessToken: auth.accessToken! }));
+    queryClient.prefetchQuery(userOptions({ id: params.userId, accessToken: auth.accessToken! }));
   },
 });
 

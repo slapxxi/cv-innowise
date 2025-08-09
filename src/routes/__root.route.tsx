@@ -6,7 +6,7 @@ import { type BreadcrumbEntry, type User } from '~/shared';
 
 export type CVRouterContext = {
   queryClient: QueryClient;
-  auth: { accessToken: string | null; user: User | null };
+  auth: { accessToken: string | null; user: User | null; isAuthenticated: () => boolean };
   breadcrumbs?: BreadcrumbEntry[];
 };
 
@@ -17,7 +17,7 @@ export const Route = createRootRouteWithContext<CVRouterContext>()({
         <HeadContent />
         <Outlet />
         <TanStackRouterDevtools position="top-right" />
-        <ReactQueryDevtools initialIsOpen={false} />
+        <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-left" />
       </>
     );
   },

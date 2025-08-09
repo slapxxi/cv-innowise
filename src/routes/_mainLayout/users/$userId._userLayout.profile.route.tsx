@@ -2,7 +2,7 @@ import { PersonOutline } from '@mui/icons-material';
 import { createFileRoute, useParams } from '@tanstack/react-router';
 import { mergeBreadcrumbs, type GetUserData } from '~/shared'; //type User
 import { UserPage } from '~/entities/user/ui/user-page/user-page.tsx';
-import { getUserQueryOptions, useUser } from '~/features';
+import { userOptions, useUser } from '~/features';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/profile')({
   component: RouteComponent,
@@ -30,7 +30,7 @@ export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/pro
   },
   loader: ({ context, params }) => {
     const { auth, queryClient } = context;
-    queryClient.prefetchQuery(getUserQueryOptions({ id: params.userId, accessToken: auth.accessToken! }));
+    queryClient.prefetchQuery(userOptions({ id: params.userId, accessToken: auth.accessToken! }));
   },
 });
 

@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
 import { useNavigate } from '@tanstack/react-router';
+import { useAuth } from '~/app';
 import { useUserForm } from '~/entities';
 import { useFormIsChanged, useUpdateProfile, useUpdateUser, useUserFormData } from '~/entities/user/service';
 import { UserFormFields, UserMeta } from '~/entities/user/ui';
-import { useAuth } from '~/features';
 import { Button, type User } from '~/shared';
 
 type PropsType = {

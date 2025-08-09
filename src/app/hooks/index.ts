@@ -1,1 +1,2 @@
-export * from './use-language.hook.ts';
+export * from './use-language.hook';
+export * from './use-auth.hook';

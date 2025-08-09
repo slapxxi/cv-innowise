@@ -7,7 +7,7 @@ import { Title } from '~/shared';
 export const Route = createFileRoute('/auth/_authLayout/signup')({
   head: () => ({ meta: [{ title: i18n.t('Signup') }] }),
   beforeLoad: ({ context }) => {
-    if (context.auth.user) {
+    if (context.auth.isAuthenticated()) {
       throw redirect({ to: '/' });
     }
   },

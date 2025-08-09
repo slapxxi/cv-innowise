@@ -102,7 +102,7 @@ export const Table = <T extends { id: string }>(props: TableProps<T>) => {
         </BaseTable>
       </TableContainer>
 
-      {count && limit && page && (
+      {!!count && !!limit && !!page && (
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, 50, 100]}
           component="div"
