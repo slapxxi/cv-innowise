@@ -1,15 +1,20 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useTranslation } from 'react-i18next';
-import { Button, PasswordField, TextField, Title } from '~/shared';
+import { createFileRoute, redirect } from '@tanstack/react-router';
+import { t } from 'i18next';
+import i18n from '~/app/i18n.ts';
+import { LoginForm } from '~/features';
+import { Title } from '~/shared';
 
 export const Route = createFileRoute('/auth/_authLayout/login')({
+  head: () => ({ meta: [{ title: i18n.t('Login') }] }),
+  beforeLoad: ({ context, search }) => {
+    if (context.auth.isAuthenticated()) {
+      throw redirect({ to: search.redirect });
+    }
+  },
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { t } = useTranslation();
-  const nav = Route.useNavigate();
-
   return (
     <section className="flex flex-col">
       <header className="flex flex-col items-center gap-6 mb-10">
@@ -19,18 +24,7 @@ function RouteComponent() {
         <p>{t('Happy to see you')}</p>
       </header>
 
-      <div className="flex flex-col gap-4">
-        <TextField label={t('Email')} type="email" />
-
-        <PasswordField label={t('Password')} />
-      </div>
-
-      <div className="mt-15 flex flex-col gap-2 self-center">
-        <Button>{t('Login')}</Button>
-        <Button onClick={() => nav({ to: '/auth/forgot-password' })} variant="text">
-          {t('Forgot password')}
-        </Button>
-      </div>
+      <LoginForm />
     </section>
   );
 }

@@ -11,23 +11,56 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root.route'
+import { Route as VerifyEmailRouteRouteImport } from './routes/verify-email.route'
 import { Route as AboutRouteRouteImport } from './routes/about.route'
+import { Route as MainLayoutRouteRouteImport } from './routes/_mainLayout/route'
 import { Route as IndexRouteRouteImport } from './routes/index.route'
 import { Route as AuthForgotPasswordRouteRouteImport } from './routes/auth/forgot-password.route'
 import { Route as AuthAuthLayoutRouteRouteImport } from './routes/auth/_authLayout.route'
+import { Route as MainLayoutSkillsRouteRouteImport } from './routes/_mainLayout/skills.route'
+import { Route as MainLayoutSettingsRouteRouteImport } from './routes/_mainLayout/settings.route'
+import { Route as MainLayoutProjectsRouteRouteImport } from './routes/_mainLayout/projects.route'
+import { Route as MainLayoutPositionsRouteRouteImport } from './routes/_mainLayout/positions.route'
+import { Route as MainLayoutLanguagesRouteRouteImport } from './routes/_mainLayout/languages.route'
+import { Route as MainLayoutDepartmentsRouteRouteImport } from './routes/_mainLayout/departments.route'
+import { Route as MainLayoutUsersIndexRouteRouteImport } from './routes/_mainLayout/users/index.route'
+import { Route as MainLayoutCvsIndexRouteRouteImport } from './routes/_mainLayout/cvs/index.route'
 import { Route as AuthAuthLayoutSignupRouteRouteImport } from './routes/auth/_authLayout.signup.route'
 import { Route as AuthAuthLayoutLoginRouteRouteImport } from './routes/auth/_authLayout.login.route'
+import { Route as MainLayoutUsersUserIdUserLayoutRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.route'
+import { Route as MainLayoutCvsCvIdCvsLayoutRouteRouteImport } from './routes/_mainLayout/cvs/$cvId/_cvsLayout.route'
+import { Route as MainLayoutUsersUserIdUserLayoutSkillsRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.skills.route'
+import { Route as MainLayoutUsersUserIdUserLayoutProfileRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.profile.route'
+import { Route as MainLayoutUsersUserIdUserLayoutLanguagesRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.languages.route'
+import { Route as MainLayoutUsersUserIdUserLayoutCvsRouteRouteImport } from './routes/_mainLayout/users/$userId._userLayout.cvs.route'
+import { Route as MainLayoutCvsCvIdCvsLayoutSkillsRouteRouteImport } from './routes/_mainLayout/cvs/$cvId/_cvsLayout.skills.route'
+import { Route as MainLayoutCvsCvIdCvsLayoutProjectsRouteRouteImport } from './routes/_mainLayout/cvs/$cvId/_cvsLayout.projects.route'
+import { Route as MainLayoutCvsCvIdCvsLayoutPreviewRouteRouteImport } from './routes/_mainLayout/cvs/$cvId/_cvsLayout.preview.route'
+import { Route as MainLayoutCvsCvIdCvsLayoutDetailsRouteRouteImport } from './routes/_mainLayout/cvs/$cvId/_cvsLayout.details.route'
 
 const AuthRouteImport = createFileRoute('/auth')()
+const MainLayoutUsersUserIdRouteImport = createFileRoute(
+  '/_mainLayout/users/$userId',
+)()
+const MainLayoutCvsCvIdRouteImport = createFileRoute('/_mainLayout/cvs/$cvId')()
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VerifyEmailRouteRoute = VerifyEmailRouteRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRouteRoute = AboutRouteRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MainLayoutRouteRoute = MainLayoutRouteRouteImport.update({
+  id: '/_mainLayout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRouteRoute = IndexRouteRouteImport.update({
@@ -44,6 +77,60 @@ const AuthAuthLayoutRouteRoute = AuthAuthLayoutRouteRouteImport.update({
   id: '/_authLayout',
   getParentRoute: () => AuthRoute,
 } as any)
+const MainLayoutSkillsRouteRoute = MainLayoutSkillsRouteRouteImport.update({
+  id: '/skills',
+  path: '/skills',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
+const MainLayoutSettingsRouteRoute = MainLayoutSettingsRouteRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
+const MainLayoutProjectsRouteRoute = MainLayoutProjectsRouteRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
+const MainLayoutPositionsRouteRoute =
+  MainLayoutPositionsRouteRouteImport.update({
+    id: '/positions',
+    path: '/positions',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
+const MainLayoutLanguagesRouteRoute =
+  MainLayoutLanguagesRouteRouteImport.update({
+    id: '/languages',
+    path: '/languages',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
+const MainLayoutDepartmentsRouteRoute =
+  MainLayoutDepartmentsRouteRouteImport.update({
+    id: '/departments',
+    path: '/departments',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
+const MainLayoutUsersUserIdRoute = MainLayoutUsersUserIdRouteImport.update({
+  id: '/users/$userId',
+  path: '/users/$userId',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
+const MainLayoutCvsCvIdRoute = MainLayoutCvsCvIdRouteImport.update({
+  id: '/cvs/$cvId',
+  path: '/cvs/$cvId',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
+const MainLayoutUsersIndexRouteRoute =
+  MainLayoutUsersIndexRouteRouteImport.update({
+    id: '/users/',
+    path: '/users/',
+    getParentRoute: () => MainLayoutRouteRoute,
+  } as any)
+const MainLayoutCvsIndexRouteRoute = MainLayoutCvsIndexRouteRouteImport.update({
+  id: '/cvs/',
+  path: '/cvs/',
+  getParentRoute: () => MainLayoutRouteRoute,
+} as any)
 const AuthAuthLayoutSignupRouteRoute =
   AuthAuthLayoutSignupRouteRouteImport.update({
     id: '/signup',
@@ -56,64 +143,244 @@ const AuthAuthLayoutLoginRouteRoute =
     path: '/login',
     getParentRoute: () => AuthAuthLayoutRouteRoute,
   } as any)
+const MainLayoutUsersUserIdUserLayoutRouteRoute =
+  MainLayoutUsersUserIdUserLayoutRouteRouteImport.update({
+    id: '/_userLayout',
+    getParentRoute: () => MainLayoutUsersUserIdRoute,
+  } as any)
+const MainLayoutCvsCvIdCvsLayoutRouteRoute =
+  MainLayoutCvsCvIdCvsLayoutRouteRouteImport.update({
+    id: '/_cvsLayout',
+    getParentRoute: () => MainLayoutCvsCvIdRoute,
+  } as any)
+const MainLayoutUsersUserIdUserLayoutSkillsRouteRoute =
+  MainLayoutUsersUserIdUserLayoutSkillsRouteRouteImport.update({
+    id: '/skills',
+    path: '/skills',
+    getParentRoute: () => MainLayoutUsersUserIdUserLayoutRouteRoute,
+  } as any)
+const MainLayoutUsersUserIdUserLayoutProfileRouteRoute =
+  MainLayoutUsersUserIdUserLayoutProfileRouteRouteImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => MainLayoutUsersUserIdUserLayoutRouteRoute,
+  } as any)
+const MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute =
+  MainLayoutUsersUserIdUserLayoutLanguagesRouteRouteImport.update({
+    id: '/languages',
+    path: '/languages',
+    getParentRoute: () => MainLayoutUsersUserIdUserLayoutRouteRoute,
+  } as any)
+const MainLayoutUsersUserIdUserLayoutCvsRouteRoute =
+  MainLayoutUsersUserIdUserLayoutCvsRouteRouteImport.update({
+    id: '/cvs',
+    path: '/cvs',
+    getParentRoute: () => MainLayoutUsersUserIdUserLayoutRouteRoute,
+  } as any)
+const MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute =
+  MainLayoutCvsCvIdCvsLayoutSkillsRouteRouteImport.update({
+    id: '/skills',
+    path: '/skills',
+    getParentRoute: () => MainLayoutCvsCvIdCvsLayoutRouteRoute,
+  } as any)
+const MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute =
+  MainLayoutCvsCvIdCvsLayoutProjectsRouteRouteImport.update({
+    id: '/projects',
+    path: '/projects',
+    getParentRoute: () => MainLayoutCvsCvIdCvsLayoutRouteRoute,
+  } as any)
+const MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute =
+  MainLayoutCvsCvIdCvsLayoutPreviewRouteRouteImport.update({
+    id: '/preview',
+    path: '/preview',
+    getParentRoute: () => MainLayoutCvsCvIdCvsLayoutRouteRoute,
+  } as any)
+const MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute =
+  MainLayoutCvsCvIdCvsLayoutDetailsRouteRouteImport.update({
+    id: '/details',
+    path: '/details',
+    getParentRoute: () => MainLayoutCvsCvIdCvsLayoutRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRouteRoute
   '/about': typeof AboutRouteRoute
+  '/verify-email': typeof VerifyEmailRouteRoute
+  '/departments': typeof MainLayoutDepartmentsRouteRoute
+  '/languages': typeof MainLayoutLanguagesRouteRoute
+  '/positions': typeof MainLayoutPositionsRouteRoute
+  '/projects': typeof MainLayoutProjectsRouteRoute
+  '/settings': typeof MainLayoutSettingsRouteRoute
+  '/skills': typeof MainLayoutSkillsRouteRoute
   '/auth': typeof AuthAuthLayoutRouteRouteWithChildren
   '/auth/forgot-password': typeof AuthForgotPasswordRouteRoute
   '/auth/login': typeof AuthAuthLayoutLoginRouteRoute
   '/auth/signup': typeof AuthAuthLayoutSignupRouteRoute
+  '/cvs': typeof MainLayoutCvsIndexRouteRoute
+  '/users': typeof MainLayoutUsersIndexRouteRoute
+  '/cvs/$cvId': typeof MainLayoutCvsCvIdCvsLayoutRouteRouteWithChildren
+  '/users/$userId': typeof MainLayoutUsersUserIdUserLayoutRouteRouteWithChildren
+  '/cvs/$cvId/details': typeof MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute
+  '/cvs/$cvId/preview': typeof MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute
+  '/cvs/$cvId/projects': typeof MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute
+  '/cvs/$cvId/skills': typeof MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute
+  '/users/$userId/cvs': typeof MainLayoutUsersUserIdUserLayoutCvsRouteRoute
+  '/users/$userId/languages': typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute
+  '/users/$userId/profile': typeof MainLayoutUsersUserIdUserLayoutProfileRouteRoute
+  '/users/$userId/skills': typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRouteRoute
   '/about': typeof AboutRouteRoute
+  '/verify-email': typeof VerifyEmailRouteRoute
+  '/departments': typeof MainLayoutDepartmentsRouteRoute
+  '/languages': typeof MainLayoutLanguagesRouteRoute
+  '/positions': typeof MainLayoutPositionsRouteRoute
+  '/projects': typeof MainLayoutProjectsRouteRoute
+  '/settings': typeof MainLayoutSettingsRouteRoute
+  '/skills': typeof MainLayoutSkillsRouteRoute
   '/auth': typeof AuthAuthLayoutRouteRouteWithChildren
   '/auth/forgot-password': typeof AuthForgotPasswordRouteRoute
   '/auth/login': typeof AuthAuthLayoutLoginRouteRoute
   '/auth/signup': typeof AuthAuthLayoutSignupRouteRoute
+  '/cvs': typeof MainLayoutCvsIndexRouteRoute
+  '/users': typeof MainLayoutUsersIndexRouteRoute
+  '/cvs/$cvId': typeof MainLayoutCvsCvIdCvsLayoutRouteRouteWithChildren
+  '/users/$userId': typeof MainLayoutUsersUserIdUserLayoutRouteRouteWithChildren
+  '/cvs/$cvId/details': typeof MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute
+  '/cvs/$cvId/preview': typeof MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute
+  '/cvs/$cvId/projects': typeof MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute
+  '/cvs/$cvId/skills': typeof MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute
+  '/users/$userId/cvs': typeof MainLayoutUsersUserIdUserLayoutCvsRouteRoute
+  '/users/$userId/languages': typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute
+  '/users/$userId/profile': typeof MainLayoutUsersUserIdUserLayoutProfileRouteRoute
+  '/users/$userId/skills': typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRouteRoute
+  '/_mainLayout': typeof MainLayoutRouteRouteWithChildren
   '/about': typeof AboutRouteRoute
+  '/verify-email': typeof VerifyEmailRouteRoute
+  '/_mainLayout/departments': typeof MainLayoutDepartmentsRouteRoute
+  '/_mainLayout/languages': typeof MainLayoutLanguagesRouteRoute
+  '/_mainLayout/positions': typeof MainLayoutPositionsRouteRoute
+  '/_mainLayout/projects': typeof MainLayoutProjectsRouteRoute
+  '/_mainLayout/settings': typeof MainLayoutSettingsRouteRoute
+  '/_mainLayout/skills': typeof MainLayoutSkillsRouteRoute
   '/auth': typeof AuthRouteWithChildren
   '/auth/_authLayout': typeof AuthAuthLayoutRouteRouteWithChildren
   '/auth/forgot-password': typeof AuthForgotPasswordRouteRoute
   '/auth/_authLayout/login': typeof AuthAuthLayoutLoginRouteRoute
   '/auth/_authLayout/signup': typeof AuthAuthLayoutSignupRouteRoute
+  '/_mainLayout/cvs/': typeof MainLayoutCvsIndexRouteRoute
+  '/_mainLayout/users/': typeof MainLayoutUsersIndexRouteRoute
+  '/_mainLayout/cvs/$cvId': typeof MainLayoutCvsCvIdRouteWithChildren
+  '/_mainLayout/cvs/$cvId/_cvsLayout': typeof MainLayoutCvsCvIdCvsLayoutRouteRouteWithChildren
+  '/_mainLayout/users/$userId': typeof MainLayoutUsersUserIdRouteWithChildren
+  '/_mainLayout/users/$userId/_userLayout': typeof MainLayoutUsersUserIdUserLayoutRouteRouteWithChildren
+  '/_mainLayout/cvs/$cvId/_cvsLayout/details': typeof MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute
+  '/_mainLayout/cvs/$cvId/_cvsLayout/preview': typeof MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute
+  '/_mainLayout/cvs/$cvId/_cvsLayout/projects': typeof MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute
+  '/_mainLayout/cvs/$cvId/_cvsLayout/skills': typeof MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute
+  '/_mainLayout/users/$userId/_userLayout/cvs': typeof MainLayoutUsersUserIdUserLayoutCvsRouteRoute
+  '/_mainLayout/users/$userId/_userLayout/languages': typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute
+  '/_mainLayout/users/$userId/_userLayout/profile': typeof MainLayoutUsersUserIdUserLayoutProfileRouteRoute
+  '/_mainLayout/users/$userId/_userLayout/skills': typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/verify-email'
+    | '/departments'
+    | '/languages'
+    | '/positions'
+    | '/projects'
+    | '/settings'
+    | '/skills'
     | '/auth'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/signup'
+    | '/cvs'
+    | '/users'
+    | '/cvs/$cvId'
+    | '/users/$userId'
+    | '/cvs/$cvId/details'
+    | '/cvs/$cvId/preview'
+    | '/cvs/$cvId/projects'
+    | '/cvs/$cvId/skills'
+    | '/users/$userId/cvs'
+    | '/users/$userId/languages'
+    | '/users/$userId/profile'
+    | '/users/$userId/skills'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/verify-email'
+    | '/departments'
+    | '/languages'
+    | '/positions'
+    | '/projects'
+    | '/settings'
+    | '/skills'
     | '/auth'
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/signup'
+    | '/cvs'
+    | '/users'
+    | '/cvs/$cvId'
+    | '/users/$userId'
+    | '/cvs/$cvId/details'
+    | '/cvs/$cvId/preview'
+    | '/cvs/$cvId/projects'
+    | '/cvs/$cvId/skills'
+    | '/users/$userId/cvs'
+    | '/users/$userId/languages'
+    | '/users/$userId/profile'
+    | '/users/$userId/skills'
   id:
     | '__root__'
     | '/'
+    | '/_mainLayout'
     | '/about'
+    | '/verify-email'
+    | '/_mainLayout/departments'
+    | '/_mainLayout/languages'
+    | '/_mainLayout/positions'
+    | '/_mainLayout/projects'
+    | '/_mainLayout/settings'
+    | '/_mainLayout/skills'
     | '/auth'
     | '/auth/_authLayout'
     | '/auth/forgot-password'
     | '/auth/_authLayout/login'
     | '/auth/_authLayout/signup'
+    | '/_mainLayout/cvs/'
+    | '/_mainLayout/users/'
+    | '/_mainLayout/cvs/$cvId'
+    | '/_mainLayout/cvs/$cvId/_cvsLayout'
+    | '/_mainLayout/users/$userId'
+    | '/_mainLayout/users/$userId/_userLayout'
+    | '/_mainLayout/cvs/$cvId/_cvsLayout/details'
+    | '/_mainLayout/cvs/$cvId/_cvsLayout/preview'
+    | '/_mainLayout/cvs/$cvId/_cvsLayout/projects'
+    | '/_mainLayout/cvs/$cvId/_cvsLayout/skills'
+    | '/_mainLayout/users/$userId/_userLayout/cvs'
+    | '/_mainLayout/users/$userId/_userLayout/languages'
+    | '/_mainLayout/users/$userId/_userLayout/profile'
+    | '/_mainLayout/users/$userId/_userLayout/skills'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRouteRoute: typeof IndexRouteRoute
+  MainLayoutRouteRoute: typeof MainLayoutRouteRouteWithChildren
   AboutRouteRoute: typeof AboutRouteRoute
+  VerifyEmailRouteRoute: typeof VerifyEmailRouteRoute
   AuthRoute: typeof AuthRouteWithChildren
 }
 
@@ -126,11 +393,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_mainLayout': {
+      id: '/_mainLayout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof MainLayoutRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -154,6 +435,76 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthAuthLayoutRouteRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_mainLayout/skills': {
+      id: '/_mainLayout/skills'
+      path: '/skills'
+      fullPath: '/skills'
+      preLoaderRoute: typeof MainLayoutSkillsRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/settings': {
+      id: '/_mainLayout/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof MainLayoutSettingsRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/projects': {
+      id: '/_mainLayout/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof MainLayoutProjectsRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/positions': {
+      id: '/_mainLayout/positions'
+      path: '/positions'
+      fullPath: '/positions'
+      preLoaderRoute: typeof MainLayoutPositionsRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/languages': {
+      id: '/_mainLayout/languages'
+      path: '/languages'
+      fullPath: '/languages'
+      preLoaderRoute: typeof MainLayoutLanguagesRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/departments': {
+      id: '/_mainLayout/departments'
+      path: '/departments'
+      fullPath: '/departments'
+      preLoaderRoute: typeof MainLayoutDepartmentsRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/users/$userId': {
+      id: '/_mainLayout/users/$userId'
+      path: '/users/$userId'
+      fullPath: '/users/$userId'
+      preLoaderRoute: typeof MainLayoutUsersUserIdRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/cvs/$cvId': {
+      id: '/_mainLayout/cvs/$cvId'
+      path: '/cvs/$cvId'
+      fullPath: '/cvs/$cvId'
+      preLoaderRoute: typeof MainLayoutCvsCvIdRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/users/': {
+      id: '/_mainLayout/users/'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof MainLayoutUsersIndexRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
+    '/_mainLayout/cvs/': {
+      id: '/_mainLayout/cvs/'
+      path: '/cvs'
+      fullPath: '/cvs'
+      preLoaderRoute: typeof MainLayoutCvsIndexRouteRouteImport
+      parentRoute: typeof MainLayoutRouteRoute
+    }
     '/auth/_authLayout/signup': {
       id: '/auth/_authLayout/signup'
       path: '/signup'
@@ -168,8 +519,182 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthAuthLayoutLoginRouteRouteImport
       parentRoute: typeof AuthAuthLayoutRouteRoute
     }
+    '/_mainLayout/users/$userId/_userLayout': {
+      id: '/_mainLayout/users/$userId/_userLayout'
+      path: '/users/$userId'
+      fullPath: '/users/$userId'
+      preLoaderRoute: typeof MainLayoutUsersUserIdUserLayoutRouteRouteImport
+      parentRoute: typeof MainLayoutUsersUserIdRoute
+    }
+    '/_mainLayout/cvs/$cvId/_cvsLayout': {
+      id: '/_mainLayout/cvs/$cvId/_cvsLayout'
+      path: '/cvs/$cvId'
+      fullPath: '/cvs/$cvId'
+      preLoaderRoute: typeof MainLayoutCvsCvIdCvsLayoutRouteRouteImport
+      parentRoute: typeof MainLayoutCvsCvIdRoute
+    }
+    '/_mainLayout/users/$userId/_userLayout/skills': {
+      id: '/_mainLayout/users/$userId/_userLayout/skills'
+      path: '/skills'
+      fullPath: '/users/$userId/skills'
+      preLoaderRoute: typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRouteImport
+      parentRoute: typeof MainLayoutUsersUserIdUserLayoutRouteRoute
+    }
+    '/_mainLayout/users/$userId/_userLayout/profile': {
+      id: '/_mainLayout/users/$userId/_userLayout/profile'
+      path: '/profile'
+      fullPath: '/users/$userId/profile'
+      preLoaderRoute: typeof MainLayoutUsersUserIdUserLayoutProfileRouteRouteImport
+      parentRoute: typeof MainLayoutUsersUserIdUserLayoutRouteRoute
+    }
+    '/_mainLayout/users/$userId/_userLayout/languages': {
+      id: '/_mainLayout/users/$userId/_userLayout/languages'
+      path: '/languages'
+      fullPath: '/users/$userId/languages'
+      preLoaderRoute: typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRouteImport
+      parentRoute: typeof MainLayoutUsersUserIdUserLayoutRouteRoute
+    }
+    '/_mainLayout/users/$userId/_userLayout/cvs': {
+      id: '/_mainLayout/users/$userId/_userLayout/cvs'
+      path: '/cvs'
+      fullPath: '/users/$userId/cvs'
+      preLoaderRoute: typeof MainLayoutUsersUserIdUserLayoutCvsRouteRouteImport
+      parentRoute: typeof MainLayoutUsersUserIdUserLayoutRouteRoute
+    }
+    '/_mainLayout/cvs/$cvId/_cvsLayout/skills': {
+      id: '/_mainLayout/cvs/$cvId/_cvsLayout/skills'
+      path: '/skills'
+      fullPath: '/cvs/$cvId/skills'
+      preLoaderRoute: typeof MainLayoutCvsCvIdCvsLayoutSkillsRouteRouteImport
+      parentRoute: typeof MainLayoutCvsCvIdCvsLayoutRouteRoute
+    }
+    '/_mainLayout/cvs/$cvId/_cvsLayout/projects': {
+      id: '/_mainLayout/cvs/$cvId/_cvsLayout/projects'
+      path: '/projects'
+      fullPath: '/cvs/$cvId/projects'
+      preLoaderRoute: typeof MainLayoutCvsCvIdCvsLayoutProjectsRouteRouteImport
+      parentRoute: typeof MainLayoutCvsCvIdCvsLayoutRouteRoute
+    }
+    '/_mainLayout/cvs/$cvId/_cvsLayout/preview': {
+      id: '/_mainLayout/cvs/$cvId/_cvsLayout/preview'
+      path: '/preview'
+      fullPath: '/cvs/$cvId/preview'
+      preLoaderRoute: typeof MainLayoutCvsCvIdCvsLayoutPreviewRouteRouteImport
+      parentRoute: typeof MainLayoutCvsCvIdCvsLayoutRouteRoute
+    }
+    '/_mainLayout/cvs/$cvId/_cvsLayout/details': {
+      id: '/_mainLayout/cvs/$cvId/_cvsLayout/details'
+      path: '/details'
+      fullPath: '/cvs/$cvId/details'
+      preLoaderRoute: typeof MainLayoutCvsCvIdCvsLayoutDetailsRouteRouteImport
+      parentRoute: typeof MainLayoutCvsCvIdCvsLayoutRouteRoute
+    }
   }
 }
+
+interface MainLayoutCvsCvIdCvsLayoutRouteRouteChildren {
+  MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute: typeof MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute
+  MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute: typeof MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute
+  MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute: typeof MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute
+  MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute: typeof MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute
+}
+
+const MainLayoutCvsCvIdCvsLayoutRouteRouteChildren: MainLayoutCvsCvIdCvsLayoutRouteRouteChildren =
+  {
+    MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute:
+      MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute,
+    MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute:
+      MainLayoutCvsCvIdCvsLayoutPreviewRouteRoute,
+    MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute:
+      MainLayoutCvsCvIdCvsLayoutProjectsRouteRoute,
+    MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute:
+      MainLayoutCvsCvIdCvsLayoutSkillsRouteRoute,
+  }
+
+const MainLayoutCvsCvIdCvsLayoutRouteRouteWithChildren =
+  MainLayoutCvsCvIdCvsLayoutRouteRoute._addFileChildren(
+    MainLayoutCvsCvIdCvsLayoutRouteRouteChildren,
+  )
+
+interface MainLayoutCvsCvIdRouteChildren {
+  MainLayoutCvsCvIdCvsLayoutRouteRoute: typeof MainLayoutCvsCvIdCvsLayoutRouteRouteWithChildren
+}
+
+const MainLayoutCvsCvIdRouteChildren: MainLayoutCvsCvIdRouteChildren = {
+  MainLayoutCvsCvIdCvsLayoutRouteRoute:
+    MainLayoutCvsCvIdCvsLayoutRouteRouteWithChildren,
+}
+
+const MainLayoutCvsCvIdRouteWithChildren =
+  MainLayoutCvsCvIdRoute._addFileChildren(MainLayoutCvsCvIdRouteChildren)
+
+interface MainLayoutUsersUserIdUserLayoutRouteRouteChildren {
+  MainLayoutUsersUserIdUserLayoutCvsRouteRoute: typeof MainLayoutUsersUserIdUserLayoutCvsRouteRoute
+  MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute: typeof MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute
+  MainLayoutUsersUserIdUserLayoutProfileRouteRoute: typeof MainLayoutUsersUserIdUserLayoutProfileRouteRoute
+  MainLayoutUsersUserIdUserLayoutSkillsRouteRoute: typeof MainLayoutUsersUserIdUserLayoutSkillsRouteRoute
+}
+
+const MainLayoutUsersUserIdUserLayoutRouteRouteChildren: MainLayoutUsersUserIdUserLayoutRouteRouteChildren =
+  {
+    MainLayoutUsersUserIdUserLayoutCvsRouteRoute:
+      MainLayoutUsersUserIdUserLayoutCvsRouteRoute,
+    MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute:
+      MainLayoutUsersUserIdUserLayoutLanguagesRouteRoute,
+    MainLayoutUsersUserIdUserLayoutProfileRouteRoute:
+      MainLayoutUsersUserIdUserLayoutProfileRouteRoute,
+    MainLayoutUsersUserIdUserLayoutSkillsRouteRoute:
+      MainLayoutUsersUserIdUserLayoutSkillsRouteRoute,
+  }
+
+const MainLayoutUsersUserIdUserLayoutRouteRouteWithChildren =
+  MainLayoutUsersUserIdUserLayoutRouteRoute._addFileChildren(
+    MainLayoutUsersUserIdUserLayoutRouteRouteChildren,
+  )
+
+interface MainLayoutUsersUserIdRouteChildren {
+  MainLayoutUsersUserIdUserLayoutRouteRoute: typeof MainLayoutUsersUserIdUserLayoutRouteRouteWithChildren
+}
+
+const MainLayoutUsersUserIdRouteChildren: MainLayoutUsersUserIdRouteChildren = {
+  MainLayoutUsersUserIdUserLayoutRouteRoute:
+    MainLayoutUsersUserIdUserLayoutRouteRouteWithChildren,
+}
+
+const MainLayoutUsersUserIdRouteWithChildren =
+  MainLayoutUsersUserIdRoute._addFileChildren(
+    MainLayoutUsersUserIdRouteChildren,
+  )
+
+interface MainLayoutRouteRouteChildren {
+  MainLayoutDepartmentsRouteRoute: typeof MainLayoutDepartmentsRouteRoute
+  MainLayoutLanguagesRouteRoute: typeof MainLayoutLanguagesRouteRoute
+  MainLayoutPositionsRouteRoute: typeof MainLayoutPositionsRouteRoute
+  MainLayoutProjectsRouteRoute: typeof MainLayoutProjectsRouteRoute
+  MainLayoutSettingsRouteRoute: typeof MainLayoutSettingsRouteRoute
+  MainLayoutSkillsRouteRoute: typeof MainLayoutSkillsRouteRoute
+  MainLayoutCvsIndexRouteRoute: typeof MainLayoutCvsIndexRouteRoute
+  MainLayoutUsersIndexRouteRoute: typeof MainLayoutUsersIndexRouteRoute
+  MainLayoutCvsCvIdRoute: typeof MainLayoutCvsCvIdRouteWithChildren
+  MainLayoutUsersUserIdRoute: typeof MainLayoutUsersUserIdRouteWithChildren
+}
+
+const MainLayoutRouteRouteChildren: MainLayoutRouteRouteChildren = {
+  MainLayoutDepartmentsRouteRoute: MainLayoutDepartmentsRouteRoute,
+  MainLayoutLanguagesRouteRoute: MainLayoutLanguagesRouteRoute,
+  MainLayoutPositionsRouteRoute: MainLayoutPositionsRouteRoute,
+  MainLayoutProjectsRouteRoute: MainLayoutProjectsRouteRoute,
+  MainLayoutSettingsRouteRoute: MainLayoutSettingsRouteRoute,
+  MainLayoutSkillsRouteRoute: MainLayoutSkillsRouteRoute,
+  MainLayoutCvsIndexRouteRoute: MainLayoutCvsIndexRouteRoute,
+  MainLayoutUsersIndexRouteRoute: MainLayoutUsersIndexRouteRoute,
+  MainLayoutCvsCvIdRoute: MainLayoutCvsCvIdRouteWithChildren,
+  MainLayoutUsersUserIdRoute: MainLayoutUsersUserIdRouteWithChildren,
+}
+
+const MainLayoutRouteRouteWithChildren = MainLayoutRouteRoute._addFileChildren(
+  MainLayoutRouteRouteChildren,
+)
 
 interface AuthAuthLayoutRouteRouteChildren {
   AuthAuthLayoutLoginRouteRoute: typeof AuthAuthLayoutLoginRouteRoute
@@ -198,7 +723,9 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRouteRoute: IndexRouteRoute,
+  MainLayoutRouteRoute: MainLayoutRouteRouteWithChildren,
   AboutRouteRoute: AboutRouteRoute,
+  VerifyEmailRouteRoute: VerifyEmailRouteRoute,
   AuthRoute: AuthRouteWithChildren,
 }
 export const routeTree = rootRouteImport

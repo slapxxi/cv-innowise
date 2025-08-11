@@ -1,8 +1,16 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { Button, PasswordField, TextField, Title } from '~/shared';
+import i18n from '~/app/i18n';
+import { SignupForm } from '~/features';
+import { Title } from '~/shared';
 
 export const Route = createFileRoute('/auth/_authLayout/signup')({
+  head: () => ({ meta: [{ title: i18n.t('Signup') }] }),
+  beforeLoad: ({ context }) => {
+    if (context.auth.isAuthenticated()) {
+      throw redirect({ to: '/' });
+    }
+  },
   component: RouteComponent,
 });
 
@@ -17,16 +25,7 @@ function RouteComponent() {
         </Title>
         <p>{t('Welcome')}</p>
       </header>
-
-      <div className="flex flex-col gap-4">
-        <TextField label={t('Email')} type="email" />
-        <PasswordField label={t('Password')} />
-      </div>
-
-      <div className="mt-15 flex flex-col gap-2 self-center">
-        <Button>{t('Signup')}</Button>
-        <Button variant="text">{t('I have an account')}</Button>
-      </div>
+      <SignupForm />
     </section>
   );
 }

@@ -1,31 +1,37 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { identity } from 'lodash';
 import { useTranslation } from 'react-i18next';
+import * as z from 'zod/v4';
 import { Button, TextField, Title } from '~/shared';
+
+const forgotPasswordSearchSchema = z.object({ redirect: z.string().catch('/') });
 
 export const Route = createFileRoute('/auth/forgot-password')({
   component: RouteComponent,
+  validateSearch: forgotPasswordSearchSchema,
 });
 
 function RouteComponent() {
   const { t } = useTranslation();
   const nav = Route.useNavigate();
+
   return (
-    <div className="flex items-center justify-center h-screen ">
-      <section className="flex flex-col items-center  w-full max-w-xl p-6 ">
-        <header className="flex flex-col items-center gap-6 mb-10">
+    <div className="flex h-screen items-center justify-center">
+      <section className="flex w-full max-w-xl flex-col items-center p-6">
+        <header className="mb-10 flex flex-col items-center gap-6">
           <Title asChild>
             <h2>{t('Forgot password')}</h2>
           </Title>
-          <p>{t('We will send you an email with further instructions')}</p>
+          <p className="text-center">{t('We will send you an email with further instructions')}</p>
         </header>
 
-        <div className="flex flex-col gap-4  w-full  ">
-          <TextField placeholder='example@email.com' label={'Email'} type="email" />
+        <div className="flex w-full flex-col gap-4">
+          <TextField placeholder="example@email.com" label={t('Email')} type="email" />
         </div>
 
         <div className="mt-15 flex flex-col gap-2 self-center">
           <Button>{t('Reset password')}</Button>
-          <Button onClick={() => nav({ to: '/auth/login' })} variant="text">
+          <Button onClick={() => nav({ to: '/auth/login', search: identity })} variant="text">
             {t('Cancel')}
           </Button>
         </div>

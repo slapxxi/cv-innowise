@@ -1,11 +1,12 @@
 {
   "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "**/*.test.ts"],
   "compilerOptions": {
     "target": "es5",
     "jsx": "react-jsx",
     "module": "ESNext",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["vite/client", "jest"],
+    "types": ["vite/client", "jest", "@testing-library/jest-dom"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",

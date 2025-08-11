@@ -2,9 +2,20 @@
   --font-sans:
     'Roboto', 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
     'Noto Color Emoji';
+
+  --animate-enter: enter 350ms 125ms cubic-bezier(0.4, 0, 0.2, 1) backwards;
+
+  @keyframes enter {
+    from {
+      width: 0%;
+    }
+  }
 }
 
 @theme inline {
+  --color-bg: var(--color-white);
+  --color-bg-dark: var(--color-neutral-700);
+
   /* Material UI typography */
   --font-h1: var(--mui-font-h1);
   --font-h2: var(--mui-font-h2);
