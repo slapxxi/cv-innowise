@@ -1,12 +1,6 @@
 import { screen, render } from 'test-utils';
 import { OptionalLabel } from '../optional-label.ui';
 
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string) => key,
-  }),
-}));
-
 describe('OptionalLabel', () => {
   it('renders children when provided', () => {
     render(

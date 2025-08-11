@@ -64,8 +64,9 @@ function RouteComponent() {
     <>
       <SearchContainer title={t('Employees')} query={search.q} onSearch={handleSearch}>
         <UsersTable
-          onUpdate={handleOpenDialog}
+          key={search.page}
           fixedHeight
+          onUpdate={handleOpenDialog}
           onChangeSort={handleChangeSort}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}

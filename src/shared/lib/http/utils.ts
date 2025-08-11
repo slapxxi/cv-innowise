@@ -1,3 +1,4 @@
+import type { HttpError } from '~/shared/types';
 import { StatusCodes } from './const';
 import { ClientError } from './graphql.http';
 
@@ -8,8 +9,12 @@ export function getHandleResult<TData, TKey extends keyof TData>(key: TKey) {
 }
 
 export function getHandleException<TMessage extends string>(message: TMessage) {
-  return () => {
-    return { ok: false as const, error: { message } };
+  return (e: Error) => {
+    if (e instanceof ClientError) {
+      const errors = e.response.errors?.map((e) => e.message);
+      return { ok: false as const, error: { message, errors } };
+    }
+    return { ok: false as const, error: { message } satisfies HttpError };
   };
 }
 

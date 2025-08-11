@@ -6,10 +6,9 @@ import ReactDOM from 'react-dom/client';
 
 // Import the generated route tree
 import { QueryClientProvider } from '@tanstack/react-query';
-import { LocalizationProvider, ThemeProvider } from '~/app';
+import { LocalizationProvider, ThemeProvider, useAuth } from '~/app';
 import '~/app/i18n';
 import '~/app/styles/styles.css';
-import { useAuth } from '~/features';
 import { queryClient } from '~/shared';
 import reportWebVitals from './reportWebVitals.ts';
 import { routeTree } from './routeTree.gen';
@@ -19,7 +18,7 @@ export const router = createRouter({
   routeTree,
   context: {
     queryClient,
-    auth: { accessToken: null, user: null },
+    auth: { accessToken: null, user: null, isAuthenticated: () => !!queryClient.getQueryData(['auth']) },
   },
   defaultPreload: 'intent',
   scrollRestoration: true,
@@ -58,16 +57,19 @@ function App() {
   const auth = useAuth();
 
   useEffect(() => {
-    if (!auth.isLoading) {
-      router.invalidate();
-    }
-  }, [auth.accessToken, auth.isLoading]);
+    router.invalidate();
+  }, [auth.isAuthenticated()]);
 
   if (auth.isLoading) {
     return null;
   }
 
-  return <RouterProvider router={router} context={{ auth: { accessToken: auth.accessToken, user: auth.user } }} />;
+  return (
+    <RouterProvider
+      router={router}
+      context={{ auth: { accessToken: auth.accessToken, user: auth.user, isAuthenticated: auth.isAuthenticated } }}
+    />
+  );
 }
 
 // If you want to start measuring performance in your app, pass a function

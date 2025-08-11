@@ -14,18 +14,22 @@ jest.mock('@tanstack/react-router', () => {
 });
 
 jest.mock('react-i18next', () => {
+  const actual = jest.requireActual('react-i18next');
   return {
+    ...actual,
     useTranslation: () => ({ t: (key: string) => key }),
   };
 });
 
-jest.mock('~/features/auth', () => {
-  const actual = jest.requireActual('~/features/auth');
+jest.mock('~/app/hooks', () => {
+  const actual = jest.requireActual('~/app/hooks');
   return {
     ...actual,
     useAuth: jest.fn(() => ({})),
   };
 });
+
+jest.mock('~/main', () => {});
 
 jest.mock('~/shared/lib/http/env', () => {
   return {

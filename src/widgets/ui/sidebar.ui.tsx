@@ -10,11 +10,11 @@ import {
   WorkOutline as WorkIcon,
 } from '@mui/icons-material';
 import { Box } from '@mui/material';
-import { Link } from '@tanstack/react-router';
-import { useState } from 'react';
+import { Link, useRouter } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '~/features';
-import { ActionMenu, ActionMenuItem, ActionMenuItemLink, cn, UserAvatar } from '~/shared';
+import { useAuth } from '~/app';
+import { ActionMenu, ActionMenuItem, ActionMenuItemLink, cn, UserAvatar, type User } from '~/shared';
 
 const navItems = [
   { to: '/users', name: 'Employees', icon: <Group />, props: { className: 'xl:mt-12' } },
@@ -34,16 +34,29 @@ const navItems = [
 
 export function Sidebar() {
   const { t } = useTranslation();
+  const router = useRouter();
   const auth = useAuth();
   const [open, setOpen] = useState(true);
   const [actionMenuOpen, setActionMenuOpen] = useState(false);
-  const user = auth?.user;
+
+  const user = auth.user as User;
 
   function handleToggleOpen() {
     setOpen((o) => !o);
   }
 
-  if (!user) return <p>{t('Loading...')}</p>;
+  function handleLogout() {
+    auth.logout();
+  }
+
+  useEffect(() => {
+    const unsub = router.subscribe('onLoad', ({ fromLocation, toLocation }) => {
+      if (fromLocation?.pathname !== toLocation.pathname) {
+        setActionMenuOpen(false);
+      }
+    });
+    return unsub;
+  }, []);
 
   return (
     <aside
@@ -98,7 +111,7 @@ export function Sidebar() {
             <ActionMenuItemLink to="/settings" onClick={() => setActionMenuOpen(false)}>
               {t('Settings')}
             </ActionMenuItemLink>
-            <ActionMenuItem>{t('Log out')}</ActionMenuItem>
+            <ActionMenuItem onClick={handleLogout}>{t('Log out')}</ActionMenuItem>
           </ActionMenu>
         </ul>
       </nav>

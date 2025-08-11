@@ -6,7 +6,8 @@ import { Fragment } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { AddSkillForm, skillsOptions, UpdateSkillForm, useAuth, useDeleteProfileSkills, useUser } from '~/features';
+import { useAuth } from '~/app';
+import { AddSkillForm, skillsOptions, UpdateSkillForm, useDeleteProfileSkills, useUser } from '~/features';
 import {
   Button,
   Count,
