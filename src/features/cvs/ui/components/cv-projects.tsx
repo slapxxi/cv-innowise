@@ -31,6 +31,11 @@ export const CvProjects = ({ cv }: CvPreviewProps) => {
               {pr.startDate} - {pr.endDate ?? 'Till now'}
             </Typography>
             <Typography className={cnSubtitle}>{t('Responsibilities')}</Typography>
+            <Typography component={'ul'} className={'pl-5 m-0 list-disc [&>li::marker]:text-primary'}>
+              {pr.responsibilities.map((r, i) => (
+                <li key={i}>{r}</li>
+              ))}
+            </Typography>
             <Typography className={cnSubtitle}>{t('Environments')}</Typography>
             <Typography>
               {pr.environment.map((e, i) => (
