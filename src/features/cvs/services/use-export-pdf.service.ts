@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { useAuth } from '~/app';
-import { exportPdf, prepareHtml } from '~/shared';
+import { exportPdf, prepareHtml, useAuth } from '~/shared';
 
 type ExportPdfInput = {
   html: string;

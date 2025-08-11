@@ -6,7 +6,6 @@ import { sortBy } from 'lodash';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { useAuth } from '~/app';
 import { AddLanguageForm, languagesOptions, useDeleteProfileLanguages, useUser } from '~/features';
 import { UpdateLanguageForm } from '~/features/languages/forms/update-language.form';
 import {
@@ -15,6 +14,7 @@ import {
   mergeBreadcrumbs,
   Modal,
   PageTitle,
+  useAuth,
   useEditingState,
   UserLanguageProficiency,
   type LanguageProficiency,

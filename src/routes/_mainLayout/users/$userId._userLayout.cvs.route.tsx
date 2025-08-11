@@ -1,9 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import * as z from 'zod/v4';
-import { useAuth } from '~/app';
 import { CvsPage } from '~/entities';
 import { cvsOptions, cvsSortingFields, useCvs } from '~/features';
-import { mergeBreadcrumbs, type ChangeSortHandler } from '~/shared';
+import { mergeBreadcrumbs, useAuth, type ChangeSortHandler } from '~/shared';
 
 const cvsSearchSchema = z.object({
   sort: z.enum(cvsSortingFields).catch('name'),

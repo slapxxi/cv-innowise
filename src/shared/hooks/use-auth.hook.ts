@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { router } from '~/main';
+import { useRouter } from '@tanstack/react-router';
 import { decodeJWT, getUser, queryClient, updateToken, type Auth } from '~/shared';
 
 export type AuthData = {
@@ -8,6 +8,7 @@ export type AuthData = {
 };
 
 export function useAuth(): Auth {
+  const router = useRouter();
   const auth = useQuery({
     queryKey: ['auth'],
     queryFn: async () => {
@@ -53,7 +54,7 @@ export function useAuth(): Auth {
     logout: () => {
       localStorage.removeItem('refreshToken');
       queryClient.removeQueries({ queryKey: ['auth'] });
-      router.invalidate();
+      router?.invalidate();
     },
   };
 }

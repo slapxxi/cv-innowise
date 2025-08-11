@@ -2,9 +2,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { useAuth } from '~/app';
 import { useCreateCv } from '~/features';
-import { Button, TextField } from '~/shared';
+import { Button, TextField, useAuth } from '~/shared';
 
 const createCvSchema = z.object({
   name: z.string().trim().nonempty('Name is required'),

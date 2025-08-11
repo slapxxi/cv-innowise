@@ -1,5 +1,5 @@
 import { useMutation, type UseMutationOptions, useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '~/app';
+import { useAuth } from '~/shared';
 import { updateUser, type UpdateUserData, type UpdateUserError, type UpdateUserParams } from '~/shared/lib/http';
 
 const useUpdateUserMutation = (options?: UseMutationOptions<UpdateUserData, UpdateUserError, UpdateUserParams>) => {

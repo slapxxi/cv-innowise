@@ -1,8 +1,8 @@
 import { GraphQLClient, type RequestMiddleware } from 'graphql-request';
-import type { AuthData } from '~/app';
 import { isAuthExpired, refreshAuth } from '~/features';
 import { queryClient } from '../tanstack-query.lib';
 import { API_URL } from './env';
+import type { AuthData } from '~/shared';
 
 export { ClientError, gql, request } from 'graphql-request';
 

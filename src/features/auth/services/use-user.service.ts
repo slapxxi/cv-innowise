@@ -1,6 +1,5 @@
 import { useQueryClient, useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
-import { useAuth } from '~/app';
-import { getUser, type GetUserData, type GetUserError } from '~/shared';
+import { getUser, useAuth, type GetUserData, type GetUserError } from '~/shared';
 
 type QueryOptions = UseSuspenseQueryOptions<GetUserData, GetUserError>;
 

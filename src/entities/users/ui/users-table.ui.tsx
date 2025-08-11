@@ -3,7 +3,6 @@ import { TableRow } from '@mui/material';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '~/app';
 import { useUsers, type UsersSearchParams } from '~/features';
 import {
   ActionMenu,
@@ -13,6 +12,7 @@ import {
   OptionalLabel,
   Table,
   TableCell,
+  useAuth,
   UserAvatar,
   type NonUndefined,
   type User,

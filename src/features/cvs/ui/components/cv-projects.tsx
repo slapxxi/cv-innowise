@@ -1,9 +1,8 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { t } from 'i18next';
-import { useAuth } from '~/app';
 import { cnMarkedText, cnSubtitle, type CvPreviewProps } from '~/features';
-import { cn } from '~/shared';
+import { cn, useAuth } from '~/shared';
 
 export const CvProjects = ({ cv }: CvPreviewProps) => {
   const auth = useAuth();
