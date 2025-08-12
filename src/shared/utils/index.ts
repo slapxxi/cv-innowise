@@ -4,7 +4,6 @@ export * from './decode-jwt.util';
 export * from './lerp.util';
 export * from './merge-breadcrumbs.util';
 export * from './prepatre-html.util';
-export * from './skill-stats.util';
 export * from './slice-collection.util';
 export * from './smoothstep.util';
 export * from './switch-order.util';

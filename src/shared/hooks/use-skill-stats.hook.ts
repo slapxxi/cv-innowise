@@ -1,5 +1,5 @@
 import React from 'react';
-import type { CvProject } from '~/shared';
+import type { CvProject } from '~/shared/types';
 
 export function useSkillStats(projects: CvProject[]) {
   return React.useMemo(() => {
