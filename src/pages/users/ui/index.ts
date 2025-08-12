@@ -1,3 +1,5 @@
+export * from './cvs-page.ui';
+export * from './user-cvs-page.ui';
 export * from './user-form-fields.ui';
 export * from './user-languages-page.ui';
 export * from './user-meta.ui';
