@@ -2,11 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
 import { decodeJWT, getUser, queryClient, updateToken, type Auth } from '~/shared';
 
-export type AuthData = {
-  accessToken: string;
-  userId: string;
-};
-
 export function useAuth(): Auth {
   const router = useRouter();
   const auth = useQuery({

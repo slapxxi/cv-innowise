@@ -2,8 +2,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { identity } from 'lodash';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { type LoginFormValues, loginSchema, useLogin } from '~/features';
-import { Button, ButtonLink, FormErrors, PasswordField, TextField } from '~/shared';
+import { Button, ButtonLink, FormErrors, PasswordField, TextField } from '~/shared/ui';
+import { type LoginFormValues, loginSchema } from '../models';
+import { useLogin } from '../services';
 
 export const LoginForm = () => {
   const { t } = useTranslation();
