@@ -14,6 +14,8 @@ export type BreadcrumbEntry = {
 
 export type SortOrder = 'asc' | 'desc';
 
+export type ChangeSortHandler = (sort: string, order: SortOrder) => void;
+
 export type Auth = {
   accessToken: string | null;
   user: User | null;

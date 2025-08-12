@@ -9,7 +9,8 @@ import {
   TableSortLabel,
 } from '@mui/material';
 import { createLink } from '@tanstack/react-router';
-import { cn, type SortOrder, switchOrder } from '~/shared';
+import { type ChangeSortHandler } from '../types';
+import { cn, switchOrder } from '../utils';
 
 export { TableCell, TableRow } from '@mui/material';
 
@@ -20,8 +21,6 @@ export type TableField = {
   title: string;
   child?: React.ReactNode;
 };
-
-export type ChangeSortHandler = (sort: string, order: SortOrder) => void;
 
 type TableProps<T> = {
   data: T[];
