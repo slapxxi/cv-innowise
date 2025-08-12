@@ -1,10 +1,12 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { t } from 'i18next';
-import { cnMarkedText, cnSubtitle, type CvPreviewProps } from '~/features';
-import { cn, useAuth } from '~/shared';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from '~/shared/hooks';
+import { cn } from '~/shared/utils';
+import { type CvPreviewProps, cnMarkedText, cnSubtitle } from '../cv-preview';
 
 export const CvProjects = ({ cv }: CvPreviewProps) => {
+  const { t } = useTranslation();
   const auth = useAuth();
 
   return (

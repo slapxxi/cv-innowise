@@ -1,6 +1,7 @@
 import { Slot } from '@radix-ui/react-slot';
 import { cva } from 'class-variance-authority';
-import { cn, type Prettify } from '~/shared';
+import type { Prettify } from '../types';
+import { cn } from '../utils';
 
 type TitleProps = Prettify<
   {

@@ -1,4 +1,4 @@
-import type { Nullable } from '~/shared';
+import type { Nullable } from '~/shared/types';
 import 'cv-graphql';
 
 export type WithSkillsByCategories<T> = T & {

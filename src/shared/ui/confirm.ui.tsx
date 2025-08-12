@@ -1,5 +1,5 @@
 import { Dialog, DialogActions, DialogContent, DialogContentText } from './dialog.ui';
-import { Button } from '~/shared';
+import { Button } from '.';
 
 type ConfirmProps = {
   title: string;

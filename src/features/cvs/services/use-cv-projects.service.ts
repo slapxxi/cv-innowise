@@ -1,8 +1,10 @@
 import { type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import fuzzysort from 'fuzzysort';
 import { useMemo } from 'react';
-import { createComparator, type GetCvData, type GetCvError, type SortOrder } from '~/shared';
-import { cvOptions, useCv } from './use-cv.service';
+import { type GetCvData, type GetCvError } from '~/shared/lib/http';
+import type { SortOrder } from '~/shared/types';
+import { createComparator } from '~/shared/utils';
+import { cvOptions, useCv } from '.';
 
 export const cvProjectsSortingFields = [
   'name',

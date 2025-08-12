@@ -1,7 +1,7 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { IconButton, InputAdornment } from '@mui/material';
 import { useState } from 'react';
-import { TextField } from '~/shared';
+import { TextField } from '~/shared/ui';
 
 type PasswordFieldProps = {} & Omit<React.ComponentProps<typeof TextField>, 'type'>;
 

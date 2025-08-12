@@ -2,7 +2,7 @@ import { Chip, MenuItem } from '@mui/material';
 import { getRouteApi } from '@tanstack/react-router';
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useProjects, type ProjectsSortKey } from '~/features/projects';
+import { useProjects, type ProjectsSortKey } from '~/entities/projects';
 import type { ChangeSortHandler } from '~/shared/types';
 import {
   ActionMenu,

@@ -1,4 +1,5 @@
-import { decodeJWT, type AuthData } from '~/shared';
+import type { AuthData } from '~/shared/types';
+import { decodeJWT } from '~/shared/utils';
 
 export function isAuthExpired(auth: AuthData) {
   const decoded = decodeJWT(auth.accessToken);

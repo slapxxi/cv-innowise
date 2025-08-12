@@ -1,5 +1,5 @@
+import type { BreadcrumbEntry } from '~/shared/types';
 import { mergeBreadcrumbs } from '../merge-breadcrumbs.util';
-import type { BreadcrumbEntry } from '~/shared';
 
 describe('mergeBreadcrumbs', () => {
   const entry = (title: string): BreadcrumbEntry => ({ title, to: `/${title.toLowerCase()}` });

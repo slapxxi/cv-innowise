@@ -4,7 +4,7 @@ import {
   type UpdateCvProjectData,
   type UpdateCvProjectError,
   type UpdateCvProjectParams,
-} from '~/shared';
+} from '~/shared/lib/http';
 
 type Params = { cvId: string; projectId: string } & Omit<
   UseMutationOptions<

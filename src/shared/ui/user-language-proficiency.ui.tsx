@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { cn, type LanguageProficiency } from '~/shared';
+import { type LanguageProficiency } from '../types';
+import { cn } from '../utils';
 
 type UserLanguageProficiencyProps = { value: LanguageProficiency; className?: string } & React.ComponentProps<'div'>;
 

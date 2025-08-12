@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient, type UseMutationOptions } from '@tanstack/react-query';
-import { signup, type SignupData, type SignupError, type SignupParams } from '~/shared';
+import { signup, type SignupData, type SignupError, type SignupParams } from '~/shared/lib/http';
 
 export function useSignup(params: UseMutationOptions<SignupData, SignupError, SignupParams>) {
   const queryClient = useQueryClient();

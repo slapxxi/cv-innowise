@@ -4,7 +4,7 @@ import {
   type CreateProfileSkillData,
   type CreateProfileSkillError,
   type CreateProfileSkillParams,
-} from '~/shared';
+} from '~/shared/lib/http';
 
 type Params = {} & Omit<
   UseMutationOptions<CreateProfileSkillData, CreateProfileSkillError, Omit<CreateProfileSkillParams, 'accessToken'>>,

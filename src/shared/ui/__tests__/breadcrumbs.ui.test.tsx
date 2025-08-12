@@ -1,7 +1,7 @@
-import { Breadcrumbs } from '../breadcrumbs.ui';
-import { screen, render } from 'test-utils';
 import { useMatches } from '@tanstack/react-router';
-import type { BreadcrumbEntry } from '~/shared';
+import { render, screen } from 'test-utils';
+import type { BreadcrumbEntry } from '~/shared/types';
+import { Breadcrumbs } from '../breadcrumbs.ui';
 
 jest.mock('@tanstack/react-router', () => {
   const actual = jest.requireActual('@tanstack/react-router');

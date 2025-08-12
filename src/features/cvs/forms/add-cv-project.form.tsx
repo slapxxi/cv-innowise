@@ -5,8 +5,9 @@ import dayjs, { type Dayjs } from 'dayjs';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { useAddCvProject, useCvProjects, useProjects } from '~/features';
-import { Button, Select, SelectItem, TextField } from '~/shared';
+import { useProjects } from '~/entities/projects';
+import { Button, Select, SelectItem, TextField } from '~/shared/ui';
+import { useAddCvProject, useCvProjects } from '../services';
 
 const addCvProjectSchema = z.object({
   projectId: z.string(),

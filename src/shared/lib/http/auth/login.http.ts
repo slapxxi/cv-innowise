@@ -1,4 +1,4 @@
-import type { AuthResponse, HttpError, HttpResult, User } from '~/shared';
+import type { AuthResponse, HttpError, HttpResult, User } from '~/shared/types';
 import { API_URL } from '../env';
 import { gql, request } from '../graphql.http';
 import { Queries } from '../queries';

@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { AddCvForm, UpdateCvForm, useCvs, useDeleteCvs, type CvsSortKey } from '~/features';
-import { CvsTable } from '~/features/cvs';
+import { AddCvForm, CvsTable, UpdateCvForm, useCvs, useDeleteCvs, type CvsSortKey } from '~/features/cvs';
 import { useEditingState } from '~/shared/hooks';
 import type { ChangeSortHandler, Cv, SortOrder } from '~/shared/types';
 import { ButtonAdd, Confirm, Modal, SearchContainer } from '~/shared/ui';

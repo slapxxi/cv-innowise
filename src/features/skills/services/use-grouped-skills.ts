@@ -1,4 +1,4 @@
-import type { Skill, SkillMastery } from '~/shared';
+import type { Skill, SkillMastery } from '~/shared/types';
 
 // todo: move and test
 export function groupUserSkillsByParent(allSkills: Skill[], userSkills: SkillMastery[]): Record<string, Skill[]> {

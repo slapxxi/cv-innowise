@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
-import { decodeJWT, getUser, queryClient, updateToken, type Auth } from '~/shared';
+import { getUser, queryClient, updateToken } from '../lib';
+import { type Auth } from '../types';
+import { decodeJWT } from '../utils';
 
 export function useAuth(): Auth {
   const router = useRouter();

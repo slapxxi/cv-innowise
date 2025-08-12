@@ -1,5 +1,5 @@
 import { useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
-import { getSkillCategories, type GetSkillCategoriesData, type GetSkillCategoriesError } from '~/shared';
+import { getSkillCategories, type GetSkillCategoriesData, type GetSkillCategoriesError } from '~/shared/lib/http';
 
 type QueryOptions = UseSuspenseQueryOptions<GetSkillCategoriesData, GetSkillCategoriesError>;
 

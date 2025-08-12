@@ -1,5 +1,10 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import { addCvProject, type AddCvProjectData, type AddCvProjectError, type AddCvProjectParams } from '~/shared';
+import {
+  addCvProject,
+  type AddCvProjectData,
+  type AddCvProjectError,
+  type AddCvProjectParams,
+} from '~/shared/lib/http';
 
 type Params = { cvId: string } & Omit<
   UseMutationOptions<AddCvProjectData, AddCvProjectError, Omit<AddCvProjectParams, 'accessToken' | 'cvId'>>,

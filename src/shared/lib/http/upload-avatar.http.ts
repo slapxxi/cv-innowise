@@ -1,4 +1,4 @@
-import type { HttpError, HttpResult, UploadAvatarInput } from '~/shared';
+import type { HttpError, HttpResult, UploadAvatarInput } from '../../types';
 import { gql, graphQlClient } from './graphql.http';
 import { getHandleException, getHandleResult, handleAuthError } from './utils';
 

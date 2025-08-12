@@ -1,4 +1,4 @@
-import { type HttpError, type HttpResult, type Project } from '~/shared';
+import { type HttpError, type HttpResult, type Project } from '~/shared/types';
 import { gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { projectSchema } from '../schema';

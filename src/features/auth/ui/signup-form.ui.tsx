@@ -3,8 +3,8 @@ import { identity } from 'lodash';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { useSignup } from '~/features';
-import { Button, ButtonLink, FormErrors, PasswordField, TextField } from '~/shared';
+import { Button, ButtonLink, FormErrors, PasswordField, TextField } from '~/shared/ui';
+import { useSignup } from '../services';
 
 const formSchema = z.object({
   email: z.string().nonempty('Email is required'),

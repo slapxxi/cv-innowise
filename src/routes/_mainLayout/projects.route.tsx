@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { projectsOptions } from '~/features/projects';
+import { projectsOptions } from '~/entities/projects';
 import { ProjectsPage, projectsSearchSchema } from '~/pages/projects';
 
 export const Route = createFileRoute('/_mainLayout/projects')({

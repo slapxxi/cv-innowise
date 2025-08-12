@@ -1,5 +1,5 @@
 import * as z from 'zod/v4';
-import { skillsSortingFields } from '~/features';
+import { skillsSortingFields } from '~/features/skills';
 
 export const skillsSearchSchema = z.object({
   sort: z.enum(skillsSortingFields).catch('name'),

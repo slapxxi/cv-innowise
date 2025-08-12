@@ -1,5 +1,5 @@
 import * as z from 'zod/v4';
-import { projectsSortingFields } from '~/features/projects';
+import { projectsSortingFields } from '~/entities/projects';
 
 export const projectsSearchSchema = z.object({
   sort: z.enum(projectsSortingFields).catch('name'),

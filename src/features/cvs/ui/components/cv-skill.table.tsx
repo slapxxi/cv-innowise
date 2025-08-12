@@ -1,7 +1,8 @@
-import { type CvWithSkillsByCategories, useSkillStats } from '~/shared';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { t } from 'i18next';
-import { cnMarkedText, cnSubtitle } from '~/features';
+import { useSkillStats } from '~/shared/hooks';
+import { type CvWithSkillsByCategories } from '~/shared/types';
+import { cnMarkedText, cnSubtitle } from '../cv-preview';
 
 type Props = {
   categories: CvWithSkillsByCategories['skillsByCategories'];

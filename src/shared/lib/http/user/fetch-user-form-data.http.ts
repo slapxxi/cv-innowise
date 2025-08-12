@@ -1,4 +1,4 @@
-import { type Department, type HttpError, type HttpResult, type Position } from '~/shared';
+import { type Department, type HttpError, type HttpResult, type Position } from '~/shared/types';
 import { gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { getHandleException, handleAuthError } from '../utils';

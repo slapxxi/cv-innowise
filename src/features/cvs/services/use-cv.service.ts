@@ -1,5 +1,5 @@
 import { useQueryClient, useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
-import { getCv, type GetCvData, type GetCvError } from '~/shared';
+import { getCv, type GetCvData, type GetCvError } from '~/shared/lib/http';
 
 type QueryOptions = UseSuspenseQueryOptions<GetCvData, GetCvError>;
 

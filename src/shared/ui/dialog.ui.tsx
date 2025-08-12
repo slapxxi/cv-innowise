@@ -1,6 +1,7 @@
 import { Close as CloseIcon } from '@mui/icons-material';
 import { Dialog as BaseDialog, DialogTitle, IconButton } from '@mui/material';
-import { cn } from '~/shared';
+import { cn } from '../utils';
+
 export { DialogActions, DialogContent, DialogContentText } from '@mui/material';
 
 type DialogProps = { title: string; onClose?: () => void } & Omit<React.ComponentProps<typeof BaseDialog>, 'onClose'>;

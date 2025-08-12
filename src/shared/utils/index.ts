@@ -1,6 +1,7 @@
 export * from './cn.util';
 export * from './create-comparator-fn.util';
 export * from './decode-jwt.util';
+export * from './is-auth-expired.util';
 export * from './lerp.util';
 export * from './merge-breadcrumbs.util';
 export * from './prepatre-html.util';

@@ -1,4 +1,4 @@
-import type { HttpError, HttpResult, UpdateTokenResponse } from '~/shared';
+import type { HttpError, HttpResult, UpdateTokenResponse } from '~/shared/types';
 import { API_URL } from './env';
 import { request } from './graphql.http';
 import { Queries } from './queries';

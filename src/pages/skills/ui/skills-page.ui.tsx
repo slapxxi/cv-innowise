@@ -1,16 +1,9 @@
-import {
-  ActionMenu,
-  type ChangeSortHandler,
-  Highlight,
-  OptionalLabel,
-  SearchContainer,
-  Table,
-  TableCell,
-} from '~/shared';
 import { MenuItem, TableRow } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { useSkills } from '~/features';
 import { getRouteApi } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
+import { useSkills } from '~/features/skills';
+import type { ChangeSortHandler } from '~/shared/types';
+import { ActionMenu, Highlight, OptionalLabel, SearchContainer, Table, TableCell } from '~/shared/ui';
 
 const routeApi = getRouteApi('/_mainLayout/skills');
 

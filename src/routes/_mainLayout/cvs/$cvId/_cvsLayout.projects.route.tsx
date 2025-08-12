@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { projectsOptions } from '~/features/projects';
+import { projectsOptions } from '~/entities/projects';
 import { CvsProjectsPage, cvsProjectsSearchSchema } from '~/pages/cvs';
 import { mergeBreadcrumbs } from '~/shared/utils';
 
