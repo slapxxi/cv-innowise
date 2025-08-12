@@ -2,8 +2,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { useUpdateCv } from '~/features';
-import { Button, TextField, type Cv } from '~/shared';
+import type { Cv } from '~/shared/types';
+import { Button, TextField } from '~/shared/ui';
+import { useUpdateCv } from '../services';
 
 const UpdateCvSchema = z.object({
   name: z.string().trim().nonempty('Name is required'),

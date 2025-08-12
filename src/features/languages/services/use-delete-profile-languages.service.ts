@@ -4,7 +4,7 @@ import {
   type DeleteProfileLanguagesData,
   type DeleteProfileLanguagesError,
   type DeleteProfileLanguagesParams,
-} from '~/shared';
+} from '~/shared/lib/http';
 
 type Params = {} & Omit<
   UseMutationOptions<

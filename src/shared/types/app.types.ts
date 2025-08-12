@@ -1,4 +1,4 @@
-import type { Nullable } from '~/shared';
+import type { Nullable } from '~/shared/types';
 import 'cv-graphql';
 
 export type WithSkillsByCategories<T> = T & {
@@ -13,6 +13,8 @@ export type BreadcrumbEntry = {
 };
 
 export type SortOrder = 'asc' | 'desc';
+
+export type ChangeSortHandler = (sort: string, order: SortOrder) => void;
 
 export type Auth = {
   accessToken: string | null;

@@ -1,7 +1,8 @@
 import { useQueryClient, useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import fuzzysort from 'fuzzysort';
 import { useMemo } from 'react';
-import { createComparator, getLanguages, type GetLanguagesData, type GetLanguagesError } from '~/shared';
+import { getLanguages, type GetLanguagesData, type GetLanguagesError } from '~/shared/lib/http';
+import { createComparator } from '~/shared/utils';
 
 type QueryOptions = UseSuspenseQueryOptions<GetLanguagesData, GetLanguagesError>;
 

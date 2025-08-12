@@ -1,4 +1,4 @@
-import type { Cv, DeleteCvProjectInput, HttpError, HttpResult } from '~/shared';
+import type { Cv, DeleteCvProjectInput, HttpError, HttpResult } from '~/shared/types';
 import { gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { getHandleException, getHandleResult, handleAuthError } from '../utils';

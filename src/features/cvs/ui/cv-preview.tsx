@@ -1,8 +1,8 @@
-import { type CvWithSkillsByCategories } from '~/shared';
 import { Box, Typography } from '@mui/material';
-import { CvHeader, CvMain, CvProjects, CvSkillsTable } from '~/features';
 import { styled } from '@mui/material/styles';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
+import { type CvWithSkillsByCategories } from '~/shared/types';
+import { CvHeader, CvMain, CvProjects, CvSkillsTable } from './components';
 
 export type CvPreviewProps = {
   cv: CvWithSkillsByCategories;
@@ -14,6 +14,8 @@ export const PageBreak = styled('div')({
 });
 
 export function CvPreview({ cv }: CvPreviewProps) {
+  const { t } = useTranslation();
+
   return (
     <section id={'cv-preview'} className={'max-w-4xl mx-auto'}>
       <Box className="space-y-4 p-6 ">

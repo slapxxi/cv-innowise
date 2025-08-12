@@ -3,8 +3,10 @@ import { getRouteApi } from '@tanstack/react-router';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { Button, proficiencyLevels, Select, SelectItem } from '~/shared';
-import { useCreateProfileLanguage, useLanguages, useUser } from '~/features';
+import { useUser } from '~/entities/users';
+import { proficiencyLevels } from '~/shared/const';
+import { Button, Select, SelectItem } from '~/shared/ui';
+import { useCreateProfileLanguage, useLanguages } from '../services';
 
 const routeApi = getRouteApi('/_mainLayout/users/$userId/_userLayout/languages');
 

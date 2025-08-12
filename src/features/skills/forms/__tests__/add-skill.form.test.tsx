@@ -1,11 +1,16 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useCreateProfileSkill, useSkills, useUser } from '~/features';
+import { useUser } from '~/entities/users';
+import { useCreateProfileSkill, useSkills } from '../../services';
 import { AddSkillForm } from '../add-skill.form';
 
-jest.mock('~/features', () => ({
+jest.mock('~/features/skills/services', () => ({
   useCreateProfileSkill: jest.fn(),
   useSkills: jest.fn(),
+  useUser: jest.fn(),
+}));
+
+jest.mock('~/entities/users/services', () => ({
   useUser: jest.fn(),
 }));
 

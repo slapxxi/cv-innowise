@@ -1,7 +1,7 @@
 import { QueryClient } from '@tanstack/react-query';
 import { render, type RenderOptions } from '@testing-library/react';
 import React, { type ReactElement } from 'react';
-import { QueryClientProvider, ThemeProvider } from '~/app';
+import { QueryClientProvider, ThemeProvider } from '~/app/providers';
 
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   const testQueryClient = new QueryClient({

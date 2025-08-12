@@ -1,11 +1,11 @@
 import type {
-  RemoveCvProjectInput,
-  UpdateCvProjectInput as CvUpdateCvProjectInput,
   UpdateCvInput as CvUpdateCvInput,
-  UploadAvatarInput as CvUploadAvatarInput,
+  UpdateCvProjectInput as CvUpdateCvProjectInput,
   UpdateProfileInput as CvUpdateProfileInput,
+  UploadAvatarInput as CvUploadAvatarInput,
+  RemoveCvProjectInput,
 } from 'cv-graphql';
-import type { Prettify, Result, User } from '~/shared';
+import type { Prettify, Result, User } from '../types';
 
 export type HttpError = {
   message: string;

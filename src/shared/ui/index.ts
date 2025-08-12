@@ -13,6 +13,8 @@ export * from './icon-button-link.ui';
 export * from './menu-item-link.ui';
 export * from './tab-link.ui';
 
+export * from './confirm.ui';
+export * from './dialog.ui';
 export * from './modal.ui';
 export * from './optional-label.ui';
 export * from './password-field.ui';
@@ -25,9 +27,11 @@ export * from './text-field.ui';
 export * from './text.ui';
 export * from './title.ui';
 export * from './user-avatar.ui';
-export * from './dialog.ui';
-export * from './confirm.ui';
 
 export * from './page-title.ui';
 
 export * from './user-language-proficiency.ui';
+
+export * from './input-file-upload.ui';
+export * from './search-container.ui';
+export * from './sidebar.ui';

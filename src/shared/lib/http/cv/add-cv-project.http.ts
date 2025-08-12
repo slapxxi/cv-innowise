@@ -1,5 +1,5 @@
 import type { AddCvProjectInput } from 'cv-graphql';
-import type { Cv, HttpError, HttpResult } from '~/shared';
+import type { Cv, HttpError, HttpResult } from '~/shared/types';
 import { gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { getHandleException, getHandleResult, handleAuthError } from '../utils';

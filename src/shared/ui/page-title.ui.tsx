@@ -1,4 +1,4 @@
-import { Text } from '~/shared';
+import { Text } from '~/shared/ui';
 
 type PageTitleProps = {} & React.ComponentProps<typeof Text>;
 

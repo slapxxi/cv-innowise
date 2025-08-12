@@ -1,5 +1,5 @@
 import Avatar from '@mui/material/Avatar';
-import type { User } from '~/shared';
+import type { User } from '../types';
 
 type UserAvatarProps = { user?: User | null } & React.ComponentProps<typeof Avatar>;
 

@@ -1,4 +1,4 @@
-import type { HttpError, HttpResult, UpdateProfileInput } from '~/shared';
+import type { HttpError, HttpResult, UpdateProfileInput } from '~/shared/types';
 import { gql, graphQlClient } from '../graphql.http';
 import { getHandleException, getHandleResult, handleAuthError } from '../utils';
 

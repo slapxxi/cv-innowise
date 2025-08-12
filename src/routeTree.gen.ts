@@ -12,7 +12,6 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root.route'
 import { Route as VerifyEmailRouteRouteImport } from './routes/verify-email.route'
-import { Route as AboutRouteRouteImport } from './routes/about.route'
 import { Route as MainLayoutRouteRouteImport } from './routes/_mainLayout/route'
 import { Route as IndexRouteRouteImport } from './routes/index.route'
 import { Route as AuthForgotPasswordRouteRouteImport } from './routes/auth/forgot-password.route'
@@ -52,11 +51,6 @@ const AuthRoute = AuthRouteImport.update({
 const VerifyEmailRouteRoute = VerifyEmailRouteRouteImport.update({
   id: '/verify-email',
   path: '/verify-email',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRouteRoute = AboutRouteRouteImport.update({
-  id: '/about',
-  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MainLayoutRouteRoute = MainLayoutRouteRouteImport.update({
@@ -204,7 +198,6 @@ const MainLayoutCvsCvIdCvsLayoutDetailsRouteRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRouteRoute
-  '/about': typeof AboutRouteRoute
   '/verify-email': typeof VerifyEmailRouteRoute
   '/departments': typeof MainLayoutDepartmentsRouteRoute
   '/languages': typeof MainLayoutLanguagesRouteRoute
@@ -231,7 +224,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRouteRoute
-  '/about': typeof AboutRouteRoute
   '/verify-email': typeof VerifyEmailRouteRoute
   '/departments': typeof MainLayoutDepartmentsRouteRoute
   '/languages': typeof MainLayoutLanguagesRouteRoute
@@ -260,7 +252,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRouteRoute
   '/_mainLayout': typeof MainLayoutRouteRouteWithChildren
-  '/about': typeof AboutRouteRoute
   '/verify-email': typeof VerifyEmailRouteRoute
   '/_mainLayout/departments': typeof MainLayoutDepartmentsRouteRoute
   '/_mainLayout/languages': typeof MainLayoutLanguagesRouteRoute
@@ -292,7 +283,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
     | '/verify-email'
     | '/departments'
     | '/languages'
@@ -319,7 +309,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/verify-email'
     | '/departments'
     | '/languages'
@@ -347,7 +336,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_mainLayout'
-    | '/about'
     | '/verify-email'
     | '/_mainLayout/departments'
     | '/_mainLayout/languages'
@@ -379,7 +367,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRouteRoute: typeof IndexRouteRoute
   MainLayoutRouteRoute: typeof MainLayoutRouteRouteWithChildren
-  AboutRouteRoute: typeof AboutRouteRoute
   VerifyEmailRouteRoute: typeof VerifyEmailRouteRoute
   AuthRoute: typeof AuthRouteWithChildren
 }
@@ -398,13 +385,6 @@ declare module '@tanstack/react-router' {
       path: '/verify-email'
       fullPath: '/verify-email'
       preLoaderRoute: typeof VerifyEmailRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_mainLayout': {
@@ -724,7 +704,6 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRouteRoute: IndexRouteRoute,
   MainLayoutRouteRoute: MainLayoutRouteRouteWithChildren,
-  AboutRouteRoute: AboutRouteRoute,
   VerifyEmailRouteRoute: VerifyEmailRouteRoute,
   AuthRoute: AuthRouteWithChildren,
 }

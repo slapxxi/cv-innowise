@@ -21,8 +21,8 @@ jest.mock('react-i18next', () => {
   };
 });
 
-jest.mock('~/app/hooks', () => {
-  const actual = jest.requireActual('~/app/hooks');
+jest.mock('~/shared/hooks', () => {
+  const actual = jest.requireActual('~/shared/hooks');
   return {
     ...actual,
     useAuth: jest.fn(() => ({})),
