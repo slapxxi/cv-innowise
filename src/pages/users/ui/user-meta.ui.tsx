@@ -1,16 +1,17 @@
 import { Box, CircularProgress } from '@mui/material';
-import { type Profile, type User, UserAvatar } from '~/shared';
-import { toBase64 } from '~/shared/utils/to-base64.util';
-import { useUploadAvatar } from '~/entities';
-import { useRef, type ChangeEvent } from 'react';
-import { InputFileUpload } from '~/shared/ui/input-file-upload.ui';
 import { t } from 'i18next';
+import { useRef, type ChangeEvent } from 'react';
+import { type Profile, type User } from '~/shared/types';
+import { InputFileUpload, UserAvatar } from '~/shared/ui';
+import { toBase64 } from '~/shared/utils';
+import { useUploadAvatar } from '../services';
 
 type PropsType = {
   profile: Profile;
   user: User;
   isOwner: boolean;
 };
+
 export const UserMeta = ({ profile, user, isOwner }: PropsType) => {
   const { mutate: uploadAvatar, isPending } = useUploadAvatar();
   const fileInputRef = useRef<HTMLInputElement>(null);

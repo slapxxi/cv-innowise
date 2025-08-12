@@ -1,11 +1,11 @@
 import { PersonOutline } from '@mui/icons-material';
-import { createFileRoute, useParams } from '@tanstack/react-router';
-import { mergeBreadcrumbs, type GetUserData } from '~/shared'; //type User
-import { UserPage } from '~/entities/user/ui/user-page/user-page.tsx';
-import { userOptions, useUser } from '~/features';
+import { createFileRoute } from '@tanstack/react-router';
+import { UserProfilePage, userOptions } from '~/pages/users';
+import { type GetUserData } from '~/shared/lib/http';
+import { mergeBreadcrumbs } from '~/shared/utils';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/profile')({
-  component: RouteComponent,
+  component: UserProfilePage,
   beforeLoad: ({ params, context }) => {
     const { queryClient } = context;
     const user = queryClient.getQueryData<GetUserData>(['user', params.userId]);
@@ -33,12 +33,3 @@ export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/pro
     queryClient.prefetchQuery(userOptions({ id: params.userId, accessToken: auth.accessToken! }));
   },
 });
-
-function RouteComponent() {
-  const { userId } = useParams({ from: '/_mainLayout/users/$userId/_userLayout/profile' });
-  const { user } = useUser({ id: userId });
-
-  if (user) {
-    return <UserPage user={user} />;
-  }
-}

@@ -55,6 +55,7 @@ export function UsersPage() {
           {...search}
         />
       </SearchContainer>
+
       {selectedUser && (
         <Modal open={dialogOpen} onClose={handleCloseDialog} title={t('Update User')}>
           <UpdateUserForm onClose={handleCloseDialog} user={selectedUser} />

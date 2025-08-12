@@ -5,7 +5,8 @@ import React, { Suspense } from 'react';
 import { useUserForm } from '~/entities/user/hooks/use-user-form-handlers.ts';
 import { useFormIsChanged, useUpdateProfile, useUpdateUser, useUserFormData } from '~/entities/user/service';
 import { UserFormFields } from '~/entities/user/ui/users-table/user-form-fields';
-import { Button, type User } from '~/shared';
+import { type User } from '~/shared/types';
+import { Button } from '~/shared/ui';
 
 type Props = { user: User; onClose: () => void };
 

@@ -33,3 +33,4 @@ export * from './page-title.ui';
 export * from './user-language-proficiency.ui';
 
 export * from './search-container.ui';
+export * from './input-file-upload.ui';
