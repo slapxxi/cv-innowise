@@ -5,7 +5,6 @@ import { type GetUserData } from '~/shared/lib/http';
 import { mergeBreadcrumbs } from '~/shared/utils';
 
 export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/profile')({
-  component: UserProfilePage,
   beforeLoad: ({ params, context }) => {
     const { queryClient } = context;
     const user = queryClient.getQueryData<GetUserData>(['user', params.userId]);
@@ -32,4 +31,5 @@ export const Route = createFileRoute('/_mainLayout/users/$userId/_userLayout/pro
     const { auth, queryClient } = context;
     queryClient.prefetchQuery(userOptions({ id: params.userId, accessToken: auth.accessToken! }));
   },
+  component: UserProfilePage,
 });
