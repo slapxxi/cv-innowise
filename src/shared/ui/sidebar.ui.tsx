@@ -13,7 +13,10 @@ import { Box } from '@mui/material';
 import { Link, useRouter } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionMenu, ActionMenuItem, ActionMenuItemLink, cn, useAuth, UserAvatar, type User } from '~/shared';
+import { ActionMenu, ActionMenuItem, ActionMenuItemLink, UserAvatar } from '.';
+import { useAuth } from '../hooks';
+import { type User } from '../types';
+import { cn } from '../utils';
 
 const navItems = [
   { to: '/users', name: 'Employees', icon: <Group />, props: { className: 'xl:mt-12' } },
