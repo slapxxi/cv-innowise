@@ -1,18 +1,13 @@
 import { getRouteApi } from '@tanstack/react-router';
 import { CvsPageContainer, useCvs } from '~/features/cvs';
-import { useAuth } from '~/shared/hooks';
-import type { ChangeSortHandler } from '~/shared/types';
+import { type ChangeSortHandler } from '~/shared/types';
 
-const routeApi = getRouteApi('/_mainLayout/users/$userId/_userLayout/cvs');
+const routeApi = getRouteApi('/_mainLayout/cvs/');
 
-export function UserCvsPage() {
+export function CvsPage() {
   const search = routeApi.useSearch();
-  const params = routeApi.useParams();
   const nav = routeApi.useNavigate();
-  const auth = useAuth();
-  const { cvs } = useCvs({ userId: params.userId, ...search });
-
-  const isOwner = params.userId === auth.user!.id;
+  const { cvs } = useCvs({ ...search });
 
   const handleSearch = (q: string) => {
     nav({ search: (prev) => ({ ...prev, q }) });
@@ -24,7 +19,7 @@ export function UserCvsPage() {
 
   return (
     <CvsPageContainer
-      admin={isOwner}
+      admin
       cvs={cvs}
       q={search.q}
       sort={search.sort}

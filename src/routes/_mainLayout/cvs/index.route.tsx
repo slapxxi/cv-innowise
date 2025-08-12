@@ -1,46 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router';
-import * as z from 'zod/v4';
-import { CvsPage } from '~/entities';
-import { cvsOptions, cvsSortingFields, useCvs } from '~/features';
-import { type ChangeSortHandler } from '~/shared';
-
-const cvsSearchSchema = z.object({
-  sort: z.enum(cvsSortingFields).catch('name'),
-  order: z.enum(['asc', 'desc']).catch('asc'),
-  q: z.string().trim().catch(''),
-});
+import { cvsOptions } from '~/features/cvs';
+import { CvsPage, cvsSearchSchema } from '~/pages/cvs';
 
 export const Route = createFileRoute('/_mainLayout/cvs/')({
-  component: RouteComponent,
+  component: CvsPage,
   loader: ({ context }) => {
     const { queryClient } = context;
     queryClient.prefetchQuery(cvsOptions());
   },
   validateSearch: cvsSearchSchema,
 });
-
-function RouteComponent() {
-  const search = Route.useSearch();
-  const nav = Route.useNavigate();
-  const { cvs } = useCvs({ ...search });
-
-  const handleSearch = (q: string) => {
-    nav({ search: (prev) => ({ ...prev, q }) });
-  };
-
-  const handleChangeSort: ChangeSortHandler = (sort, order) => {
-    nav({ search: (prev) => ({ ...prev, sort, order }) });
-  };
-
-  return (
-    <CvsPage
-      admin
-      cvs={cvs}
-      q={search.q}
-      sort={search.sort}
-      order={search.order}
-      onSearch={handleSearch}
-      onChangeSort={handleChangeSort}
-    />
-  );
-}
