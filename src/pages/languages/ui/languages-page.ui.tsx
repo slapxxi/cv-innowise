@@ -3,7 +3,7 @@ import { getRouteApi } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { useLanguages } from '~/features/languages';
 import type { ChangeSortHandler } from '~/shared/types';
-import { ActionMenu, Highlight, OptionalLabel, PageTitle, SearchField, Table, TableCell } from '~/shared/ui';
+import { ActionMenu, Highlight, OptionalLabel, SearchContainer, Table, TableCell } from '~/shared/ui';
 
 const routeApi = getRouteApi('/_mainLayout/languages');
 
@@ -13,12 +13,8 @@ export function LanguagesPage() {
   const nav = routeApi.useNavigate();
   const { languages } = useLanguages({ ...search });
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    const form = e.currentTarget;
-    const fd = new FormData(form);
-    const q = fd.get('query');
+  const handleSearch = (q: string) => {
     nav({ search: (prev) => ({ ...prev, q }) });
-    e.preventDefault();
   };
 
   const handleChangeSort: ChangeSortHandler = (sort, order) => {
@@ -26,15 +22,7 @@ export function LanguagesPage() {
   };
 
   return (
-    <section className="flex flex-col gap-4 p-6 py-4">
-      <header className="sticky top-4 z-10 flex flex-col gap-2 bg-bg dark:bg-bg-dark">
-        <PageTitle>{t('Languages')}</PageTitle>
-
-        <form onSubmit={handleSearch} key={search.q}>
-          <SearchField placeholder={t('Search')} defaultValue={search.q} name="query" autoFocus={search.q !== ''} />
-        </form>
-      </header>
-
+    <SearchContainer title={t('Positions')} query={search.q} onSearch={handleSearch}>
       <Table
         data={languages}
         headFields={[
@@ -74,6 +62,6 @@ export function LanguagesPage() {
           </TableRow>
         )}
       </Table>
-    </section>
+    </SearchContainer>
   );
 }
