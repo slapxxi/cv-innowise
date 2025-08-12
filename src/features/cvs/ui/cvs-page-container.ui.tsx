@@ -1,10 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { SearchContainer } from '~/app';
 import { AddCvForm, UpdateCvForm, useCvs, useDeleteCvs, type CvsSortKey } from '~/features';
 import { CvsTable } from '~/features/cvs';
 import { useEditingState } from '~/shared/hooks';
 import type { ChangeSortHandler, Cv, SortOrder } from '~/shared/types';
-import { ButtonAdd, Confirm, Modal } from '~/shared/ui';
+import { ButtonAdd, Confirm, Modal, SearchContainer } from '~/shared/ui';
 
 type CvsPageProps = {
   cvs: ReturnType<typeof useCvs>['cvs'];

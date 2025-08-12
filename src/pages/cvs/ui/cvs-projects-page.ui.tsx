@@ -1,7 +1,12 @@
 import { getRouteApi } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { CvProjectsTable } from '~/entities';
-import { AddCvProjectForm, UpdateCvProjectForm, useCvProjects, useDeleteCvProject } from '~/features/cvs';
+import {
+  AddCvProjectForm,
+  UpdateCvProjectForm,
+  useCvProjects,
+  useDeleteCvProject,
+  CvProjectsTable,
+} from '~/features/cvs';
 import { useEditingState } from '~/shared/hooks';
 import { type ChangeSortHandler, type CvProject } from '~/shared/types';
 import { ButtonAdd, Confirm, Modal, SearchContainer } from '~/shared/ui';

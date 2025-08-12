@@ -2,12 +2,14 @@ import { Chip, MenuItem } from '@mui/material';
 import { Fragment, useState } from 'react';
 import type { NonUndefined } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useCvProjects, type CvProjectsSearchParams, type CvProjectsSortKey, type UsersSearchParams } from '~/features';
-import { ActionMenu, cn, Highlight, OptionalLabel, Table, TableCell, TableRow, Text, type CvProject } from '~/shared';
+import { type CvProject } from '~/shared/types';
+import { ActionMenu, Highlight, OptionalLabel, Table, TableCell, TableRow, Text } from '~/shared/ui';
+import { cn } from '~/shared/utils';
+import { useCvProjects, type CvProjectsSearchParams, type CvProjectsSortKey } from '../services';
 
 type CvProjectsTableProps = {
   cvId: string;
-  q: NonUndefined<UsersSearchParams['q']>;
+  q: NonUndefined<CvProjectsSearchParams['q']>;
   sort: NonUndefined<CvProjectsSearchParams['sort']>;
   onUpdate?: (cvProject: CvProject) => void;
   onDelete?: (cvProject: CvProject) => void;

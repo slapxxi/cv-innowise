@@ -1,8 +1,8 @@
 import { Box, CardContent, Typography, useColorScheme } from '@mui/material';
 import type { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLanguageQuery } from '~/app';
-import { Select, SelectItem } from '~/shared/ui/select.ui';
+import { useLanguageQuery } from '~/shared/hooks';
+import { Select, SelectItem } from '~/shared/ui';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 

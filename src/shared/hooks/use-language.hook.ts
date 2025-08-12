@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const LANGUAGE_STORAGE_KEY = 'app-language';
 
-export type Language = 'en' | 'ru';
+type Language = 'en' | 'ru';
 
 const getLanguage = (): Language => {
   const storedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);

@@ -1,5 +1,5 @@
 import { type ChangeEvent, useState } from 'react';
-import type { FormType } from '~/entities/user/types';
+import type { FormType } from '../types';
 
 export const useUserForm = (initialState: FormType) => {
   const [form, setForm] = useState<FormType>(initialState);
