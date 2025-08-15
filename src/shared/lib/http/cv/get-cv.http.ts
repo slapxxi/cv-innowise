@@ -1,6 +1,6 @@
 import { groupBy } from 'lodash';
 import z from 'zod/v4';
-import { type Cv, type CvWithSkillsByCategories, type HttpError, type HttpResult, type Mastery } from '~/shared';
+import { type Cv, type CvWithSkillsByCategories, type HttpError, type HttpResult, type Mastery } from '~/shared/types';
 import { gql, graphQlClient } from '../graphql.http';
 import { Queries } from '../queries';
 import { cvSchema, skillCategorySchema } from '../schema';

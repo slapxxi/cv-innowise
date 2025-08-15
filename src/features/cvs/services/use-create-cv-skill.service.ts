@@ -1,5 +1,10 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import { createCvSkill, type CreateCvSkillData, type CreateCvSkillError, type CreateCvSkillParams } from '~/shared';
+import {
+  createCvSkill,
+  type CreateCvSkillData,
+  type CreateCvSkillError,
+  type CreateCvSkillParams,
+} from '~/shared/lib/http';
 
 type Params = {} & Omit<
   UseMutationOptions<CreateCvSkillData, CreateCvSkillError, Omit<CreateCvSkillParams, 'accessToken'>>,

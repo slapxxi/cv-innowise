@@ -4,7 +4,7 @@ import {
   type DeleteProfileSkillsData,
   type DeleteProfileSkillsError,
   type DeleteProfileSkillsParams,
-} from '~/shared';
+} from '~/shared/lib/http';
 
 type Params = {} & Omit<
   UseMutationOptions<DeleteProfileSkillsData, DeleteProfileSkillsError, Omit<DeleteProfileSkillsParams, 'accessToken'>>,

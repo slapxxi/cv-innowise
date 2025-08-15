@@ -1,9 +1,9 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { useUpdateProfileSkill } from '~/features';
-import { type Mastery } from '~/shared';
+import type { Mastery } from '~/shared/types';
 import { UpdateSkillForm } from '../update-skill.form';
+import { useUpdateProfileSkill } from '../../services';
 
-jest.mock('~/features', () => ({
+jest.mock('~/features/skills/services', () => ({
   useUpdateProfileSkill: jest.fn(),
 }));
 

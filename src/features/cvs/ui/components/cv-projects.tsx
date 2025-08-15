@@ -1,11 +1,12 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { t } from 'i18next';
-import { useAuth } from '~/app';
-import { cnMarkedText, cnSubtitle, type CvPreviewProps } from '~/features';
-import { cn } from '~/shared';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from '~/shared/hooks';
+import { cn } from '~/shared/utils';
+import { type CvPreviewProps, cnMarkedText, cnSubtitle } from '../cv-preview';
 
 export const CvProjects = ({ cv }: CvPreviewProps) => {
+  const { t } = useTranslation();
   const auth = useAuth();
 
   return (
@@ -31,6 +32,11 @@ export const CvProjects = ({ cv }: CvPreviewProps) => {
               {pr.startDate} - {pr.endDate ?? 'Till now'}
             </Typography>
             <Typography className={cnSubtitle}>{t('Responsibilities')}</Typography>
+            <Typography component={'ul'} className={'pl-5 m-0 list-disc [&>li::marker]:text-primary'}>
+              {pr.responsibilities.map((r, i) => (
+                <li key={i}>{r}</li>
+              ))}
+            </Typography>
             <Typography className={cnSubtitle}>{t('Environments')}</Typography>
             <Typography>
               {pr.environment.map((e, i) => (

@@ -4,7 +4,7 @@ import {
   type UpdateProfileLanguageData,
   type UpdateProfileLanguageError,
   type UpdateProfileLanguageParams,
-} from '~/shared';
+} from '~/shared/lib/http';
 
 type Params = {} & Omit<
   UseMutationOptions<

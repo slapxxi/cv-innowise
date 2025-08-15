@@ -3,8 +3,10 @@ import { getRouteApi } from '@tanstack/react-router';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { useUpdateProfileSkill } from '~/features';
-import { Button, Select, SelectItem, type SkillMastery, masteryLevels } from '~/shared';
+import { masteryLevels } from '~/shared/const';
+import type { SkillMastery } from '~/shared/types';
+import { Button, Select, SelectItem } from '~/shared/ui';
+import { useUpdateProfileSkill } from '../services';
 
 const routeApi = getRouteApi('/_mainLayout/users/$userId/_userLayout/skills');
 

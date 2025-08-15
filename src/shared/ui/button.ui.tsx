@@ -1,6 +1,6 @@
 import BaseButton from '@mui/material/Button';
 import { cva } from 'class-variance-authority';
-import { cn } from '~/shared';
+import { cn } from '../utils';
 
 const buttonVariants = cva('rounded-full px-6 py-2', {
   variants: {

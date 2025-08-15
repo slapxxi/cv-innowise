@@ -2,11 +2,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { getRouteApi } from '@tanstack/react-router';
 import dayjs, { type Dayjs } from 'dayjs';
-import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
+import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { useAddCvProject, useCvProjects, useProjects } from '~/features';
-import { Button, Select, SelectItem, TextField } from '~/shared';
+import { useProjects } from '~/entities/projects';
+import { Button, Select, SelectItem, TextField } from '~/shared/ui';
+import { useAddCvProject, useCvProjects } from '../services';
 
 const addCvProjectSchema = z.object({
   projectId: z.string(),
@@ -59,7 +60,7 @@ export const AddCvProjectForm: React.FC<AddCvFormProps> = (props) => {
       projectId: data.projectId,
       startDate: data.startDate.format('YYYY-MM-DD'),
       endDate: data.endDate?.format('YYYY-MM-DD'),
-      responsibilities: data.responsibilities.split(','),
+      responsibilities: data.responsibilities.split(';'),
       roles: data.roles.split(','),
     });
   };

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient, type UseMutationOptions } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
-import { login, type LoginData, type UpdateTokenError, type LoginParams } from '~/shared';
+import { login, type LoginData, type LoginParams, type UpdateTokenError } from '~/shared/lib/http';
 
 export function useLogin(params: UseMutationOptions<LoginData, UpdateTokenError, LoginParams>) {
   const queryClient = useQueryClient();

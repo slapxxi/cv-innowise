@@ -1,8 +1,9 @@
 import { useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import fuzzysort from 'fuzzysort';
 import { useMemo } from 'react';
-import type { GetSkillsData, GetSkillsError } from '~/shared';
-import { createComparator, getSkills, queryClient } from '~/shared';
+import { queryClient } from '~/shared/lib';
+import { getSkills, type GetSkillsData, type GetSkillsError } from '~/shared/lib/http';
+import { createComparator } from '~/shared/utils';
 
 export const skillsSortingFields = ['name', 'categoryName'] as const;
 

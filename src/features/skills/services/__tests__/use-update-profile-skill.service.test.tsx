@@ -2,7 +2,7 @@ import { userEvent } from '@testing-library/user-event';
 import { graphql, HttpResponse } from 'msw';
 import { render, screen, waitFor } from 'test-utils';
 import { server } from '~/../mocks/server';
-import type { Mastery } from '~/shared';
+import type { Mastery } from '~/shared/types';
 import { useUpdateProfileSkill } from '../use-update-profile-skill.service';
 
 const testSkill = {

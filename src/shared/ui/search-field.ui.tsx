@@ -2,7 +2,7 @@ import { Search } from '@mui/icons-material';
 import { IconButton, InputAdornment } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { useId } from 'react';
-import { cn } from '~/shared';
+import { cn } from '../utils';
 
 type SearchFieldProps = {} & Omit<React.ComponentProps<typeof TextField>, 'type' | 'slotProps' | 'id'>;
 

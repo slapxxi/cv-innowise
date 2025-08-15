@@ -1,5 +1,10 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import { deleteCvSkills, type DeleteCvSkillsData, type DeleteCvSkillsError, type DeleteCvSkillsParams } from '~/shared';
+import {
+  deleteCvSkills,
+  type DeleteCvSkillsData,
+  type DeleteCvSkillsError,
+  type DeleteCvSkillsParams,
+} from '~/shared/lib/http';
 
 type Params = {} & Omit<
   UseMutationOptions<DeleteCvSkillsData, DeleteCvSkillsError, Omit<DeleteCvSkillsParams, 'accessToken'>>,

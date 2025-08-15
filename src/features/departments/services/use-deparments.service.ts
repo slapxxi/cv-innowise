@@ -1,13 +1,9 @@
 import { useQueryClient, useSuspenseQuery, type UseSuspenseQueryOptions } from '@tanstack/react-query';
 import fuzzysort from 'fuzzysort';
 import { useMemo } from 'react';
-import {
-  createComparator,
-  getDepartments,
-  type GetDepartmentsData,
-  type GetDepartmentsError,
-  type SortOrder,
-} from '~/shared';
+import { getDepartments, type GetDepartmentsData, type GetDepartmentsError } from '~/shared/lib/http';
+import type { SortOrder } from '~/shared/types';
+import { createComparator } from '~/shared/utils';
 
 type QueryOptions = UseSuspenseQueryOptions<GetDepartmentsData, GetDepartmentsError>;
 

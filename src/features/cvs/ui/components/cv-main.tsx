@@ -1,10 +1,11 @@
-import { cnSubtitle, type CvPreviewProps } from '~/features';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { groupUserSkillsByParent, useSkills } from '~/features';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
+import { groupUserSkillsByParent, useSkills } from '~/features/skills';
+import { type CvPreviewProps, cnSubtitle } from '../cv-preview';
 
 export const CvMain = ({ cv }: CvPreviewProps) => {
+  const { t } = useTranslation();
   const { skills: allSkills } = useSkills();
   const userSkills = cv.skills;
   const groupedSkills = groupUserSkillsByParent(allSkills, userSkills);

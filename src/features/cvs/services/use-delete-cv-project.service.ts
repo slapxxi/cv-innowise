@@ -4,7 +4,7 @@ import {
   type DeleteCvProjectData,
   type DeleteCvProjectError,
   type DeleteCvProjectParams,
-} from '~/shared';
+} from '~/shared/lib/http';
 
 type Params = {} & Omit<
   UseMutationOptions<DeleteCvProjectData, DeleteCvProjectError, Omit<DeleteCvProjectParams, 'accessToken'>>,

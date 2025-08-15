@@ -4,7 +4,7 @@ import {
   type CreateProfileLanguageData,
   type CreateProfileLanguageError,
   type CreateProfileLanguageParams,
-} from '~/shared';
+} from '~/shared/lib/http';
 
 type Params = {} & Omit<
   UseMutationOptions<

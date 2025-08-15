@@ -3,8 +3,10 @@ import { getRouteApi } from '@tanstack/react-router';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import * as z from 'zod/v4';
-import { useCreateCvSkill, useCv, useSkills } from '~/features';
-import { Button, masteryLevels, Select, SelectItem } from '~/shared';
+import { useSkills } from '~/features/skills';
+import { masteryLevels } from '~/shared/const';
+import { Button, Select, SelectItem } from '~/shared/ui';
+import { useCreateCvSkill, useCv } from '../services';
 
 const routeApi = getRouteApi('/_mainLayout/cvs/$cvId/_cvsLayout/skills');
 

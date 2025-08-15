@@ -7,7 +7,7 @@ import {
   type SkillCategory,
   type User,
   type UserWithSkillsByCategories,
-} from '~/shared';
+} from '~/shared/types';
 import { API_URL } from '../env';
 import { gql, request } from '../graphql.http';
 import { Queries } from '../queries';

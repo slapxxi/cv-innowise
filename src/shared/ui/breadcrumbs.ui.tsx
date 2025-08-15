@@ -1,7 +1,7 @@
 import { ChevronRight } from '@mui/icons-material';
 import { Link } from '@tanstack/react-router';
 import { Fragment } from 'react';
-import { useBreadcrumbs } from '~/shared';
+import { useBreadcrumbs } from '~/shared/hooks';
 
 type BreadcrumbsProps = {
   className?: string;

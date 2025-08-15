@@ -1,5 +1,5 @@
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query';
-import { updateCv, type UpdateCvData, type UpdateCvError, type UpdateCvParams } from '~/shared';
+import { updateCv, type UpdateCvData, type UpdateCvError, type UpdateCvParams } from '~/shared/lib/http';
 
 type Params = {} & Omit<
   UseMutationOptions<UpdateCvData, UpdateCvError, Omit<UpdateCvParams, 'accessToken'>>,

@@ -1,4 +1,5 @@
-import { cn, type Mastery } from '~/shared';
+import type { Mastery } from '../types';
+import { cn } from '../utils';
 
 type MasteryMap<T> = {
   [key in Lowercase<Mastery>]: T;
